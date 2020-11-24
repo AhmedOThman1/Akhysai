@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_pickSignUpTypeFragment"
+            app:destination="@id/pickSignUpTypeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_phoneAuthFragment"
+            app:destination="@id/phoneAuthFragment"
+            app:enterAnim="@anim/slide_in_top"
+            app:exitAnim="@anim/slide_out_bottom" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_top"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_oneArticleFragment"
+            app:destination="@id/oneArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_libraryArticlesFragment"
+            app:destination="@id/libraryArticlesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_centersAndClinicsFragment"
+            app:destination="@id/centersAndClinicsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myArticlesFragment"
+            app:destination="@id/myArticlesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pickSignUpTypeFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.signUp.PickSignUpTypeFragment"
+        android:label="fragment_pick_sign_up_type"
+        tools:layout="@layout/fragment_pick_sign_up_type">
+        <action
+            android:id="@+id/action_pickSignUpTypeFragment_to_signUpPageOneFragment"
+            app:destination="@id/signUpPageOneFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpPageOneFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.signUp.SignUpPageOneFragment"
+        android:label="fragment_sign_up_page_one"
+        tools:layout="@layout/fragment_sign_up_page_one">
+        <action
+            android:id="@+id/action_signUpPageOneFragment_to_signUpPageTwoFragment"
+            app:destination="@id/signUpPageTwoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpPageTwoFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.signUp.SignUpPageTwoFragment"
+        android:label="SignUpPageTwoFragment"
+        tools:layout="@layout/fragment_sign_up_page_two">
+        <action
+            android:id="@+id/action_signUpPageTwoFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signUpPageTwoFragment_to_signUpPageThreeFragment"
+            app:destination="@id/signUpPageThreeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpPageThreeFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.signUp.SignUpPageThreeFragment"
+        android:label="SignUpPageThreeFragment"
+        tools:layout="@layout/fragment_sign_up_page_three">
+        <action
+            android:id="@+id/action_signUpPageThreeFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneAuthFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.login.PhoneAuthFragment"
+        android:label="PhoneAuthFragment"
+        tools:layout="@layout/fragment_phone_auth">
+        <action
+            android:id="@+id/action_phoneAuthFragment_to_phoneAuthPageTwoFragment"
+            app:destination="@id/phoneAuthPageTwoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneAuthPageTwoFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.login.PhoneAuthPageTwoFragment"
+        android:label="PhoneAuthPageTwoFragment"
+        tools:layout="@layout/fragment_phone_auth_page_two">
+        <action
+            android:id="@+id/action_phoneAuthPageTwoFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_phoneAuthPageTwoFragment_to_pickSignUpTypeFragment"
+            app:destination="@id/pickSignUpTypeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_oneAkhysaiFragment"
+            app:destination="@id/oneAkhysaiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_searchFragment_to_bookOneAkhysaiFragment"
+            app:destination="@id/bookOneAkhysaiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/oneArticleFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.OneArticleFragment"
+        android:label="fragment_one_article"
+        tools:layout="@layout/fragment_one_article" >
+        <action
+            android:id="@+id/action_oneArticleFragment_to_oneAkhysaiFragment"
+            app:destination="@id/oneAkhysaiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/libraryArticlesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.LibraryArticlesFragment"
+        android:label="fragment_library_articles"
+        tools:layout="@layout/fragment_library_articles" >
+        <action
+            android:id="@+id/action_libraryArticlesFragment_to_oneArticleFragment"
+            app:destination="@id/oneArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/oneAkhysaiFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.OneAkhysaiFragment"
+        android:label="fragment_one_akhysai"
+        tools:layout="@layout/fragment_one_akhysai">
+        <action
+            android:id="@+id/action_oneAkhysaiFragment_to_bookOneAkhysaiFragment"
+            app:destination="@id/bookOneAkhysaiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_oneAkhysaiFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_top"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top" />
+        <action
+            android:id="@+id/action_oneAkhysaiFragment_to_oneArticleFragment"
+            app:destination="@id/oneArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookOneAkhysaiFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.BookOneAkhysaiFragment"
+        android:label="fragment_book_one_akhysai"
+        tools:layout="@layout/fragment_book_one_akhysai" >
+        <action
+            android:id="@+id/action_bookOneAkhysaiFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_top"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top" />
+        <action
+            android:id="@+id/action_bookOneAkhysaiFragment_to_confirmDateFragment"
+            app:destination="@id/confirmDateFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/callUsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.CallUsFragment"
+        android:label="fragment_call_us"
+        tools:layout="@layout/fragment_call_us" />
+    <fragment
+        android:id="@+id/confirmDateFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.ConfirmDateFragment"
+        android:label="ConfirmDateFragment"
+        tools:layout="@layout/fragment_confirm_date"/>
+    <fragment
+        android:id="@+id/centersAndClinicsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.CentersAndClinicsFragment"
+        android:label="CentersAndClinicsFragment"
+        tools:layout="@layout/fragment_centers_and_clinics">
+        <action
+            android:id="@+id/action_centersAndClinicsFragment_to_oneClinicFragment"
+            app:destination="@id/oneClinicFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/oneClinicFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.OneClinicFragment"
+        android:label="OneClinicFragment"
+        tools:layout="@layout/fragment_one_clinic"/>
+    <fragment
+        android:id="@+id/myArticlesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.MyArticlesFragment"
+        android:label="MyArticlesFragment"
+        tools:layout="@layout/fragment_my_articles">
+        <action
+            android:id="@+id/action_myArticlesFragment_to_oneArticleFragment"
+            app:destination="@id/oneArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_myArticlesFragment_to_createNewArticleFragment"
+            app:destination="@id/createNewArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/myAvailableDatesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.MyAvailableDatesFragment"
+        android:label="MyAvailableDatesFragment"
+        tools:layout="@layout/fragment_my_available_dates"/>
+    <fragment
+        android:id="@+id/mySpecialtiesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.MySpecialtiesFragment"
+        android:label="MySpecialtiesFragment"
+        tools:layout="@layout/fragment_my_specialties"/>
+    <fragment
+        android:id="@+id/createNewArticleFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.CreateNewArticleFragment"
+        android:label="CreateNewArticleFragment"
+        tools:layout="@layout/fragment_create_new_article"/>
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.AboutUsFragment"
+        android:label="fragment_booking_requests"
+        tools:layout="@layout/fragment_about_us" />
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.PrivacyPolicyFragment"
+        android:label="fragment_privacy_policy"
+        tools:layout="@layout/fragment_privacy_policy" />
+    <fragment
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.TermsAndConditionsFragment"
+        android:label="fragment_terms_and_conditions"
+        tools:layout="@layout/fragment_terms_and_conditions" />
+    <fragment
+        android:id="@+id/editClinicFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.EditClinicFragment"
+        android:label="EditClinicFragment"
+        tools:layout="@layout/fragment_edit_clinic_data"/>
+    <fragment
+        android:id="@+id/bookingRequestsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.BookingRequestsFragment"
+        android:label="BookingRequestsFragment"
+        tools:layout="@layout/fragment_booking_requests"/>
+    <fragment
+        android:id="@+id/editAkhysaiDataFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.EditAkhysaiDataFragment"
+        android:label="EditAkhysaiDataFragment"
+        tools:layout="@layout/fragment_edit_akhysai_profile"/>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_callUsFragment"
+            app:destination="@id/callUsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_termsAndConditionsFragment"
+            app:destination="@id/termsAndConditionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+</navigation>

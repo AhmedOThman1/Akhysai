@@ -1,0 +1,105 @@
+apply plugin: 'com.android.application'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.ahmed.othman.akhysai"
+        minSdkVersion 17
+        targetSdkVersion 29
+        versionCode 21
+        versionName "2.3.9"
+
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+
+
+    def nav_version = "2.3.1"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+
+    // Declare the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth'
+
+
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+
+    // pin view
+    implementation 'com.chaos.view:pinview:1.4.4'
+
+    //round image view
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    // Component
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.android.support:design:29.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.4.1"
+
+    // google play services
+    implementation 'com.google.android.gms:play-services-vision:20.1.2'
+
+    // Photo
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    // GIF
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // LifeCycle
+
+    def lifecycle_version = "2.2.0"
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
+    implementation 'com.google.android.material:material:1.2.1'
+
+
+}

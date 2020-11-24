@@ -1,0 +1,244 @@
+﻿<resources>
+    <string name="app_name">Akhysai</string>
+
+    <string name="facebook_app_id" translatable="false">356147552267231</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb356147552267231</string>
+
+
+    <string name="nav_drawer_open" translatable="false">Open Navigation Drawer</string>
+    <string name="nav_drawer_close" translatable="false">Close Navigation Drawer</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="signup">don\'t have an account ? <b>Sign up.</b></string>
+    <string name="name_hint">Name</string>
+    <string name="phone_number_hint">Phone number</string>
+    <string name="address_hint">Address</string>
+    <string name="city_hint">City</string>
+    <string name="sign_up_button">Sign Up</string>
+    <string name="birthday_hint">Birthday</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="next_button">Next</string>
+    <string name="id_card_number">ID card number</string>
+    <string name="years_of_experience">Years of experience</string>
+    <string name="years_of_experience2">Years of experience</string>
+    <string name="this_rate_from">"This rate from "</string>
+    <string name="visitor">" visitor"</string>
+    <string name="egp">" Egp)"</string>
+    <string name="category">"Category: "</string>
+    <string name="phone">"Phone: "</string>
+    <string name="website">"Website: "</string>
+    <string name="company">"Company: "</string>
+    <string name="session_price">"Session price ("</string>
+    <string name="session_price_hint">Session price</string>
+    <string name="write_few_lines_about_yourself">Write few lines about yourself</string>
+    <string name="write_about_yourself_hint">Write extensively about yourself</string>
+    <string name="upload_cv">Upload your CV</string>
+    <string name="or">OR</string>
+    <string name="register_to_book_session">Register to book a session</string>
+    <string name="join_to_our_team">Join our doctors team</string>
+    <string name="register_clinic">Register as clinic</string>
+    <string name="search">Search</string>
+    <string name="article_title">Article title</string>
+    <string name="akhysai_library">Akhysai Library</string>
+    <string name="how_to_book_akhysai_title"> How to book Akhysai </string>
+    <string name="one">1</string>
+    <string name="register_free_title"> Register for free !</string>
+    <string name="sign_up_body"> Registration allows you to book Akhysai easily  </string>
+    <string name="two">2</string>
+    <string name="search_akhysai_title"> Search for Akhysai </string>
+    <string name="search_akhysai_body"> By specialty and region </string>
+    <string name="_3">3</string>
+    <string name="choose_akhysai_title"> Choose the right Akhysai </string>
+    <string name="choose_akhysai_body"> According to the reviews and the right price for you </string>
+    <string name="_4" translatable="false">4</string>
+    <string name="book_date_title"> Book your appointment </string>
+    <string name="book_date_body"> Easily with the right Akhysai for you </string>
+    <string name="akhysai_library_title">Akhysai library</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="example_01123456789">example: 01123456789</string>
+    <string name="enter_the_code">Enter the code</string>
+    <string name="choose_the">"Choose The "</string>
+    <string name="you_want">You Want</string>
+    <string name="akhysai_title2">Akhysai</string>
+    <string name="akhysai_is_the_first_application_for_specialists_in_egypt">Akhysai is the first application for specialists in egypt.</string>
+    <string name="get_started">Get Started</string>
+    <string name="one_day_ago">1 day ago</string>
+    <string name="days_ago">" days ago"</string>
+    <string name="two_days_ago">2 days ago</string>
+    <string name="ago" />
+    <string name="today">Today</string>
+    <string name="days_ago2">" days ago"</string>
+    <string name="years">" years"</string>
+    <string name="rates">Reviews</string>
+    <string name="book_akhysai_title">Book akhysai</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="book_date"> Book an appointment </string>
+    <string name="write_review"> Write a review </string>
+    <string name="about_akhysai"> About Akhysai </string>
+    <string name="profile"> Profile </string>
+    <string name="akhysai_book"> Book Akhysai </string>
+    <string name="write_review_hint"> Describe your experience with this Akhysai </string>
+    <string name="publish_review">Publish review</string>
+    <string name="cancel">Cancel</string>
+    <string name="oops_no_result_found">Oops! No result found</string>
+    <string name="try_search_for_something_more_general_check_for_spelling_mistakes">Try search for something more general, check for spelling mistakes.</string>
+    <string name="control_board">Control Board</string>
+    <string name="join_us">Join us</string>
+    <string name="logout">Logout</string>
+    <string name="tell_a_friend">Tell a Friend</string>
+    <string name="contact_us">Contact us</string>
+    <string name="home">Home</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="go_to_setting">Go to wifi Setting</string>
+    <string name="available_appointments">Available appointments</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="there_are_no_appointments_available_today">There are no appointments available today</string>
+    <string name="are_you_sure_to_book_an_appointment_with_dr">Are you sure to book an appointment with Dr.</string>
+    <string name="on">" on "</string>
+    <string name="at">" at "</string>
+    <string name="pm">" PM "</string>
+    <string name="am">" AM "</string>
+    <string name="question_mark">"?"</string>
+    <string name="reservation_confirmation">reservation confirmation</string>
+    <string name="type_the_address_in_detail">Type the address in detail</string>
+    <string name="notes">Notes</string>
+    <string name="yes_send">Yes, Send</string>
+    <string name="no_cancel">No, Cancel</string>
+    <string name="about_us">About Us</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="enter_your_password_to_continue">Enter your password to continue</string>
+    <string name="continue_text">Continue</string>
+    <string name="clinic_name">Clinic name</string>
+    <string name="clinics_title">دليل عيادات و مراكز</string>
+    <string name="centers_and_clinics">Centers and Clinics</string>
+    <string name="call">Call</string>
+    <string name="open_website">open website</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="my_articles">My Articles</string>
+    <string name="create_new_article">Create new article</string>
+    <string name="details">Article details</string>
+    <string name="create">Create</string>
+    <string name="his_articles">His Articles</string>
+    <string name="writer">Writer</string>
+    <string name="message_title_hint">Message title</string>
+    <string name="your_message_hint">Your message</string>
+    <string name="send">Send</string>
+    <string name="from">" from "</string>
+    <string name="to">" to "</string>
+    <string name="edit">Edit</string>
+    <string name="website_hint">Website</string>
+    <string name="company_name">Company name</string>
+    <string name="my_available_dates">My available dates</string>
+    <string name="start_time">Start time</string>
+    <string name="add_available_date">Add available date</string>
+    <string name="add">Add</string>
+    <string name="end_time">End time</string>
+    <string name="clinic_details">Clinic details</string>
+    <string name="add_new_specialty">Add new specialty</string>
+    <string name="my_specialties">My specialties</string>
+    <string name="my_booking_requests">My Booking requests</string>
+    <string name="day">"Day: "</string>
+    <string name="booking_requests">Booking requests</string>
+    <string name="nav_edit_akhysai_profile">Profile</string>
+    <string name="nav_my_specialties">My Specialties</string>
+    <string name="nav_my_available_dates">My available dates</string>
+    <string name="nav_create_article">Add article</string>
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="version">Version</string>
+    <string name="version_num">v2.3.9</string>
+
+
+    <array name="days">
+        <item>Day</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </array>
+
+    <array name="specialties_medical">
+        <item>Choose specialty</item>
+        <item>Neurologists</item>
+        <item>Ear, Nose and Throat</item>
+        <item>Children</item>
+        <item>Belly</item>
+        <item>Heart and blood vessels</item>
+    </array>
+
+    <array name="specialties_with_special_needs">
+        <item>Choose specialty</item>
+        <item>Occupational therapy</item>
+        <item>Pronunciation and speech</item>
+        <item>learning difficulties</item>
+        <item>Behavior Modification</item>
+        <item>Skills Development</item>
+        <item>Autism</item>
+        <item>Psychological tests</item>
+    </array>
+
+
+    <array name="category">
+        <item>Choose category</item>
+        <item>Medical</item>
+        <item>With special needs</item>
+    </array>
+
+    <array name="fields">
+        <item>Choose field</item>
+        <item>Medical</item>
+        <item>With special needs</item>
+    </array>
+
+
+    <array name="cities">
+        <item>Choose city</item>
+        <item>Cairo</item>
+        <item>Giza</item>
+        <item>Alexandria</item>
+        <item>Mansoura</item>
+    </array>
+
+    <array name="cairo">
+        <item>Choose area</item>
+        <item>new egypt</item>
+        <item>nasr city</item>
+        <item>old egypt</item>
+    </array>
+
+    <array name="giza">
+        <item>Choose area</item>
+        <item>Doki</item>
+        <item>pyramid</item>
+    </array>
+
+    <array name="alex">
+        <item>Choose area</item>
+        <item>Abo Qair</item>
+        <item>Sidi Beshr</item>
+        <item>El Maamora</item>
+    </array>
+
+    <array name="mansoura">
+        <item>Choose area</item>
+        <item>new mansoura</item>
+        <item>da7e7 st.</item>
+    </array>
+
+
+    <dimen name="eight_dp">25dp</dimen>
+
+</resources>

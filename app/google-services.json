@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "766047040313",
+    "firebase_url": "https://akhysai-bdcb4.firebaseio.com",
+    "project_id": "akhysai-bdcb4",
+    "storage_bucket": "akhysai-bdcb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766047040313:android:6a163d36cfcb462100eee8",
+        "android_client_info": {
+          "package_name": "com.ahmed.othman.akhysai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766047040313-ukig69mdhjt2sov4hs1vmedto6if3ebp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ahmed.othman.akhysai",
+            "certificate_hash": "257b7f1876ab897d087723a7694f8a2ba451d034"
+          }
+        },
+        {
+          "client_id": "766047040313-6i7ln36it7o1fm8b8jc1ttfvlkdels6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy5JsEeMC9MJrQI-46pEWPUjOK3O281g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766047040313-6i7ln36it7o1fm8b8jc1ttfvlkdels6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
