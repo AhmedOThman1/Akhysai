@@ -83,6 +83,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                 PinView.setError(null);
                 verifyVerificationCode(code);
             } else {
+                Log.w("CodeError",code+", he wrote: "+PinView.getText().toString().trim());
                 PinView.setError("Enter the correct code");
                 PinView.setText("");
                 PinView.requestFocus();
@@ -102,6 +103,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                     PinView.setError(null);
                     verifyVerificationCode(code);
                 } else if (temp.length() == 6) {
+                    Log.w("CodeError",code+", he wrote: "+temp);
                     PinView.setError("Enter the correct code");
                     PinView.setText("");
                     PinView.requestFocus();
@@ -139,6 +141,8 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                 TimeUnit.SECONDS,   // Unit of timeout
                 activity,               // Activity (for callback binding)
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                         //Getting the code sent by SMS

@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 
+import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
 public class SettingsFragment extends Fragment {
@@ -27,6 +28,7 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         toolbar.setVisibility(View.VISIBLE);
+        navigation_view.setCheckedItem(R.id.nav_settings);
 
         view.findViewById(R.id.language).setOnClickListener(v -> chooseLanguage());
         view.findViewById(R.id.language_text).setOnClickListener(v -> chooseLanguage());
