@@ -52,7 +52,7 @@ public class MyArticlesFragment extends Fragment {
         my_articles_recycler = view.findViewById(R.id.my_articles_recycler);
 
         toolbar.setVisibility(View.VISIBLE);
-        navigation_view.setCheckedItem(R.id.akhysai_library); //todo
+        navigation_view.setCheckedItem(R.id.nav_my_articles);
 
         ArticleAdapter articleAdapter = new ArticleAdapter(getContext());
 

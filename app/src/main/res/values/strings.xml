@@ -157,6 +157,7 @@
     <string name="language">Language</string>
     <string name="version">Version</string>
     <string name="version_num">v2.3.9</string>
+    <string name="language_name">English</string>
 
 
     <array name="days">

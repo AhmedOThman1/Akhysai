@@ -109,10 +109,10 @@ public class LoginFragment extends Fragment {
                 username.setError(null);
                 password.setError(null);
                 close_keyboard();
-                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
                 requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                 updateNavDrawer(requireActivity());
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
 //                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.fragment_container, new HomeFragment()).addToBackStack(null).commit();
             }
         });

@@ -2,7 +2,11 @@ package com.ahmed.othman.akhysai.ui.fragments;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,4 +42,5 @@ public class AboutUsFragment extends Fragment {
     private void getAboutUsData() {
         AboutUsData = "This About Us Data from server";
     }
+
 }

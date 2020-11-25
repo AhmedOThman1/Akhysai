@@ -20,10 +20,13 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
@@ -50,7 +53,7 @@ public class EditAkhysaiDataFragment extends Fragment {
     }
 
     CircleImageView akhysai_image;
-    TextInputLayout name, email, password, phone, birthday,years_of_experience,akhysai_price,id_card_number,akhysai_description,about_akhysai;
+    TextInputLayout name, email, password, phone, birthday, years_of_experience, akhysai_price, id_card_number, akhysai_description, about_akhysai;
     Spinner city, area;
     RadioGroup gender;
     RadioButton male;
@@ -164,7 +167,7 @@ public class EditAkhysaiDataFragment extends Fragment {
                 phone.setError(null);
                 birthday.setError("Can't be empty");
                 open_pick_birthday();
-            }else if (city.getSelectedItemPosition() == 0) {
+            } else if (city.getSelectedItemPosition() == 0) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
@@ -192,7 +195,7 @@ public class EditAkhysaiDataFragment extends Fragment {
                 years_of_experience.setError("Can't be empty");
                 years_of_experience.requestFocus();
                 open_keyboard(years_of_experience.getEditText());
-            }  else if (akhysai_price.getEditText().getText().toString().trim().isEmpty()) {
+            } else if (akhysai_price.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
@@ -204,7 +207,7 @@ public class EditAkhysaiDataFragment extends Fragment {
                 akhysai_price.setError("Enter valid phone number");
                 akhysai_price.requestFocus();
                 open_keyboard(akhysai_price.getEditText());
-            }   else if (id_card_number.getEditText().getText().toString().trim().isEmpty()) {
+            } else if (id_card_number.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
@@ -217,7 +220,7 @@ public class EditAkhysaiDataFragment extends Fragment {
                 id_card_number.setError("Enter valid phone number");
                 id_card_number.requestFocus();
                 open_keyboard(id_card_number.getEditText());
-            }    else if (akhysai_description.getEditText().getText().toString().trim().isEmpty()) {
+            } else if (akhysai_description.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
@@ -231,7 +234,7 @@ public class EditAkhysaiDataFragment extends Fragment {
                 akhysai_description.setError("Enter valid phone number");
                 akhysai_description.requestFocus();
                 open_keyboard(akhysai_description.getEditText());
-            }   else if (about_akhysai.getEditText().getText().toString().trim().isEmpty()) {
+            } else if (about_akhysai.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
@@ -273,13 +276,13 @@ public class EditAkhysaiDataFragment extends Fragment {
                         akhysai_description.getEditText().getText().toString().trim(),
                         about_akhysai.getEditText().getText().toString().trim(),
                         Integer.parseInt(years_of_experience.getEditText().getText().toString().trim()),
-                        (float) 4 ,//put the real rate here
-                        19 ,// put the real visitor num here
+                        (float) 4,//put the real rate here
+                        19,// put the real visitor num here
                         Integer.parseInt(akhysai_price.getEditText().getText().toString().trim()),
                         phone.getEditText().getText().toString().trim(),
                         calendar.getTimeInMillis(),
                         male.isChecked(),
-                        id_card_number.getEditText().getText().toString().trim(),new ArrayList<>(),new ArrayList<>());
+                        id_card_number.getEditText().getText().toString().trim(), new ArrayList<>(), new ArrayList<>());
                 postEditAkhysaiProfileData(akhysai);
             }
         });
@@ -309,8 +312,8 @@ public class EditAkhysaiDataFragment extends Fragment {
     }
 
 
-
     Calendar calendar = Calendar.getInstance();
+
     private void open_pick_birthday() {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -372,4 +375,25 @@ public class EditAkhysaiDataFragment extends Fragment {
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.homeFragment, true)
+                        .setEnterAnim(R.anim.slide_in_right)
+                        .setExitAnim(R.anim.slide_out_left)
+                        .setPopEnterAnim(R.anim.slide_in_left)
+                        .setPopExitAnim(R.anim.slide_out_right)
+                        .build();
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 }

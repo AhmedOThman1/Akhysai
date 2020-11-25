@@ -164,7 +164,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
 
-                        Toast.makeText(context, "errorr" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "error" + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.w("ERROR_AUTH", e.getMessage());
                     }
 
@@ -198,9 +198,9 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                         // TODO write the correct condition
                         if (true == true && !false == !true)     // logged in before ?
                         {
-                            Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_homeFragment);
                             requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
                             updateNavDrawer(requireActivity());
+                            Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_homeFragment);
                         } else {
                             // new user ?
                             Bundle bundle = new Bundle();

@@ -31,25 +31,13 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.language).setOnClickListener(v -> chooseLanguage());
         view.findViewById(R.id.language_text).setOnClickListener(v -> chooseLanguage());
 
-        view.findViewById(R.id.about_us).setOnClickListener(v -> {
-            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_aboutUsFragment, null, navOptions);
-        });
+        view.findViewById(R.id.about_us).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_aboutUsFragment));
 
-        view.findViewById(R.id.terms_and_conditions).setOnClickListener(v -> {
-            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_termsAndConditionsFragment, null, navOptions);
-        });
+        view.findViewById(R.id.terms_and_conditions).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_termsAndConditionsFragment));
 
-        view.findViewById(R.id.privacy_policy).setOnClickListener(v -> {
-            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_privacyPolicyFragment, null, navOptions);
-        });
+        view.findViewById(R.id.privacy_policy).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_privacyPolicyFragment));
 
-        view.findViewById(R.id.contact_us).setOnClickListener(v -> {
-            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_callUsFragment, null, navOptions);
-        });
+        view.findViewById(R.id.contact_us).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_callUsFragment));
 
 
         return view;

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ahmed.othman.akhysai.R;
@@ -42,7 +43,7 @@ public class BookOneAkhysaiFragment extends Fragment {
 
     Context context;
     Akhysai currentAkhysai = new Akhysai();
-    NestedScrollView nested;
+    ScrollView nested;
     boolean check_ScrollingUp = false;
 
     ChipGroup saturday_chips,

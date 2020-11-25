@@ -167,7 +167,7 @@ public class OneAkhysaiFragment extends Fragment {
         reviewAdapter = new ReviewAdapter(context);
         reviewAdapter.setModels(currentAkhysai.getReviews());
         rates_recyclerview.setAdapter(reviewAdapter);
-        rates_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        rates_recyclerview.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
 
         return view;
     }

@@ -213,15 +213,6 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_libraryArticlesFragment);
         });
 
-//TODO delete this
-        view.findViewById(R.id.title1).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.myArticlesFragment));
-        view.findViewById(R.id.title2).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.myAvailableDatesFragment));
-        view.findViewById(R.id.title3).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.mySpecialtiesFragment));
-        view.findViewById(R.id.title4).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.createNewArticleFragment));
-        view.findViewById(R.id.home_image_background).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.editClinicFragment));
-        view.findViewById(R.id.home_first_title).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.bookingRequestsFragment));
-        view.findViewById(R.id.home_second_title).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.editAkhysaiDataFragment));
-
 //        nested_scroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 //            if (scrollY > oldScrollY + 2) {
 //                // User scrolls down

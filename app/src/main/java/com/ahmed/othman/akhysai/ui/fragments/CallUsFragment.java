@@ -119,26 +119,6 @@ public class CallUsFragment extends Fragment {
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        // This callback will only be called when MyFragment is at least Started.
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-    }
 
 }

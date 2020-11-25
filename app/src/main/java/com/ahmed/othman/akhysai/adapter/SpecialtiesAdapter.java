@@ -49,13 +49,9 @@ public class SpecialtiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ViewHolder.specialty_delete_background.setOnClickListener(v -> {
             Models.remove(position);
             this.setModels(Models);
-            this.notifyItemRemoved(position);
+            this.notifyDataSetChanged();
         });
-        ViewHolder.specialty_delete_icon.setOnClickListener(v -> {
-            Models.remove(position);
-            this.setModels(Models);
-            this.notifyItemRemoved(position);
-        });
+
 
     }
 

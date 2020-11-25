@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
             } else if (id == R.id.nav_book_requests && Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() != R.id.bookingRequestsFragment) {
-                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookingRequestsFragment, null, navOptions);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.bookingRequestsFragment);
             } else if (id == R.id.nav_edit_akhysai_profile && Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() != R.id.editAkhysaiDataFragment) {
                 NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.editAkhysaiDataFragment, null, navOptions);
@@ -77,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.myAvailableDatesFragment, null, navOptions);
             } else if (id == R.id.nav_create_article && Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() != R.id.createNewArticleFragment) {
-                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.createNewArticleFragment, null, navOptions);
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.createNewArticleFragment);
             } else if (id == R.id.nav_my_articles && Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() != R.id.myArticlesFragment) {
                 NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build();
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.myArticlesFragment, null, navOptions);
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent share_app_intent = new Intent(Intent.ACTION_SEND);
                 share_app_intent.setType("text/plain");
                 share_app_intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing app");
-                share_app_intent.putExtra(Intent.EXTRA_TEXT, "Www.akhysai.com/");
+                share_app_intent.putExtra(Intent.EXTRA_TEXT, "Download akhysai app for free now! Www.akhysai.com/");
                 startActivity(Intent.createChooser(share_app_intent, "Sharing Akhysai app"));
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return false;
@@ -109,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.logout) {
                 FirebaseAuth.getInstance().signOut();
                 getSharedPreferences(shared_pref, MODE_PRIVATE).edit().putBoolean(logged_in, false).apply();
+                updateNavDrawer(this);
                 if (Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() != R.id.homeFragment)
                     Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.homeFragment);
-                updateNavDrawer(this);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
