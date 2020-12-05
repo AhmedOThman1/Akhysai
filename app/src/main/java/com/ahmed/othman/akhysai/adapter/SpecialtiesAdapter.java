@@ -20,7 +20,6 @@ public class SpecialtiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Context context;
     private ArrayList<String> Models;
-    private String current_model;
 
     public SpecialtiesAdapter(@NonNull Context context) {
         this.context = context;
@@ -41,7 +40,7 @@ public class SpecialtiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        current_model = Models.get(position);
+        String current_model = Models.get(position);
         final SpecialtyViewHolder ViewHolder = (SpecialtyViewHolder) holder;
 
         ViewHolder.specialty_title.setText(current_model);
@@ -60,7 +59,7 @@ public class SpecialtiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return Models.size();
     }
 
-    class SpecialtyViewHolder extends RecyclerView.ViewHolder {
+    static class SpecialtyViewHolder extends RecyclerView.ViewHolder {
         // views
         TextView specialty_title, specialty_delete_background;
         ImageView specialty_delete_icon;

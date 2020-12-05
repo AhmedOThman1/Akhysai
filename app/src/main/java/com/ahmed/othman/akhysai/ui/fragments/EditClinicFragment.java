@@ -173,7 +173,7 @@ public class EditClinicFragment extends Fragment {
                 password.setError(null);
                 company_name.setError(null);
                 phone.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner_error);
                 Toast.makeText(getContext(), "Choose your category", Toast.LENGTH_SHORT).show();
             } else if (city.getSelectedItemPosition() == 0) {
                 name.setError(null);
@@ -181,8 +181,8 @@ public class EditClinicFragment extends Fragment {
                 password.setError(null);
                 company_name.setError(null);
                 phone.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner);
+                city.setBackgroundResource(R.drawable.background_spinner_error);
                 Toast.makeText(getContext(), "Choose your city", Toast.LENGTH_SHORT).show();
             } else if (area.getSelectedItemPosition() == 0) {
                 name.setError(null);
@@ -190,9 +190,9 @@ public class EditClinicFragment extends Fragment {
                 password.setError(null);
                 company_name.setError(null);
                 phone.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner);
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner_error);
                 Toast.makeText(getContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
             } else if (clinic_details.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
@@ -200,9 +200,9 @@ public class EditClinicFragment extends Fragment {
                 password.setError(null);
                 company_name.setError(null);
                 phone.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner);
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 clinic_details.setError("Can't be empty");
                 clinic_details.requestFocus();
                 open_keyboard(clinic_details.getEditText());
@@ -213,9 +213,9 @@ public class EditClinicFragment extends Fragment {
                 company_name.setError(null);
                 phone.setError(null);
                 clinic_details.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner);
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 clinic_image.setBorderWidth((float) 2);
                 clinic_image.setBorderColor(getContext().getResources().getColor(R.color.error_red));
                 Toast.makeText(getContext(), "Upload your profile picture", Toast.LENGTH_SHORT).show();
@@ -226,9 +226,9 @@ public class EditClinicFragment extends Fragment {
                 company_name.setError(null);
                 phone.setError(null);
                 clinic_details.setError(null);
-                clinic_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                clinic_category.setBackgroundResource(R.drawable.background_spinner);
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 clinic_image.setBorderWidth((float) 0);
                 Clinic clinic = new Clinic(String.valueOf(ImageUri),
                         name.getEditText().getText().toString().trim(),

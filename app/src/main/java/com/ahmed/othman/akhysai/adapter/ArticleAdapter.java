@@ -24,7 +24,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context context;
     private ArrayList<Article> Models;
-    private Article current_model;
 
     public ArticleAdapter(@NonNull Context context) {
         this.context = context;
@@ -44,7 +43,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        current_model = Models.get(position);
+        Article current_model = Models.get(position);
 
         final ArticleViewHolder ViewHolder = (ArticleViewHolder) holder;
 
@@ -64,7 +63,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return Models.size();
     }
 
-    class ArticleViewHolder extends RecyclerView.ViewHolder {
+    static class ArticleViewHolder extends RecyclerView.ViewHolder {
         // views
         CircleImageView article_item_image;
         TextView article_item_title, article_item_category;

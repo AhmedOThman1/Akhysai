@@ -23,7 +23,6 @@ public class ClinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
     private ArrayList<Clinic> Models;
-    private Clinic current_model;
 
     public ClinicAdapter(@NonNull Context context) {
         this.context = context;
@@ -43,7 +42,7 @@ public class ClinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        current_model = Models.get(position);
+        Clinic current_model = Models.get(position);
 
         final ClinicViewHolder ViewHolder = (ClinicViewHolder) holder;
 
@@ -69,10 +68,10 @@ public class ClinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return Models.size();
     }
 
-    class ClinicViewHolder extends RecyclerView.ViewHolder {
+    static class ClinicViewHolder extends RecyclerView.ViewHolder {
         // views
         CircleImageView clinic_item_image;
-        TextView clinic_item_name, clinic_item_category,clinic_item_phone,clinic_item_website,clinic_item_company_name;
+        TextView clinic_item_name, clinic_item_category, clinic_item_phone, clinic_item_website, clinic_item_company_name;
 
         public ClinicViewHolder(@NonNull View itemView) {
             super(itemView);

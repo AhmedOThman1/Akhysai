@@ -23,7 +23,7 @@ public class AboutUsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    String AboutUsData="";
+    String AboutUsData = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

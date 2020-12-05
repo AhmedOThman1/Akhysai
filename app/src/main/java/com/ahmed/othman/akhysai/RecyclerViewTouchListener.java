@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener {
 
-
     public interface RecyclerViewClickListener {
         void onClick(View view, int position);
 

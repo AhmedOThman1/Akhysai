@@ -128,18 +128,18 @@
     <string name="send">إرسال</string>
     <string name="from">" من "</string>
     <string name="to">" إلي "</string>
-    <string name="edit">Edit</string>
-    <string name="website_hint">Website</string>
-    <string name="company_name">Company name</string>
-    <string name="my_available_dates">My available dates</string>
-    <string name="start_time">Start time</string>
-    <string name="add_available_date">Add available date</string>
-    <string name="add">Add</string>
-    <string name="end_time">End time</string>
-    <string name="clinic_details">Clinic details</string>
-    <string name="add_new_specialty">Add new specialty</string>
-    <string name="my_specialties">My specialties</string>
-    <string name="my_booking_requests">My Booking requests</string>
+    <string name="edit">تعديل</string>
+    <string name="website_hint">الموقع</string>
+    <string name="company_name">إسم الشركة</string>
+    <string name="my_available_dates">مواعيدي المتاحة</string>
+    <string name="start_time">وقت البدء</string>
+    <string name="add_available_date">إضافة معاد جديد</string>
+    <string name="add">إضافة</string>
+    <string name="end_time">وقت الانتهاء</string>
+    <string name="clinic_details">تفاصيل العيادة</string>
+    <string name="add_new_specialty">إضافة تخصص جديد</string>
+    <string name="my_specialties">تخصصاتي</string>
+    <string name="my_booking_requests">طلبات الحجز</string>
     <string name="day" >"اليوم: "</string>
     <string name="booking_requests">طلبات الحجز</string>
     <string name="nav_edit_akhysai_profile">بياناتي</string>
@@ -151,6 +151,10 @@
     <string name="version">الإصدار</string>
     <string name="version_num">v2.3.9</string>
     <string name="language_name">العربية</string>
+    <string name="share_text">حمل تطبيق أخصائي مجانا الان! Www.akhysai.com/</string>
+    <string name="change_app_language">تغيير لغة التطبيق</string>
+    <string name="english">الانجليزية</string>
+    <string name="arabic">العربية</string>
 
     <array name="days">
         <item>اليوم</item>

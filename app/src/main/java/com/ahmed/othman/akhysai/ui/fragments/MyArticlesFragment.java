@@ -54,14 +54,14 @@ public class MyArticlesFragment extends Fragment {
         toolbar.setVisibility(View.VISIBLE);
         navigation_view.setCheckedItem(R.id.nav_my_articles);
 
-        ArticleAdapter articleAdapter = new ArticleAdapter(getContext());
+        ArticleAdapter articleAdapter = new ArticleAdapter(requireContext());
 
         articleAdapter.setModels(myArticles);
         my_articles_recycler.setAdapter(articleAdapter);
-        my_articles_recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        my_articles_recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         my_articles_recycler.setHasFixedSize(true);
 
-        my_articles_recycler.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), my_articles_recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
+        my_articles_recycler.addOnItemTouchListener(new RecyclerViewTouchListener(requireContext(), my_articles_recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
                 Bundle bundle = new Bundle();
@@ -106,14 +106,16 @@ public class MyArticlesFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_in_right)
+//                        .setExitAnim(R.anim.slide_out_left)
+//                        .setPopEnterAnim(R.anim.slide_in_left)
+//                        .setPopExitAnim(R.anim.slide_out_right)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

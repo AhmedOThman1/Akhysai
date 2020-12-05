@@ -58,51 +58,52 @@ public class ConfirmDateFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args == null)
-            getActivity().onBackPressed();
+            requireActivity().onBackPressed();
+        else {
+            String json = args.getString("akhyisa", "");
+            if (!json.trim().isEmpty())
+                currentAkhysai = new Gson().fromJson(json, Akhysai.class);
 
-        String json = args.getString("akhyisa", "");
-        if (!json.trim().isEmpty())
-            currentAkhysai = new Gson().fromJson(json, Akhysai.class);
+            json = args.getString("date", "");
+            if (!json.trim().isEmpty()) {
+                date = new Gson().fromJson(json, AvailableDate.class);
+                start_time = date.getStart_time();
+                end_time = date.getEnd_time();
 
-        json = args.getString("date", "");
-        if (!json.trim().isEmpty()) {
-            date = new Gson().fromJson(json, AvailableDate.class);
-            start_time = date.getStart_time();
-            end_time = date.getEnd_time();
+                start.setTimeInMillis(start_time);
+                end.setTimeInMillis(end_time);
+            }
 
-            start.setTimeInMillis(start_time);
-            end.setTimeInMillis(end_time);
+
+            String temp1 = requireContext().getResources().getString(R.string.are_you_sure_to_book_an_appointment_with_dr),
+                    temp2 = args.getString("name", "Name"),
+                    temp3 = requireContext().getResources().getString(R.string.on),
+                    temp4 = args.getString("day", "Day"),
+                    temp5 = requireContext().getResources().getString(R.string.from),
+                    temp6 = (start.get(Calendar.HOUR) == 0 ? "12" : start.get(Calendar.HOUR))
+                            + ":" + (start.get(Calendar.MINUTE) < 10 ? "0" + start.get(Calendar.MINUTE) : start.get(Calendar.MINUTE)),
+                    temp7 = start.get(Calendar.AM_PM) == Calendar.AM ?
+                            requireContext().getResources().getString(R.string.am)
+                            : requireContext().getResources().getString(R.string.pm),
+                    temp8 = requireContext().getResources().getString(R.string.to),
+                    temp9 = (end.get(Calendar.HOUR) == 0 ? "12" : end.get(Calendar.HOUR))
+                            + ":" + (end.get(Calendar.MINUTE) < 10 ? "0" + end.get(Calendar.MINUTE) : end.get(Calendar.MINUTE)),
+                    temp10 = end.get(Calendar.AM_PM) == Calendar.AM ?
+                            requireContext().getResources().getString(R.string.am)
+                            : requireContext().getResources().getString(R.string.pm);
+
+            SpannableStringBuilder ssb = new SpannableStringBuilder(temp1 + temp2 + temp3 + temp4 + temp5 + temp6 + temp7 + temp8 + temp9 + temp10 + requireContext().getResources().getString(R.string.question_mark));
+            ForegroundColorSpan fcsPrimary = new ForegroundColorSpan(requireContext().getResources().getColor(R.color.primary));
+            ForegroundColorSpan fcsPrimary2 = new ForegroundColorSpan(requireContext().getResources().getColor(R.color.primary));
+            ForegroundColorSpan fcsPrimary3 = new ForegroundColorSpan(requireContext().getResources().getColor(R.color.primary));
+            ForegroundColorSpan fcsPrimary4 = new ForegroundColorSpan(requireContext().getResources().getColor(R.color.primary));
+
+            ssb.setSpan(fcsPrimary, temp1.length(), temp1.length() + temp2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(fcsPrimary2, temp1.length() + temp2.length() + temp3.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(fcsPrimary3, temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(fcsPrimary4, temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length() + temp7.length() + temp8.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length() + temp7.length() + temp8.length() + temp9.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            are_you_sure_question_text.setText(ssb);
         }
-
-        String temp1 = getContext().getResources().getString(R.string.are_you_sure_to_book_an_appointment_with_dr),
-                temp2 = args.getString("name", "Name"),
-                temp3 = getContext().getResources().getString(R.string.on),
-                temp4 = args.getString("day", "Day"),
-                temp5 = getContext().getResources().getString(R.string.from),
-                temp6 = (start.get(Calendar.HOUR)==0?"12":start.get(Calendar.HOUR))
-                        + ":" + (start.get(Calendar.MINUTE) < 10 ? "0" + start.get(Calendar.MINUTE) : start.get(Calendar.MINUTE)),
-                temp7 = start.get(Calendar.AM_PM) == Calendar.AM ?
-                        getContext().getResources().getString(R.string.am)
-                        : getContext().getResources().getString(R.string.pm),
-                temp8 = getContext().getResources().getString(R.string.to),
-                temp9 = (end.get(Calendar.HOUR)==0?"12":end.get(Calendar.HOUR))
-                        + ":" + (end.get(Calendar.MINUTE) < 10 ? "0" + end.get(Calendar.MINUTE) : end.get(Calendar.MINUTE)),
-                temp10 = end.get(Calendar.AM_PM) == Calendar.AM ?
-                        getContext().getResources().getString(R.string.am)
-                        : getContext().getResources().getString(R.string.pm);
-
-        SpannableStringBuilder ssb = new SpannableStringBuilder(temp1 + temp2 + temp3 + temp4 + temp5 + temp6 + temp7 + temp8 + temp9 + temp10 + getContext().getResources().getString(R.string.question_mark));
-        ForegroundColorSpan fcsPrimary = new ForegroundColorSpan(getContext().getResources().getColor(R.color.primary));
-        ForegroundColorSpan fcsPrimary2 = new ForegroundColorSpan(getContext().getResources().getColor(R.color.primary));
-        ForegroundColorSpan fcsPrimary3 = new ForegroundColorSpan(getContext().getResources().getColor(R.color.primary));
-        ForegroundColorSpan fcsPrimary4 = new ForegroundColorSpan(getContext().getResources().getColor(R.color.primary));
-
-        ssb.setSpan(fcsPrimary, temp1.length(), temp1.length() + temp2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(fcsPrimary2, temp1.length() + temp2.length() + temp3.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(fcsPrimary3, temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(fcsPrimary4, temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length() + temp7.length()+temp8.length(), temp1.length() + temp2.length() + temp3.length() + temp4.length() + temp5.length() + temp6.length() + temp7.length() + temp8.length()+temp9.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        are_you_sure_question_text.setText(ssb);
-
         view.findViewById(R.id.yes_send).setOnClickListener(v -> {
             if (phone.getEditText().getText().toString().trim().isEmpty()) {
                 address.setError(null);

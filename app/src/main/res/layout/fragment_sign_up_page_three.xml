@@ -7,7 +7,6 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    android:padding="8dp"
     tools:context=".ui.fragments.signUp.SignUpPageOneFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,7 +74,7 @@
                     android:id="@+id/years_of_experience"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:hint="@string/years_of_experience"
                     app:errorEnabled="true"
@@ -95,7 +94,7 @@
                     android:id="@+id/id_card_number"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:hint="@string/id_card_number"
                     app:errorEnabled="true"
@@ -115,7 +114,7 @@
                     android:id="@+id/about_doctor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:hint="@string/write_few_lines_about_yourself"
                     app:counterEnabled="true"
@@ -138,7 +137,7 @@
                     android:id="@+id/upload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/upload_cv"
                     app:layout_constraintStart_toStartOf="parent"

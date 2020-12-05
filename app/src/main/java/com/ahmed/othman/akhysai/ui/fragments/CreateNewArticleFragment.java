@@ -1,7 +1,6 @@
 package com.ahmed.othman.akhysai.ui.fragments;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,16 +13,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Article;
@@ -36,9 +31,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.CODE2_PERMISSION;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.GAL_CODE;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.GAL_CODE2;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.PDF_CODE;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
 public class CreateNewArticleFragment extends Fragment {
@@ -78,38 +71,38 @@ public class CreateNewArticleFragment extends Fragment {
             }
         });
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Categories);
+        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Categories);
         field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         article_category.setAdapter(field_adapter);
 
         view.findViewById(R.id.create_new_article).setOnClickListener(v -> {
             if (article_category.getSelectedItemPosition() == 0) {
-                Toast.makeText(getContext(), "select category", Toast.LENGTH_SHORT).show();
-                article_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
+                Toast.makeText(requireContext(), "select category", Toast.LENGTH_SHORT).show();
+                article_category.setBackgroundResource(R.drawable.background_spinner_error);
             } else if (article_title.getEditText().getText().toString().trim().isEmpty()) {
-                article_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                article_category.setBackgroundResource(R.drawable.background_spinner);
                 article_title.setError("Can't be empty");
                 article_title.requestFocus();
                 open_keyboard(article_title.getEditText());
             } else if (article_body.getEditText().getText().toString().trim().isEmpty()) {
                 article_title.setError(null);
-                article_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                article_category.setBackgroundResource(R.drawable.background_spinner);
                 article_body.setError("Can't be empty");
                 article_body.requestFocus();
                 open_keyboard(article_body.getEditText());
             } else if (ImageUri == null) {
                 article_title.setError(null);
                 article_body.setError(null);
-                article_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                article_category.setBackgroundResource(R.drawable.background_spinner);
 
-                article_image.setBorderWidth((float)2);
-                article_image.setBorderColor(getContext().getResources().getColor(R.color.error_red));
-                Toast.makeText(getContext(), "Upload your profile picture", Toast.LENGTH_SHORT).show();
+                article_image.setBorderWidth((float) 2);
+                article_image.setBorderColor(requireContext().getResources().getColor(R.color.error_red));
+                Toast.makeText(requireContext(), "Upload your profile picture", Toast.LENGTH_SHORT).show();
 
             } else {
                 article_title.setError(null);
                 article_body.setError(null);
-                article_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                article_category.setBackgroundResource(R.drawable.background_spinner);
                 Article article = new Article(String.valueOf(ImageUri),
                         article_title.getEditText().getText().toString().trim(),
                         Categories.get(article_category.getSelectedItemPosition()),
@@ -149,7 +142,7 @@ public class CreateNewArticleFragment extends Fragment {
             if (imageUri != null) {
                 // one image
                 article_image.setImageURI(imageUri);
-                article_image.setBorderWidth((float)0);
+                article_image.setBorderWidth((float) 0);
                 ImageUri = imageUri;
             }
         }
@@ -164,6 +157,6 @@ public class CreateNewArticleFragment extends Fragment {
     }
 
     private void getArticlesCategories() {
-        Categories = Arrays.asList(getContext().getResources().getStringArray(R.array.category));
+        Categories = Arrays.asList(requireContext().getResources().getStringArray(R.array.category));
     }
 }

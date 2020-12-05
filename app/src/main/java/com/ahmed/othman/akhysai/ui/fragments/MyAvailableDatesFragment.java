@@ -58,10 +58,6 @@ public class MyAvailableDatesFragment extends Fragment {
 
     ArrayList<AvailableDate> availableDates = new ArrayList<>();
 
-    ChipGroup lastDeletedChipGroup;
-    Chip lastDeletedChip;
-    AvailableDate lastDeleteAvailableDate;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,7 +79,7 @@ public class MyAvailableDatesFragment extends Fragment {
 
         availableDates = getAvailableDatesByAkhysaiID("TODO");
 
-        ArrayAdapter<String> days = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getContext().getResources().getStringArray(R.array.days));
+        ArrayAdapter<String> days = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, requireContext().getResources().getStringArray(R.array.days));
         days.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         days_spinner.setAdapter(days);
         days_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -122,24 +118,24 @@ public class MyAvailableDatesFragment extends Fragment {
 
 
             if (days_spinner.getSelectedItemPosition() == 0) {
-                days_spinner.setBackground(requireContext().getResources().getDrawable(R.drawable.background_spinner_error));
+                days_spinner.setBackgroundResource(R.drawable.background_spinner_error);
                 Toast.makeText(requireContext(), "Choose day first", Toast.LENGTH_SHORT).show();
             } else if (start_time_text.getEditText().getText().toString().trim().isEmpty()) {
-                days_spinner.setBackground(requireContext().getResources().getDrawable(R.drawable.background_spinner));
+                days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError("Can't be empty");
                 choice_start_time();
             } else if (end_time_text.getEditText().getText().toString().trim().isEmpty()) {
-                days_spinner.setBackground(requireContext().getResources().getDrawable(R.drawable.background_spinner));
+                days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError(null);
                 end_time_text.setError("Can't be empty");
                 choice_end_time();
             } else if (end_calendar.before(start_calendar)) {
-                days_spinner.setBackground(requireContext().getResources().getDrawable(R.drawable.background_spinner));
+                days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError(null);
                 end_time_text.setError(null);
                 Toast.makeText(requireContext(), "End time can't be before Start time, change one of them", Toast.LENGTH_SHORT).show();
             } else {
-                days_spinner.setBackground(requireContext().getResources().getDrawable(R.drawable.background_spinner));
+                days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError(null);
                 end_time_text.setError(null);
                 AvailableDate newAvailableDate = new AvailableDate(start_calendar.getTimeInMillis(), end_calendar.getTimeInMillis());
@@ -297,7 +293,7 @@ public class MyAvailableDatesFragment extends Fragment {
     private void addChipToChipGroup(AvailableDate date, String title, ChipGroup chipGroup) {
         Chip chip = (Chip) getLayoutInflater().inflate(R.layout.one_date_chip_item, chipGroup, false);
         chip.setText(title);
-        chip.setCloseIconTint(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
+        chip.setCloseIconTint(ColorStateList.valueOf(requireContext().getResources().getColor(R.color.colorPrimary)));
         chip.setCloseIconVisible(true);
         chip.setOnCloseIconClickListener(v -> {
             Snackbar.make(v, "this date has been deleted successfully", Snackbar.LENGTH_LONG)
@@ -335,7 +331,7 @@ public class MyAvailableDatesFragment extends Fragment {
         int Cminute = time.equals("start") ? start_calendar.get(Calendar.MINUTE) : end_calendar.get(Calendar.MINUTE);
         if ((time.equals("start") && start_calendar.get(Calendar.AM_PM) == Calendar.PM) || (time.equals("end") && end_calendar.get(Calendar.AM_PM) == Calendar.PM))
             Chour += 12;
-        TimePickerDialog pickerDialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute) -> {
+        TimePickerDialog pickerDialog = new TimePickerDialog(requireContext(), (view, hourOfDay, minute) -> {
             if (time.equals("start")) {
                 start_calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 start_calendar.set(Calendar.MINUTE, minute);
@@ -365,25 +361,25 @@ public class MyAvailableDatesFragment extends Fragment {
             String day;
             switch (start_calendar.get(Calendar.DAY_OF_WEEK)) {
                 case Calendar.SATURDAY:
-                    day = getContext().getResources().getString(R.string.saturday);
+                    day = requireContext().getResources().getString(R.string.saturday);
                     break;
                 case Calendar.SUNDAY:
-                    day = getContext().getResources().getString(R.string.sunday);
+                    day = requireContext().getResources().getString(R.string.sunday);
                     break;
                 case Calendar.MONDAY:
-                    day = getContext().getResources().getString(R.string.monday);
+                    day = requireContext().getResources().getString(R.string.monday);
                     break;
                 case Calendar.TUESDAY:
-                    day = getContext().getResources().getString(R.string.tuesday);
+                    day = requireContext().getResources().getString(R.string.tuesday);
                     break;
                 case Calendar.WEDNESDAY:
-                    day = getContext().getResources().getString(R.string.wednesday);
+                    day = requireContext().getResources().getString(R.string.wednesday);
                     break;
                 case Calendar.THURSDAY:
-                    day = getContext().getResources().getString(R.string.thursday);
+                    day = requireContext().getResources().getString(R.string.thursday);
                     break;
                 case Calendar.FRIDAY:
-                    day = getContext().getResources().getString(R.string.friday);
+                    day = requireContext().getResources().getString(R.string.friday);
                     break;
                 default:
                     day = "DayName";
@@ -392,25 +388,25 @@ public class MyAvailableDatesFragment extends Fragment {
             Log.w("START_TIME_CHECK2", start_calendar.get(Calendar.YEAR) + "/" + (start_calendar.get(Calendar.MONTH) + 1) + "/" + start_calendar.get(Calendar.DAY_OF_MONTH) + " " + start_calendar.get(Calendar.HOUR) + ":" + start_calendar.get(Calendar.MINUTE) + " " + (start_calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM") + ", " + day);
             switch (end_calendar.get(Calendar.DAY_OF_WEEK)) {
                 case Calendar.SATURDAY:
-                    day = getContext().getResources().getString(R.string.saturday);
+                    day = requireContext().getResources().getString(R.string.saturday);
                     break;
                 case Calendar.SUNDAY:
-                    day = getContext().getResources().getString(R.string.sunday);
+                    day = requireContext().getResources().getString(R.string.sunday);
                     break;
                 case Calendar.MONDAY:
-                    day = getContext().getResources().getString(R.string.monday);
+                    day = requireContext().getResources().getString(R.string.monday);
                     break;
                 case Calendar.TUESDAY:
-                    day = getContext().getResources().getString(R.string.tuesday);
+                    day = requireContext().getResources().getString(R.string.tuesday);
                     break;
                 case Calendar.WEDNESDAY:
-                    day = getContext().getResources().getString(R.string.wednesday);
+                    day = requireContext().getResources().getString(R.string.wednesday);
                     break;
                 case Calendar.THURSDAY:
-                    day = getContext().getResources().getString(R.string.thursday);
+                    day = requireContext().getResources().getString(R.string.thursday);
                     break;
                 case Calendar.FRIDAY:
-                    day = getContext().getResources().getString(R.string.friday);
+                    day = requireContext().getResources().getString(R.string.friday);
                     break;
                 default:
                     day = "DayName";
@@ -432,14 +428,16 @@ public class MyAvailableDatesFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_in_right)
+//                        .setExitAnim(R.anim.slide_out_left)
+//                        .setPopEnterAnim(R.anim.slide_in_left)
+//                        .setPopExitAnim(R.anim.slide_out_right)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

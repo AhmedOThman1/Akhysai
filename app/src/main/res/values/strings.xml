@@ -158,6 +158,10 @@
     <string name="version">Version</string>
     <string name="version_num">v2.3.9</string>
     <string name="language_name">English</string>
+    <string name="share_text">Download akhysai app for free now! Www.akhysai.com/</string>
+    <string name="change_app_language">Change app language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
 
 
     <array name="days">

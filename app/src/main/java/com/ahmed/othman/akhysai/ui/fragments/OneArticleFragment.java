@@ -32,12 +32,14 @@ public class OneArticleFragment extends Fragment {
     public OneArticleFragment() {
         // Required empty public constructor
     }
-    RoundedImageView article_item_image,article_writer_image;
-    TextView article_item_title,article_item_category,article_item_time,article_item_body, article_writer_name;
+
+    RoundedImageView article_item_image, article_writer_image;
+    TextView article_item_title, article_item_category, article_item_time, article_item_body, article_writer_name;
     Article article = new Article();
     Context context;
     Akhysai Article_writer;
     boolean fromAkhysiaProfile = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,12 +58,11 @@ public class OneArticleFragment extends Fragment {
         toolbar.setVisibility(View.VISIBLE);
 
         Bundle args = getArguments();
-        if(args!=null){
-            fromAkhysiaProfile = args.getBoolean("from_akhysai_profile",false);
-            String json = args.getString("article","");
-            Log.w("JSON_ARTICLE",json+"");
-            if(!json.trim().isEmpty())
-            {
+        if (args != null) {
+            fromAkhysiaProfile = args.getBoolean("from_akhysai_profile", false);
+            String json = args.getString("article", "");
+            Log.w("JSON_ARTICLE", json + "");
+            if (!json.trim().isEmpty()) {
                 article = new Gson().fromJson(json, Article.class);
                 Article_writer = getArticleWriterData(article.getArticle_writer_id());
             }
@@ -82,7 +83,7 @@ public class OneArticleFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(article.getDate());
-        article_item_time.setText(c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH));
+        article_item_time.setText(c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH));
 
         Glide.with(context)
                 .load(Article_writer.getPhoto())
@@ -92,13 +93,13 @@ public class OneArticleFragment extends Fragment {
 
         article_writer_name.setText(String.valueOf(Article_writer.getName()));
 
-        view.findViewById(R.id.writer_card).setOnClickListener(v->{
-            if(fromAkhysiaProfile)
+        view.findViewById(R.id.writer_card).setOnClickListener(v -> {
+            if (fromAkhysiaProfile)
                 requireActivity().onBackPressed();
-            else{
+            else {
                 Bundle bundle = new Bundle();
                 bundle.putString("akhysai", new Gson().toJson(Article_writer));
-                Navigation.findNavController(v).navigate(R.id.action_oneArticleFragment_to_oneAkhysaiFragment,bundle);
+                Navigation.findNavController(v).navigate(R.id.action_oneArticleFragment_to_oneAkhysaiFragment, bundle);
             }
         });
 

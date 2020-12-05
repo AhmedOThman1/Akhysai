@@ -37,37 +37,37 @@ public class PickSignUpTypeFragment extends Fragment {
 
         view.findViewById(R.id.image1).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "patient");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });
         view.findViewById(R.id.sign_up_patient).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "patient");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });
         view.findViewById(R.id.image2).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "akhysai");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });
         view.findViewById(R.id.sign_up_akhysai).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "akhysai");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });
         view.findViewById(R.id.image3).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "clinic");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });
         view.findViewById(R.id.sign_up_clinic).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            if(getArguments()!=null) bundle.putAll(getArguments());
+            if (getArguments() != null) bundle.putAll(getArguments());
             bundle.putString("Type", "clinic");
             Navigation.findNavController(v).navigate(R.id.action_pickSignUpTypeFragment_to_signUpPageOneFragment, bundle);
         });

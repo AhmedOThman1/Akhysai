@@ -52,7 +52,7 @@ public class MySpecialtiesFragment extends Fragment {
         my_specialties_recyclerview = view.findViewById(R.id.my_specialties_recyclerview);
 
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Fields);
+        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Fields);
         field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         field.setAdapter(field_adapter);
 
@@ -61,9 +61,9 @@ public class MySpecialtiesFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 specialty.setVisibility(position > 0 ? View.VISIBLE : View.GONE);
                 if (position > 0) {
-                    ArrayAdapter<String> specialty_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                            position == 1 ? getContext().getResources().getStringArray(R.array.specialties_medical) :
-                                    getContext().getResources().getStringArray(R.array.specialties_with_special_needs));
+                    ArrayAdapter<String> specialty_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,
+                            position == 1 ? requireContext().getResources().getStringArray(R.array.specialties_medical) :
+                                    requireContext().getResources().getStringArray(R.array.specialties_with_special_needs));
                     specialty_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     specialty.setAdapter(specialty_adapter);
 
@@ -79,15 +79,15 @@ public class MySpecialtiesFragment extends Fragment {
 
         view.findViewById(R.id.add_available_date).setOnClickListener(v -> {
             if (field.getSelectedItemPosition() == 0) {
-                field.setBackground(getContext().getResources().getDrawable(R.drawable.background_spinner_error));
-                Toast.makeText(getContext(), "Select field first", Toast.LENGTH_SHORT).show();
+                field.setBackgroundResource(R.drawable.background_spinner_error);
+                Toast.makeText(requireContext(), "Select field first", Toast.LENGTH_SHORT).show();
             } else if (specialty.getSelectedItemPosition() == 0) {
-                field.setBackground(getContext().getResources().getDrawable(R.drawable.background_spinner));
-                specialty.setBackground(getContext().getResources().getDrawable(R.drawable.background_spinner_error));
-                Toast.makeText(getContext(), "Select specialty first", Toast.LENGTH_SHORT).show();
+                field.setBackgroundResource(R.drawable.background_spinner);
+                specialty.setBackgroundResource(R.drawable.background_spinner_error);
+                Toast.makeText(requireContext(), "Select specialty first", Toast.LENGTH_SHORT).show();
             } else {
-                field.setBackground(getContext().getResources().getDrawable(R.drawable.background_spinner));
-                specialty.setBackground(getContext().getResources().getDrawable(R.drawable.background_spinner));
+                field.setBackgroundResource(R.drawable.background_spinner);
+                specialty.setBackgroundResource(R.drawable.background_spinner);
                 postAddNewSpecialty("", specialty.getSelectedItemPosition()+"");
                 view.findViewById(R.id.my_specialties_card).setVisibility(mySpecialtiesTitles.isEmpty()?View.GONE:View.VISIBLE);
             }
@@ -146,14 +146,16 @@ public class MySpecialtiesFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_in_right)
+//                        .setExitAnim(R.anim.slide_out_left)
+//                        .setPopEnterAnim(R.anim.slide_in_left)
+//                        .setPopExitAnim(R.anim.slide_out_right)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

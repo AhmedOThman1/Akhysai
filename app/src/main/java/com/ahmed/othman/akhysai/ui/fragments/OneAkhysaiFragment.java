@@ -59,7 +59,7 @@ public class OneAkhysaiFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_one_akhysai, container, false);
 
-        context = getContext();
+        context = requireContext();
 
         RoundedImageView akhysai_image = view.findViewById(R.id.akhysai_image);
         TextView akhysai_name = view.findViewById(R.id.akhysai_name),
@@ -81,6 +81,10 @@ public class OneAkhysaiFragment extends Fragment {
                 currentAkhysai = new Gson().fromJson(json, Akhysai.class);
                 currentAkhysai.setReviews(getReviewsByAkhysaiID(currentAkhysai.getAkhysai_id()));
                 currentAkhysai.setArticles(getArticlesByAkhysaiID(currentAkhysai.getAkhysai_id()));
+            }
+            if(args.getBoolean("OpenWriteReviewDialog",false)){
+                open_write_review_dialog();
+                dialogHidden = false;
             }
         }
 
@@ -107,14 +111,14 @@ public class OneAkhysaiFragment extends Fragment {
         } else {
             //TODO hide image no articles found
 
-            ArticleAdapter articleAdapter = new ArticleAdapter(getContext());
+            ArticleAdapter articleAdapter = new ArticleAdapter(requireContext());
 
             articleAdapter.setModels(currentAkhysai.getArticles());
             akhysai_articles_recyclerview.setAdapter(articleAdapter);
-            akhysai_articles_recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+            akhysai_articles_recyclerview.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
             akhysai_articles_recyclerview.setHasFixedSize(true);
 
-            akhysai_articles_recyclerview.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), akhysai_articles_recyclerview, new RecyclerViewTouchListener.RecyclerViewClickListener() {
+            akhysai_articles_recyclerview.addOnItemTouchListener(new RecyclerViewTouchListener(requireContext(), akhysai_articles_recyclerview, new RecyclerViewTouchListener.RecyclerViewClickListener() {
                 @Override
                 public void onClick(View v, int position) {
                     Bundle bundle = new Bundle();
@@ -160,14 +164,19 @@ public class OneAkhysaiFragment extends Fragment {
                 open_write_review_dialog();
                 dialogHidden = false;
             } else if (dialogHidden)
-                Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_loginFragment);
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("goTo","oneAkhysaiFragmntWriteReview");
+                bundle.putString("akhysai",new Gson().toJson(currentAkhysai));
+                Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_loginFragment,bundle);
+            }
 
         });
 
         reviewAdapter = new ReviewAdapter(context);
         reviewAdapter.setModels(currentAkhysai.getReviews());
         rates_recyclerview.setAdapter(reviewAdapter);
-        rates_recyclerview.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
+        rates_recyclerview.setLayoutManager(new LinearLayoutManager(context));
 
         return view;
     }
@@ -211,7 +220,7 @@ public class OneAkhysaiFragment extends Fragment {
     AlertDialog dialog;
 
     private void open_write_review_dialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View write_review_dialog = getLayoutInflater().inflate(R.layout.write_review_dialog, null);
         TextInputLayout review = write_review_dialog.findViewById(R.id.review);
         RatingBar akhysai_rating = write_review_dialog.findViewById(R.id.akhysai_rating);

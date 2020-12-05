@@ -60,6 +60,7 @@ public class SignUpPageTwoFragment extends Fragment {
     boolean gender = true;
 
     String Type = "";
+    private String goTo = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,6 +92,8 @@ public class SignUpPageTwoFragment extends Fragment {
         if (arg != null) {
 
             Type = arg.getString("Type");
+            goTo = arg.getString("goTo", "");
+            Log.w("GOTO2", "goto: " + goTo);
 
             phone_text = arg.getString("phone");
             if (phone_text != null)
@@ -157,11 +160,34 @@ public class SignUpPageTwoFragment extends Fragment {
 
         sign_up.setOnClickListener(v -> {
             if (Type.equals("patient") && patient_sign_up(v)) {
-                //TODO
+                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
+                        .putBoolean(logged_in, true)
+                        .putString("userType", "Patient")
+                        .apply();
+                updateNavDrawer(requireActivity());
+                if (goTo.isEmpty())
+                    Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_homeFragment);
+                else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                    Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+                else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                    Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
+
             } else if (Type.equals("akhysai") && akhysai_sign_up(v)) {
-                //TODO
+                Bundle bundle = new Bundle();
+                bundle.putString("goTo", goTo);
+                Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_signUpPageThreeFragment, bundle);
             } else if (Type.equals("clinic") && clinic_sign_up(v)) {
-                //TODO
+                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
+                        .putBoolean(logged_in, true)
+                        .putString("userType", "Clinic")
+                        .apply();
+                updateNavDrawer(requireActivity());
+                if (goTo.isEmpty())
+                    Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_homeFragment);
+                else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                    Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+                else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                    Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
             }
 
 
@@ -179,7 +205,7 @@ public class SignUpPageTwoFragment extends Fragment {
                     phone.setError("Enter valid phone number");
                     phone.requestFocus();
                     open_keyboard(phone.getEditText());
-                } else if(!Type.equals("clinic")) {
+                } else if (!Type.equals("clinic")) {
                     phone.setError(null);
                     open_pick_birthday();
                 }
@@ -238,19 +264,20 @@ public class SignUpPageTwoFragment extends Fragment {
         } else if (city.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your city", Toast.LENGTH_SHORT).show();
             return false;
         } else if (area.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner);
+            area.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             phone.setError(null);
             birthday.setError(null);
-            Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_homeFragment);
-            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
-            updateNavDrawer(requireActivity());
+            close_keyboard();
             return true;
         }
     }
@@ -276,17 +303,20 @@ public class SignUpPageTwoFragment extends Fragment {
         } else if (city.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your city", Toast.LENGTH_SHORT).show();
             return false;
         } else if (area.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner);
+            area.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             phone.setError(null);
             birthday.setError(null);
-            Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_signUpPageThreeFragment);
+            close_keyboard();
             return true;
         }
     }
@@ -307,24 +337,26 @@ public class SignUpPageTwoFragment extends Fragment {
         } else if (city.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your city", Toast.LENGTH_SHORT).show();
             return false;
         } else if (area.getSelectedItemPosition() == 0) {
             phone.setError(null);
             birthday.setError(null);
+            city.setBackgroundResource(R.drawable.background_spinner);
+            area.setBackgroundResource(R.drawable.background_spinner_error);
             Toast.makeText(getContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             phone.setError(null);
             birthday.setError(null);
-            Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_homeFragment);
-            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
-            updateNavDrawer(requireActivity());
+            close_keyboard();
             return true;
         }
     }
 
     Calendar calendar = Calendar.getInstance();
+
     private void open_pick_birthday() {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -348,6 +380,14 @@ public class SignUpPageTwoFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
         assert imm != null;
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
+    }
 
+    private void close_keyboard() {
+        View view = requireActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

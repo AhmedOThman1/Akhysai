@@ -23,7 +23,6 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-
         /* change status bar color **/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -32,7 +31,7 @@ public class LauncherActivity extends AppCompatActivity {
         }
 
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(LauncherActivity.this,MainActivity.class));
+            startActivity(new Intent(LauncherActivity.this, MainActivity.class));
             finish();
         }, Movie.decodeStream(getResources().openRawResource(R.raw.launcher_gif)).duration());
 

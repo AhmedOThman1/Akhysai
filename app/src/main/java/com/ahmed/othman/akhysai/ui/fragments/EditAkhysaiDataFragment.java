@@ -101,11 +101,11 @@ public class EditAkhysaiDataFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Cities);
+        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Cities);
         city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         city.setAdapter(city_adapter);
 
-        ArrayAdapter<String> area_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Areas);
+        ArrayAdapter<String> area_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Areas);
         area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         area.setAdapter(area_adapter);
 
@@ -173,25 +173,25 @@ public class EditAkhysaiDataFragment extends Fragment {
                 password.setError(null);
                 birthday.setError(null);
                 phone.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                Toast.makeText(getContext(), "Choose your city", Toast.LENGTH_SHORT).show();
+                city.setBackgroundResource(R.drawable.background_spinner_error);
+                Toast.makeText(requireContext(), "Choose your city", Toast.LENGTH_SHORT).show();
             } else if (area.getSelectedItemPosition() == 0) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
                 birthday.setError(null);
                 phone.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                Toast.makeText(getContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner_error);
+                Toast.makeText(requireContext(), "Choose your Area", Toast.LENGTH_SHORT).show();
             } else if (years_of_experience.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
                 birthday.setError(null);
                 phone.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 years_of_experience.setError("Can't be empty");
                 years_of_experience.requestFocus();
                 open_keyboard(years_of_experience.getEditText());
@@ -202,8 +202,8 @@ public class EditAkhysaiDataFragment extends Fragment {
                 birthday.setError(null);
                 phone.setError(null);
                 years_of_experience.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 akhysai_price.setError("Enter valid phone number");
                 akhysai_price.requestFocus();
                 open_keyboard(akhysai_price.getEditText());
@@ -215,8 +215,8 @@ public class EditAkhysaiDataFragment extends Fragment {
                 phone.setError(null);
                 years_of_experience.setError(null);
                 akhysai_price.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 id_card_number.setError("Enter valid phone number");
                 id_card_number.requestFocus();
                 open_keyboard(id_card_number.getEditText());
@@ -229,8 +229,8 @@ public class EditAkhysaiDataFragment extends Fragment {
                 years_of_experience.setError(null);
                 akhysai_price.setError(null);
                 id_card_number.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 akhysai_description.setError("Enter valid phone number");
                 akhysai_description.requestFocus();
                 open_keyboard(akhysai_description.getEditText());
@@ -244,8 +244,8 @@ public class EditAkhysaiDataFragment extends Fragment {
                 akhysai_price.setError(null);
                 id_card_number.setError(null);
                 akhysai_description.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 about_akhysai.setError("Enter valid phone number");
                 about_akhysai.requestFocus();
                 open_keyboard(about_akhysai.getEditText());
@@ -256,11 +256,11 @@ public class EditAkhysaiDataFragment extends Fragment {
                 birthday.setError(null);
                 phone.setError(null);
                 years_of_experience.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 akhysai_image.setBorderWidth(2);
-                akhysai_image.setBorderColor(getContext().getResources().getColor(R.color.error_red));
-                Toast.makeText(getContext(), "Upload your profile picture", Toast.LENGTH_SHORT).show();
+                akhysai_image.setBorderColor(requireContext().getResources().getColor(R.color.error_red));
+                Toast.makeText(requireContext(), "Upload your profile picture", Toast.LENGTH_SHORT).show();
             } else {
                 name.setError(null);
                 email.setError(null);
@@ -268,8 +268,8 @@ public class EditAkhysaiDataFragment extends Fragment {
                 birthday.setError(null);
                 phone.setError(null);
                 years_of_experience.setError(null);
-                city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                city.setBackgroundResource(R.drawable.background_spinner);
+                area.setBackgroundResource(R.drawable.background_spinner);
                 akhysai_image.setBorderWidth(0);
                 Akhysai akhysai = new Akhysai(String.valueOf(ImageUri),
                         name.getEditText().getText().toString().trim(),
@@ -333,8 +333,8 @@ public class EditAkhysaiDataFragment extends Fragment {
     }
 
     private void initSpinners() {
-        Cities = Arrays.asList(getContext().getResources().getStringArray(R.array.cities));
-        Areas = Arrays.asList(getContext().getResources().getStringArray(R.array.cairo));
+        Cities = Arrays.asList(requireContext().getResources().getStringArray(R.array.cities));
+        Areas = Arrays.asList(requireContext().getResources().getStringArray(R.array.cairo));
     }
 
     private void postEditAkhysaiProfileData(Akhysai akhysai) {
@@ -384,14 +384,16 @@ public class EditAkhysaiDataFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_in_right)
+//                        .setExitAnim(R.anim.slide_out_left)
+//                        .setPopEnterAnim(R.anim.slide_in_left)
+//                        .setPopExitAnim(R.anim.slide_out_right)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

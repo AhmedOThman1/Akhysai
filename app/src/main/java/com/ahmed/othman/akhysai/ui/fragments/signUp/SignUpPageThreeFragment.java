@@ -73,6 +73,8 @@ public class SignUpPageThreeFragment extends Fragment {
 
     Uri ImageUri = null;
 
+    private String goTo="";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +98,8 @@ public class SignUpPageThreeFragment extends Fragment {
         Bundle arg = getArguments();
 
         if (arg != null) {
-
+            goTo = arg.getString("goTo", "");
+            Log.w("GOTO3", "goto: " + goTo);
         }
 
         back.setOnClickListener(v ->
@@ -240,10 +243,19 @@ public class SignUpPageThreeFragment extends Fragment {
             years_of_experience.setError(null);
             id_card_number.setError(null);
             about_doctor.setError(null);
+            close_keyboard();
             uploadSignUpData();
-            Navigation.findNavController(v).navigate(R.id.action_signUpPageThreeFragment_to_homeFragment);
-            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
+            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
+                    .putBoolean(logged_in, true)
+                    .putString("userType","Akhysia")
+                    .apply();
             updateNavDrawer(requireActivity());
+            if (goTo.isEmpty())
+                Navigation.findNavController(v).navigate(R.id.action_signUpPageThreeFragment_to_homeFragment);
+            else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+            else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
             return true;
         }
     }
@@ -257,5 +269,14 @@ public class SignUpPageThreeFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
         assert imm != null;
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
+    }
+
+    private void close_keyboard() {
+        View view = requireActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

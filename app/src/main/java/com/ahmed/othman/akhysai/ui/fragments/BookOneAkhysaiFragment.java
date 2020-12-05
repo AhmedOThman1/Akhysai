@@ -3,7 +3,7 @@ package com.ahmed.othman.akhysai.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.core.widget.NestedScrollView;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -44,7 +44,7 @@ public class BookOneAkhysaiFragment extends Fragment {
     Context context;
     Akhysai currentAkhysai = new Akhysai();
     ScrollView nested;
-    boolean check_ScrollingUp = false;
+//    boolean check_ScrollingUp = false;
 
     ChipGroup saturday_chips,
             sunday_chips,
@@ -55,7 +55,7 @@ public class BookOneAkhysaiFragment extends Fragment {
             friday_chips;
     View view;
 
-    Map<Integer,AvailableDate> chipsMap = new HashMap<>();
+    Map<Integer, AvailableDate> chipsMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +64,7 @@ public class BookOneAkhysaiFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_book_one_akhysai, container, false);
 
         toolbar.setVisibility(View.VISIBLE);
-        context = getContext();
+        context = requireContext();
 
         RoundedImageView akhysai_image = view.findViewById(R.id.akhysai_image);
         TextView akhysai_name = view.findViewById(R.id.akhysai_name),
@@ -148,41 +148,41 @@ public class BookOneAkhysaiFragment extends Fragment {
     private ArrayList<AvailableDate> getAvailableDatesByAkhysaiID(String akhysai_id) {
         ArrayList<AvailableDate> tempAvailableDates = new ArrayList<>();
 
-        Calendar c = Calendar.getInstance(),c2 = Calendar.getInstance();
-        c2.add(Calendar.HOUR,1);
-        c2.add(Calendar.MINUTE,30);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
-        c.add(Calendar.HOUR,4);
-        c2.add(Calendar.HOUR,4);
-        c2.add(Calendar.MINUTE,30);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
+        Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
+        c2.add(Calendar.HOUR, 1);
+        c2.add(Calendar.MINUTE, 30);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+        c.add(Calendar.HOUR, 4);
+        c2.add(Calendar.HOUR, 4);
+        c2.add(Calendar.MINUTE, 30);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
 
-        c.add(Calendar.DAY_OF_MONTH,1);
-        c2.add(Calendar.DAY_OF_MONTH,1);
-        c.add(Calendar.HOUR,1);
-        c2.add(Calendar.HOUR,1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        c2.add(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.HOUR, 1);
+        c2.add(Calendar.HOUR, 1);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
 
-        c.add(Calendar.DAY_OF_MONTH,1);
-        c2.add(Calendar.DAY_OF_MONTH,1);
-        c.add(Calendar.HOUR,1);
-        c2.add(Calendar.HOUR,1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
-        c.add(Calendar.HOUR,1);
-        c2.add(Calendar.HOUR,1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
-        c.add(Calendar.HOUR,1);
-        c2.add(Calendar.HOUR,1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        c2.add(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.HOUR, 1);
+        c2.add(Calendar.HOUR, 1);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+        c.add(Calendar.HOUR, 1);
+        c2.add(Calendar.HOUR, 1);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+        c.add(Calendar.HOUR, 1);
+        c2.add(Calendar.HOUR, 1);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
 
-        c.add(Calendar.DAY_OF_MONTH,1);
-        c2.add(Calendar.DAY_OF_MONTH,1);
-        c.add(Calendar.HOUR,2);
-        c2.add(Calendar.HOUR,2);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
-        c.add(Calendar.HOUR,1);
-        c2.add(Calendar.HOUR,2);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(),c2.getTimeInMillis()));
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        c2.add(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.HOUR, 2);
+        c2.add(Calendar.HOUR, 2);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+        c.add(Calendar.HOUR, 1);
+        c2.add(Calendar.HOUR, 2);
+        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
 
         return tempAvailableDates;
     }
@@ -193,11 +193,11 @@ public class BookOneAkhysaiFragment extends Fragment {
             start_time.setTimeInMillis(date.getStart_time());
             end_time.setTimeInMillis(date.getEnd_time());
 
-            String title = (start_time.get(Calendar.HOUR)==0?"12":start_time.get(Calendar.HOUR))
+            String title = (start_time.get(Calendar.HOUR) == 0 ? "12" : start_time.get(Calendar.HOUR))
                     + ":" + (start_time.get(Calendar.MINUTE) < 10 ? "0" + start_time.get(Calendar.MINUTE) : start_time.get(Calendar.MINUTE))
                     + (start_time.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM")
                     + " - "
-                    + (end_time.get(Calendar.HOUR)==0?"12":end_time.get(Calendar.HOUR))
+                    + (end_time.get(Calendar.HOUR) == 0 ? "12" : end_time.get(Calendar.HOUR))
                     + ":" + (end_time.get(Calendar.MINUTE) < 10 ? "0" + end_time.get(Calendar.MINUTE) : end_time.get(Calendar.MINUTE))
                     + (end_time.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM");
 
@@ -245,25 +245,25 @@ public class BookOneAkhysaiFragment extends Fragment {
         String day;
         switch (index) {
             case 0:
-                day = getContext().getResources().getString(R.string.saturday);
+                day = requireContext().getResources().getString(R.string.saturday);
                 break;
             case 1:
-                day = getContext().getResources().getString(R.string.sunday);
+                day = requireContext().getResources().getString(R.string.sunday);
                 break;
             case 2:
-                day = getContext().getResources().getString(R.string.monday);
+                day = requireContext().getResources().getString(R.string.monday);
                 break;
             case 3:
-                day = getContext().getResources().getString(R.string.tuesday);
+                day = requireContext().getResources().getString(R.string.tuesday);
                 break;
             case 4:
-                day = getContext().getResources().getString(R.string.wednesday);
+                day = requireContext().getResources().getString(R.string.wednesday);
                 break;
             case 5:
-                day = getContext().getResources().getString(R.string.thursday);
+                day = requireContext().getResources().getString(R.string.thursday);
                 break;
             case 6:
-                day = getContext().getResources().getString(R.string.friday);
+                day = requireContext().getResources().getString(R.string.friday);
                 break;
             default:
                 day = "DayName";
@@ -274,17 +274,20 @@ public class BookOneAkhysaiFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("name", currentAkhysai.getName());
             bundle.putString("day", day);
-            bundle.putString("date",new Gson().toJson(chipsMap.get(checkedId)));
+            bundle.putString("date", new Gson().toJson(chipsMap.get(checkedId)));
             Navigation.findNavController(view).navigate(R.id.action_bookOneAkhysaiFragment_to_confirmDateFragment, bundle);
 
-        } else
-            Navigation.findNavController(view).navigate(R.id.action_bookOneAkhysaiFragment_to_loginFragment);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("goTo", "BookOneAkhysaiFragment");
+            Navigation.findNavController(view).navigate(R.id.action_bookOneAkhysaiFragment_to_loginFragment, bundle);
+        }
     }
 
     private void addChipToChipGroup(AvailableDate date, String title, ChipGroup chipGroup) {
         Chip chip = (Chip) getLayoutInflater().inflate(R.layout.one_date_chip_item, chipGroup, false);
         chip.setText(title);
         chipGroup.addView(chip);
-        chipsMap.put(chip.getId(),date);
+        chipsMap.put(chip.getId(), date);
     }
 }

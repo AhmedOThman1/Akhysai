@@ -35,6 +35,7 @@ public class PhoneAuthFragment extends Fragment {
     TextInputLayout phone_number;
     Context context;
     Activity activity;
+    private String goTo="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,12 @@ public class PhoneAuthFragment extends Fragment {
 
         toolbar.setVisibility(View.GONE);
 
+        Bundle args = getArguments();
+        if (args != null) {
+            goTo = args.getString("goTo", "");
+            Log.w("GOTO P1", "goto: " + goTo);
+        }
+
         view.findViewById(R.id.back).setOnClickListener(v -> requireActivity().onBackPressed());
         view.findViewById(R.id.login_with_phone).setOnClickListener(v -> {
             if (phone_number.getEditText().getText().toString().trim().isEmpty()) {
@@ -63,6 +70,7 @@ public class PhoneAuthFragment extends Fragment {
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString("phone", phone_number.getEditText().getText().toString().trim());
+                bundle.putString("goTo",goTo);
                 Log.w("PHONEAUTH",phone_number.getEditText().getText().toString().trim());
                 Navigation.findNavController(v).navigate(R.id.action_phoneAuthFragment_to_phoneAuthPageTwoFragment, bundle);
             }
@@ -76,6 +84,5 @@ public class PhoneAuthFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
         assert imm != null;
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
-
     }
 }

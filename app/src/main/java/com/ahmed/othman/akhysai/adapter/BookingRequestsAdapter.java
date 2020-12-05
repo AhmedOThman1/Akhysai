@@ -23,7 +23,6 @@ public class BookingRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private Context context;
     private ArrayList<BookingRequest> Models;
-    private BookingRequest current_model;
 
     public BookingRequestsAdapter(@NonNull Context context) {
         this.context = context;
@@ -44,7 +43,7 @@ public class BookingRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        current_model = Models.get(position);
+        BookingRequest current_model = Models.get(position);
         final BookingRequestViewHolder ViewHolder = (BookingRequestViewHolder) holder;
 
         ViewHolder.username.setText(current_model.getName());
@@ -86,7 +85,7 @@ public class BookingRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             case Calendar.FRIDAY:
                 return context.getResources().getString(R.string.friday);
             default:
-                return  "DayName";
+                return "DayName";
         }
 
     }
@@ -96,7 +95,7 @@ public class BookingRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return Models.size();
     }
 
-    class BookingRequestViewHolder extends RecyclerView.ViewHolder {
+    static class BookingRequestViewHolder extends RecyclerView.ViewHolder {
         // views
         CircleImageView user_image;
         TextView username, booking_day, booking_hours;

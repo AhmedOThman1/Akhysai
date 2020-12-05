@@ -40,8 +40,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:gravity="top"
+                android:inputType="textMultiLine"
                 android:maxLength="500"
+                android:maxHeight="130dp"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 

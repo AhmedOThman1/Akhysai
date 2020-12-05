@@ -17,23 +17,19 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.RecyclerViewTouchListener;
-import com.ahmed.othman.akhysai.adapter.ArticleAdapter;
 import com.ahmed.othman.akhysai.adapter.ClinicAdapter;
-import com.ahmed.othman.akhysai.pojo.Article;
 import com.ahmed.othman.akhysai.pojo.Clinic;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
@@ -49,11 +45,11 @@ public class CentersAndClinicsFragment extends Fragment {
     TextInputLayout search;
     Spinner search_category;
     RecyclerView clinics_recycler;
-    ArrayList<Clinic> ClinicsArray=new ArrayList<>();
-    List<String> Categories =new ArrayList<>();
+    ArrayList<Clinic> ClinicsArray = new ArrayList<>();
+    List<String> Categories = new ArrayList<>();
     TextView clinics_text;
     NestedScrollView nested_scroll;
-    ConstraintLayout no_result,no_internet;
+    ConstraintLayout no_result, no_internet;
 
 
     @Override
@@ -74,7 +70,7 @@ public class CentersAndClinicsFragment extends Fragment {
         toolbar.setVisibility(View.VISIBLE);
         navigation_view.setCheckedItem(R.id.centers_and_clinics);
 
-        ClinicAdapter clinicAdapter = new ClinicAdapter(getContext());
+        ClinicAdapter clinicAdapter = new ClinicAdapter(requireContext());
         ClinicsArray = getAllClinics();
 
         clinicAdapter.setModels(ClinicsArray);
@@ -88,7 +84,7 @@ public class CentersAndClinicsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", ClinicsArray.get(position).getClinic_id());
                 bundle.putString("clinic", new Gson().toJson(ClinicsArray.get(position)));
-                Navigation.findNavController(v).navigate(R.id.action_centersAndClinicsFragment_to_oneClinicFragment,bundle);
+                Navigation.findNavController(v).navigate(R.id.action_centersAndClinicsFragment_to_oneClinicFragment, bundle);
             }
 
             @Override
@@ -98,7 +94,7 @@ public class CentersAndClinicsFragment extends Fragment {
         }));
 
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,Categories);
+        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Categories);
         field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         search_category.setAdapter(field_adapter);
 
@@ -112,12 +108,12 @@ public class CentersAndClinicsFragment extends Fragment {
                 search.setError(null);
                 search.clearFocus();
                 Toast.makeText(getContext(), "select category", Toast.LENGTH_SHORT).show();
-                search_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
+                search_category.setBackgroundResource(R.drawable.background_spinner_error);
             } else {
                 search.setError(null);
-                search_category.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
+                search_category.setBackgroundResource(R.drawable.background_spinner);
                 nested_scroll.smoothScrollTo(0, clinics_text.getTop());
-                ClinicsArray = getClinicsByTitle(search.getEditText().getText().toString().trim(),Categories.get(search_category.getSelectedItemPosition()));
+                ClinicsArray = getClinicsByTitle(search.getEditText().getText().toString().trim(), Categories.get(search_category.getSelectedItemPosition()));
             }
         });
 
@@ -127,26 +123,26 @@ public class CentersAndClinicsFragment extends Fragment {
 
 
     private void getClinicsCategories() {
-        Categories = Arrays.asList(getContext().getResources().getStringArray(R.array.category));
+        Categories = Arrays.asList(requireContext().getResources().getStringArray(R.array.category));
     }
 
     private ArrayList<Clinic> getAllClinics() {
         ArrayList<Clinic> tempClinics = new ArrayList<>();
-        tempClinics.add(new Clinic("https://www.akhysai.com/upload/directory/bccb2c10-4fb2-42e6-8312-47cb8a448f4f.jpg", "مؤسسة عطاء للطفولة", "ذوي احتياجات خاصة","01097654241","www.Akhysai.com","Al-3ata","اختبارات ومقاييس نفسية - تقييمات لحالات ذوى الاحتياجات الخاصة - جلسات تربية خاصة -جلسات تخاطب - جلسات تعديل سلوك"));
-        tempClinics.add(new Clinic("0", "موقع الصفا للمستلزمات الطبية", "ذوي احتياجات خاصة","01097654241","www.Akhysai.com","Al-Hoda","يقول مونتاني في مقدمة كتابه (محاولات أو تجارب) : «إن هذا الكتاب حسن الطوية فهو ينبهك منذ البداية إني لا أستهدف من ورائه مقصداً إلا ما ينفع العام والخاص، ولم أرد به خدمتك أو إعلاء ذكرى فإن مواهبي تعجز عن تحقيق مثل هذه الغاية... لقد خصصته لمنفعة الخاصة من أهلي وأصدقائي حتى إذا ما افتقدوني استطاعوا أن يجدوا فيه صورة لطباعي وميولي، فيسترجعوا ذكراي التي خلفتها لهم حيّة كاملة ولو كان هدفي أن أظفر بإعجاب العالم لعملت على إطراء نفسي وإظهارها بطريقة منمّقة ولكني أريد أن أعرف في أبسط صوري الطبيعية العادية دون تكلف ولا تصنع لأني أنا الذي أصوّر نفسي لهذا تبرز مساوئي واضحة وسجيتي على طبيعتها ما سمح لي العرف بذلك...» يتضح في مقدمة كتاب ابن الجوزي صيد الخاطر إنما كتب هذه الفصول ليسجّل فيها خواطره التي أثارتها تجاربه وعلاقاته مع الأشياء. وهذه الخواطر ليست وليدة البحث والدرس العميق وإنما هي خواطر آنية تولد وتزول سريعاً إنْ لم تُدوّن لهذا سعى إلى تدوينها في هذا الكتاب وسمّاه (صيد الخاطر) كما سمّى فيما بعد أحمد أمين أشهر كتاب في المقالة الأدبية في الأدب العربي الحديث (فيض الخاطر) وهذا يعني أنَّ مفهوم ابن الجوزي لفصول كتابه قريب من مفهوم مونتاني لفصوله فهو جسّد فيها خواطره معلّقاً على هذا القول أو ذاك ومصوراً تجارب نفسه وعيوبها وما توصل إليه من أفكار تتعلق بالدين والحياة والمجتمع. يقول ابن الجوزي في مقدمة (صيد الخاطر): «. لَمّا كانت الخواطر تجول في تصفح أشياء تعرض لها، ثم تعرض عنها فتذهب، كان من أولى الأمور حفظ ما يخطر لكي لا ينسى، وقد قال عليه الصلاة والسلام: \"قيِّدوا العلم بالكتابة\". وكم خطر لي شيء فأتشاغل عن إثباته فيذهب، فأتأسف عليه ورأيت في نفسي إنني كلما فتحت بصر التفكر، سنح له من عجائب الغيب ما لم يكن في حساب فانثال عليه من كثيب التفهيم ما لا يجوز التفريط فيه فجعلت هذا الكتاب قيداً –لصيد الخاطر- والله وليّ النفع، إنه قريب مجيب»"));
-        tempClinics.add(new Clinic("2", "عيادة الصفا", "الطب","01127271078","www.Akhysai.com","Al-Safa","تفاصيل الصفا"));
-        tempClinics.add(new Clinic("3", "عيادة الفجر", "الطب","01027777778","www.Akhysai.com","Al-Fajr","تفاصيل الفجر"));
-        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب","01097654241","www.Akhysai.com","Al-Hoda","تفاصيل الهدي"));
+        tempClinics.add(new Clinic("https://www.akhysai.com/upload/directory/bccb2c10-4fb2-42e6-8312-47cb8a448f4f.jpg", "مؤسسة عطاء للطفولة", "ذوي احتياجات خاصة", "01097654241", "www.Akhysai.com", "Al-3ata", "اختبارات ومقاييس نفسية - تقييمات لحالات ذوى الاحتياجات الخاصة - جلسات تربية خاصة -جلسات تخاطب - جلسات تعديل سلوك"));
+        tempClinics.add(new Clinic("0", "موقع الصفا للمستلزمات الطبية", "ذوي احتياجات خاصة", "01097654241", "www.Akhysai.com", "Al-Hoda", "يقول مونتاني في مقدمة كتابه (محاولات أو تجارب) : «إن هذا الكتاب حسن الطوية فهو ينبهك منذ البداية إني لا أستهدف من ورائه مقصداً إلا ما ينفع العام والخاص، ولم أرد به خدمتك أو إعلاء ذكرى فإن مواهبي تعجز عن تحقيق مثل هذه الغاية... لقد خصصته لمنفعة الخاصة من أهلي وأصدقائي حتى إذا ما افتقدوني استطاعوا أن يجدوا فيه صورة لطباعي وميولي، فيسترجعوا ذكراي التي خلفتها لهم حيّة كاملة ولو كان هدفي أن أظفر بإعجاب العالم لعملت على إطراء نفسي وإظهارها بطريقة منمّقة ولكني أريد أن أعرف في أبسط صوري الطبيعية العادية دون تكلف ولا تصنع لأني أنا الذي أصوّر نفسي لهذا تبرز مساوئي واضحة وسجيتي على طبيعتها ما سمح لي العرف بذلك...» يتضح في مقدمة كتاب ابن الجوزي صيد الخاطر إنما كتب هذه الفصول ليسجّل فيها خواطره التي أثارتها تجاربه وعلاقاته مع الأشياء. وهذه الخواطر ليست وليدة البحث والدرس العميق وإنما هي خواطر آنية تولد وتزول سريعاً إنْ لم تُدوّن لهذا سعى إلى تدوينها في هذا الكتاب وسمّاه (صيد الخاطر) كما سمّى فيما بعد أحمد أمين أشهر كتاب في المقالة الأدبية في الأدب العربي الحديث (فيض الخاطر) وهذا يعني أنَّ مفهوم ابن الجوزي لفصول كتابه قريب من مفهوم مونتاني لفصوله فهو جسّد فيها خواطره معلّقاً على هذا القول أو ذاك ومصوراً تجارب نفسه وعيوبها وما توصل إليه من أفكار تتعلق بالدين والحياة والمجتمع. يقول ابن الجوزي في مقدمة (صيد الخاطر): «. لَمّا كانت الخواطر تجول في تصفح أشياء تعرض لها، ثم تعرض عنها فتذهب، كان من أولى الأمور حفظ ما يخطر لكي لا ينسى، وقد قال عليه الصلاة والسلام: \"قيِّدوا العلم بالكتابة\". وكم خطر لي شيء فأتشاغل عن إثباته فيذهب، فأتأسف عليه ورأيت في نفسي إنني كلما فتحت بصر التفكر، سنح له من عجائب الغيب ما لم يكن في حساب فانثال عليه من كثيب التفهيم ما لا يجوز التفريط فيه فجعلت هذا الكتاب قيداً –لصيد الخاطر- والله وليّ النفع، إنه قريب مجيب»"));
+        tempClinics.add(new Clinic("2", "عيادة الصفا", "الطب", "01127271078", "www.Akhysai.com", "Al-Safa", "تفاصيل الصفا"));
+        tempClinics.add(new Clinic("3", "عيادة الفجر", "الطب", "01027777778", "www.Akhysai.com", "Al-Fajr", "تفاصيل الفجر"));
+        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب", "01097654241", "www.Akhysai.com", "Al-Hoda", "تفاصيل الهدي"));
         return tempClinics;
     }
 
     private ArrayList<Clinic> getClinicsByTitle(String title, String category) {
         ArrayList<Clinic> tempClinics = new ArrayList<>();
-        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب","01097654241","www.Akhysai.com","Al-Hoda","تفاصيل الهدي"));
-        tempClinics.add(new Clinic("-1", title, category,"01027777778","www.Akhysai.com","Al-Fajr","تفاصيل الفجر"));
-        tempClinics.add(new Clinic("0", "موقع الصفا للمستلزمات الطبية", "ذوي احتياجات خاصة","01097654241","www.Akhysai.com","Al-Hoda","يقول مونتاني في مقدمة كتابه (محاولات أو تجارب) : «إن هذا الكتاب حسن الطوية فهو ينبهك منذ البداية إني لا أستهدف من ورائه مقصداً إلا ما ينفع العام والخاص، ولم أرد به خدمتك أو إعلاء ذكرى فإن مواهبي تعجز عن تحقيق مثل هذه الغاية... لقد خصصته لمنفعة الخاصة من أهلي وأصدقائي حتى إذا ما افتقدوني استطاعوا أن يجدوا فيه صورة لطباعي وميولي، فيسترجعوا ذكراي التي خلفتها لهم حيّة كاملة ولو كان هدفي أن أظفر بإعجاب العالم لعملت على إطراء نفسي وإظهارها بطريقة منمّقة ولكني أريد أن أعرف في أبسط صوري الطبيعية العادية دون تكلف ولا تصنع لأني أنا الذي أصوّر نفسي لهذا تبرز مساوئي واضحة وسجيتي على طبيعتها ما سمح لي العرف بذلك...» يتضح في مقدمة كتاب ابن الجوزي صيد الخاطر إنما كتب هذه الفصول ليسجّل فيها خواطره التي أثارتها تجاربه وعلاقاته مع الأشياء. وهذه الخواطر ليست وليدة البحث والدرس العميق وإنما هي خواطر آنية تولد وتزول سريعاً إنْ لم تُدوّن لهذا سعى إلى تدوينها في هذا الكتاب وسمّاه (صيد الخاطر) كما سمّى فيما بعد أحمد أمين أشهر كتاب في المقالة الأدبية في الأدب العربي الحديث (فيض الخاطر) وهذا يعني أنَّ مفهوم ابن الجوزي لفصول كتابه قريب من مفهوم مونتاني لفصوله فهو جسّد فيها خواطره معلّقاً على هذا القول أو ذاك ومصوراً تجارب نفسه وعيوبها وما توصل إليه من أفكار تتعلق بالدين والحياة والمجتمع. يقول ابن الجوزي في مقدمة (صيد الخاطر): «. لَمّا كانت الخواطر تجول في تصفح أشياء تعرض لها، ثم تعرض عنها فتذهب، كان من أولى الأمور حفظ ما يخطر لكي لا ينسى، وقد قال عليه الصلاة والسلام: \"قيِّدوا العلم بالكتابة\". وكم خطر لي شيء فأتشاغل عن إثباته فيذهب، فأتأسف عليه ورأيت في نفسي إنني كلما فتحت بصر التفكر، سنح له من عجائب الغيب ما لم يكن في حساب فانثال عليه من كثيب التفهيم ما لا يجوز التفريط فيه فجعلت هذا الكتاب قيداً –لصيد الخاطر- والله وليّ النفع، إنه قريب مجيب»"));
-        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب","01097654241","www.Akhysai.com","Al-Hoda","تفاصيل الهدي"));
-        tempClinics.add(new Clinic("2", "عيادة الصفا", "الطب","01127271078","www.Akhysai.com","Al-Safa","تفاصيل الصفا"));
+        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب", "01097654241", "www.Akhysai.com", "Al-Hoda", "تفاصيل الهدي"));
+        tempClinics.add(new Clinic("-1", title, category, "01027777778", "www.Akhysai.com", "Al-Fajr", "تفاصيل الفجر"));
+        tempClinics.add(new Clinic("0", "موقع الصفا للمستلزمات الطبية", "ذوي احتياجات خاصة", "01097654241", "www.Akhysai.com", "Al-Hoda", "يقول مونتاني في مقدمة كتابه (محاولات أو تجارب) : «إن هذا الكتاب حسن الطوية فهو ينبهك منذ البداية إني لا أستهدف من ورائه مقصداً إلا ما ينفع العام والخاص، ولم أرد به خدمتك أو إعلاء ذكرى فإن مواهبي تعجز عن تحقيق مثل هذه الغاية... لقد خصصته لمنفعة الخاصة من أهلي وأصدقائي حتى إذا ما افتقدوني استطاعوا أن يجدوا فيه صورة لطباعي وميولي، فيسترجعوا ذكراي التي خلفتها لهم حيّة كاملة ولو كان هدفي أن أظفر بإعجاب العالم لعملت على إطراء نفسي وإظهارها بطريقة منمّقة ولكني أريد أن أعرف في أبسط صوري الطبيعية العادية دون تكلف ولا تصنع لأني أنا الذي أصوّر نفسي لهذا تبرز مساوئي واضحة وسجيتي على طبيعتها ما سمح لي العرف بذلك...» يتضح في مقدمة كتاب ابن الجوزي صيد الخاطر إنما كتب هذه الفصول ليسجّل فيها خواطره التي أثارتها تجاربه وعلاقاته مع الأشياء. وهذه الخواطر ليست وليدة البحث والدرس العميق وإنما هي خواطر آنية تولد وتزول سريعاً إنْ لم تُدوّن لهذا سعى إلى تدوينها في هذا الكتاب وسمّاه (صيد الخاطر) كما سمّى فيما بعد أحمد أمين أشهر كتاب في المقالة الأدبية في الأدب العربي الحديث (فيض الخاطر) وهذا يعني أنَّ مفهوم ابن الجوزي لفصول كتابه قريب من مفهوم مونتاني لفصوله فهو جسّد فيها خواطره معلّقاً على هذا القول أو ذاك ومصوراً تجارب نفسه وعيوبها وما توصل إليه من أفكار تتعلق بالدين والحياة والمجتمع. يقول ابن الجوزي في مقدمة (صيد الخاطر): «. لَمّا كانت الخواطر تجول في تصفح أشياء تعرض لها، ثم تعرض عنها فتذهب، كان من أولى الأمور حفظ ما يخطر لكي لا ينسى، وقد قال عليه الصلاة والسلام: \"قيِّدوا العلم بالكتابة\". وكم خطر لي شيء فأتشاغل عن إثباته فيذهب، فأتأسف عليه ورأيت في نفسي إنني كلما فتحت بصر التفكر، سنح له من عجائب الغيب ما لم يكن في حساب فانثال عليه من كثيب التفهيم ما لا يجوز التفريط فيه فجعلت هذا الكتاب قيداً –لصيد الخاطر- والله وليّ النفع، إنه قريب مجيب»"));
+        tempClinics.add(new Clinic("1", "عيادة الهدي", "الطب", "01097654241", "www.Akhysai.com", "Al-Hoda", "تفاصيل الهدي"));
+        tempClinics.add(new Clinic("2", "عيادة الصفا", "الطب", "01127271078", "www.Akhysai.com", "Al-Safa", "تفاصيل الصفا"));
         return tempClinics;
     }
 
@@ -168,14 +164,16 @@ public class CentersAndClinicsFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_in_right)
-                        .setExitAnim(R.anim.slide_out_left)
-                        .setPopEnterAnim(R.anim.slide_in_left)
-                        .setPopExitAnim(R.anim.slide_out_right)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_in_right)
+//                        .setExitAnim(R.anim.slide_out_left)
+//                        .setPopEnterAnim(R.anim.slide_in_left)
+//                        .setPopExitAnim(R.anim.slide_out_right)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

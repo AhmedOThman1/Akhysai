@@ -21,7 +21,6 @@ public class Akhysai {
     private ArrayList<Article> Articles = new ArrayList<>();
 
     public Akhysai() {
-
     }
 
     public Akhysai(String photo, String name, String description, int experience_years, float rate, int visitor_num, int price) {

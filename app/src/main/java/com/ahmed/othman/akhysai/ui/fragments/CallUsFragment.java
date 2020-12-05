@@ -93,14 +93,15 @@ public class CallUsFragment extends Fragment {
                         message_title.getEditText().getText().toString().trim(),
                         message_body.getEditText().getText().toString().trim());
 
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .setEnterAnim(R.anim.slide_out_left)
-                        .setExitAnim(R.anim.slide_in_right)
-                        .setPopEnterAnim(R.anim.slide_out_right)
-                        .setPopExitAnim(R.anim.slide_in_left)
-                        .build();
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
+                Navigation.findNavController(v).popBackStack();
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.homeFragment, true)
+//                        .setEnterAnim(R.anim.slide_out_left)
+//                        .setExitAnim(R.anim.slide_in_right)
+//                        .setPopEnterAnim(R.anim.slide_out_right)
+//                        .setPopExitAnim(R.anim.slide_in_left)
+//                        .build();
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
             }
         });
 

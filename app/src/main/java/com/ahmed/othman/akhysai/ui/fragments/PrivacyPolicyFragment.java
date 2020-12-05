@@ -24,9 +24,8 @@ public class PrivacyPolicyFragment extends Fragment {
     }
 
 
+    String PrivacyPolicyData = "";
 
-
-    String PrivacyPolicyData ="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

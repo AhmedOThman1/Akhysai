@@ -23,7 +23,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
     private ArrayList<Review> Models;
-    private Review current_model;
 
     public ReviewAdapter(@NonNull Context context) {
         this.context = context;
@@ -44,7 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        current_model = Models.get(position);
+        Review current_model = Models.get(position);
         final ReviewViewHolder ViewHolder = (ReviewViewHolder) holder;
 
         ViewHolder.review_body.setText(current_model.getReviewBody());
@@ -56,10 +55,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         long days = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - current_model.getDate());
 
-        String temp =days<1?context.getResources().getString(R.string.today):
-                days==1?context.getResources().getString(R.string.one_day_ago):
-                        days==2?context.getResources().getString(R.string.two_days_ago):
-                                days<11?context.getResources().getString(R.string.ago) + days + context.getResources().getString(R.string.days_ago):
+        String temp = days < 1 ? context.getResources().getString(R.string.today) :
+                days == 1 ? context.getResources().getString(R.string.one_day_ago) :
+                        days == 2 ? context.getResources().getString(R.string.two_days_ago) :
+                                days < 11 ? context.getResources().getString(R.string.ago) + days + context.getResources().getString(R.string.days_ago) :
                                         context.getResources().getString(R.string.ago) + days + context.getResources().getString(R.string.days_ago2);
         ViewHolder.review_date.setText(temp);
     }
@@ -69,7 +68,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return Models.size();
     }
 
-    class ReviewViewHolder extends RecyclerView.ViewHolder {
+    static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView review_body, review_date, review_writer_name;
         RatingBar rate;
 

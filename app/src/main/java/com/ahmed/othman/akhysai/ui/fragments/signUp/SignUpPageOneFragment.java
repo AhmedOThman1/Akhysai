@@ -38,7 +38,7 @@ public class SignUpPageOneFragment extends Fragment {
     boolean gender = true, HasPhone = false;
 
     String Type = "", sign_from;
-
+    private String goTo="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +64,8 @@ public class SignUpPageOneFragment extends Fragment {
             Log.w("TypeSignUp1", "Type: " + Type);
 
             sign_from = arg.getString("sign_from");
+            goTo = arg.getString("goTo","");
+            Log.w("GOTO1", "goto: " + goTo);
             if (sign_from == null) {
                 //don't do any thing
             } else if (sign_from.equals("google") || sign_from.equals("facebook")) {
@@ -138,9 +140,11 @@ public class SignUpPageOneFragment extends Fragment {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
-                Bundle bundle = new Bundle();
+                close_keyboard();
 
+                Bundle bundle = new Bundle();
                 bundle.putString("Type", Type);
+                bundle.putString("goTo", goTo);
 
 //                bundle.putString("name", name.getEditText().getText().toString().trim());
 //                bundle.putString("email", email.getEditText().getText().toString().trim());
@@ -166,5 +170,15 @@ public class SignUpPageOneFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
         assert imm != null;
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
+    }
+
+
+    private void close_keyboard() {
+        View view = requireActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

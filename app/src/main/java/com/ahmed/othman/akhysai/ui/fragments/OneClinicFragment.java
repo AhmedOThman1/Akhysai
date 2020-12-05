@@ -31,7 +31,7 @@ public class OneClinicFragment extends Fragment {
 
     RoundedImageView clinic_item_image;
     TextView clinic_item_name, clinic_item_category, clinic_item_company_name, clinic_item_phone, clinic_item_website, clinic_item_body;
-   Clinic currentClinic = new Clinic();
+    Clinic currentClinic = new Clinic();
     Context context;
 
     @Override
@@ -53,9 +53,8 @@ public class OneClinicFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            String json = args.getString("clinic","");
-            if(!json.trim().isEmpty())
-            {
+            String json = args.getString("clinic", "");
+            if (!json.trim().isEmpty()) {
                 currentClinic = new Gson().fromJson(json, Clinic.class);
             }
 

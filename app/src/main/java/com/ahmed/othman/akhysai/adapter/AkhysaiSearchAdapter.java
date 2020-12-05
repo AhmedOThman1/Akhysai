@@ -60,7 +60,7 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         ViewHolder.akhysai_description.setText(current_model.getDescription());
 
-        String temp = context.getResources().getString(R.string.years_of_experience2)+": " + current_model.getExperience_years() + context.getResources().getString(R.string.years);
+        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + current_model.getExperience_years() + context.getResources().getString(R.string.years);
         ViewHolder.akhysai_years_of_experience.setText(temp);
 
         ViewHolder.akhysai_rating.setRating(current_model.getRate());
@@ -69,28 +69,28 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         temp = context.getResources().getString(R.string.this_rate_from) + current_model.getVisitor_num() + context.getResources().getString(R.string.visitor);
         ViewHolder.visitors_rate_num.setText(temp);
 
-        temp = context.getResources().getString(R.string.session_price)+ current_model.getPrice()+context.getResources().getString(R.string.egp);
+        temp = context.getResources().getString(R.string.session_price) + current_model.getPrice() + context.getResources().getString(R.string.egp);
         ViewHolder.akhysai_price.setText(temp);
 
-        ViewHolder.open_profile.setOnClickListener(v->{
+        ViewHolder.open_profile.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id",Models.get(position).getAkhysai_id());
+            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
-            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment,bundle);
+            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment, bundle);
         });
 
-        ViewHolder.book_akhysai.setOnClickListener(v->{
+        ViewHolder.book_akhysai.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id",Models.get(position).getAkhysai_id());
+            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
-            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_bookOneAkhysaiFragment,bundle);
+            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_bookOneAkhysaiFragment, bundle);
         });
 
-        ViewHolder.itemView.setOnClickListener(v->{
+        ViewHolder.itemView.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id",Models.get(position).getAkhysai_id());
+            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
-            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment,bundle);
+            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment, bundle);
         });
 
     }
@@ -100,7 +100,7 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         return Models.size();
     }
 
-    class AkhysaiViewHolder extends RecyclerView.ViewHolder {
+    static class AkhysaiViewHolder extends RecyclerView.ViewHolder {
         // views
         ImageView akhysai_image;
         TextView akhysai_name, akhysai_description, akhysai_years_of_experience, visitors_rate_num, akhysai_price, open_profile, book_akhysai;
@@ -118,7 +118,6 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
             open_profile = itemView.findViewById(R.id.open_profile);
             book_akhysai = itemView.findViewById(R.id.book_akhysai);
 
-            // findviewbyid
         }
     }
 

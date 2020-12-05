@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,6 +43,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
+
 import java.util.Arrays;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,6 +69,7 @@ public class LoginFragment extends Fragment {
 
 
     private CallbackManager callbackManager;
+    private String goTo = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,8 +91,13 @@ public class LoginFragment extends Fragment {
         facebook = view.findViewById(R.id.facebook);
         phone = view.findViewById(R.id.phone);
 
-
         toolbar.setVisibility(View.GONE);
+
+
+        Bundle args = getArguments();
+        if (args != null) {
+            goTo = args.getString("goTo", "");
+        }
 
         login.setOnClickListener(v -> {
             if (username.getEditText().getText().toString().trim().isEmpty()) {
@@ -112,14 +122,21 @@ public class LoginFragment extends Fragment {
                 requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                 updateNavDrawer(requireActivity());
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                if (goTo.isEmpty())
+                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                    Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+                else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                    Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
 //                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.fragment_container, new HomeFragment()).addToBackStack(null).commit();
             }
         });
 
         sign_up.setOnClickListener(v -> {
             close_keyboard();
-            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_pickSignUpTypeFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("goTo", goTo);
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_pickSignUpTypeFragment, bundle);
 //            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.fragment_container, new PickSignUpTypeFragment()).addToBackStack(null).commit();
         });
 
@@ -137,7 +154,9 @@ public class LoginFragment extends Fragment {
 
         phone.setOnClickListener(v -> {
             close_keyboard();
-            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_phoneAuthFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("goTo", goTo);
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_phoneAuthFragment, bundle);
         });
         return view;
     }
@@ -226,12 +245,22 @@ public class LoginFragment extends Fragment {
                         Log.d("TAG", "signInWithCredential:success");
                         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                         //TODO check if user new then goto sign up // else go to home
-                        if (true == true && !false == !true)     // logged in before ?
-                            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
-                        else {
+                        if (true == true && !false == !true) {  // logged in before ?
+
+                            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
+                            updateNavDrawer(requireActivity());
+
+                            if (goTo.isEmpty())
+                                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                            else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                                Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+                            else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                                Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
+                        } else {
                             // new user ?
                             Bundle bundle = new Bundle();
                             bundle.putString("sign_from", "google");
+                            bundle.putString("goTo", goTo);
                             bundle.putString("name", currentUser.getDisplayName());
                             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_pickSignUpTypeFragment, bundle);
                         }
@@ -255,15 +284,25 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            close_keyboard();
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                             //TODO check if user new then goto sign up // else go to home
-                            if (true == true && !false == !true)     // logged in before ?
-                                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
-                            else {
+                            if (true == true && !false == !true) {    // logged in before ?
+                                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
+                                updateNavDrawer(requireActivity());
+
+                                if (goTo.isEmpty())
+                                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                                else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                                    Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+                                else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                                    Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
+                            } else {
                                 // new user ?
                                 Bundle bundle = new Bundle();
                                 bundle.putString("sign_from", "facebook");
+                                bundle.putString("goTo", goTo);
                                 bundle.putString("name", currentUser.getDisplayName());
                                 Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_pickSignUpTypeFragment, bundle);
                             }

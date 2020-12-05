@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment {
             ((TextView) view.findViewById(R.id.num3)).setText("3");
         }
 
-        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Cities);
+        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Cities);
         city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         home_search_city.setAdapter(city_adapter);
 
@@ -94,11 +94,11 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 home_search_area.setVisibility(position > 0 ? View.VISIBLE : View.GONE);
                 if (position > 0) {
-                    ArrayAdapter<String> area_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                            position == 1 ? getContext().getResources().getStringArray(R.array.cairo) :
-                                    position == 2 ? getContext().getResources().getStringArray(R.array.giza) :
-                                            position == 3 ? getContext().getResources().getStringArray(R.array.alex) :
-                                                    getContext().getResources().getStringArray(R.array.mansoura));
+                    ArrayAdapter<String> area_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,
+                            position == 1 ? requireContext().getResources().getStringArray(R.array.cairo) :
+                                    position == 2 ? requireContext().getResources().getStringArray(R.array.giza) :
+                                            position == 3 ? requireContext().getResources().getStringArray(R.array.alex) :
+                                                    requireContext().getResources().getStringArray(R.array.mansoura));
                     area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     home_search_area.setAdapter(area_adapter);
                 }
@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Fields);
+        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Fields);
         field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         home_search_field.setAdapter(field_adapter);
 
@@ -120,9 +120,9 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 home_search_specialty.setVisibility(position > 0 ? View.VISIBLE : View.GONE);
                 if (position > 0) {
-                    ArrayAdapter<String> specialty_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                            position == 1 ? getContext().getResources().getStringArray(R.array.specialties_medical) :
-                                    getContext().getResources().getStringArray(R.array.specialties_with_special_needs));
+                    ArrayAdapter<String> specialty_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,
+                            position == 1 ? requireContext().getResources().getStringArray(R.array.specialties_medical) :
+                                    requireContext().getResources().getStringArray(R.array.specialties_with_special_needs));
                     specialty_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     home_search_specialty.setAdapter(specialty_adapter);
                 }
@@ -135,14 +135,14 @@ public class HomeFragment extends Fragment {
         });
 
 
-        ArticleAdapter articleAdapter = new ArticleAdapter(getContext());
+        ArticleAdapter articleAdapter = new ArticleAdapter(requireContext());
 
         articleAdapter.setModels(homeArticles);
         akhysai_library.setAdapter(articleAdapter);
-        akhysai_library.setLayoutManager(new LinearLayoutManager(getContext()));
+        akhysai_library.setLayoutManager(new LinearLayoutManager(requireContext()));
         akhysai_library.setHasFixedSize(true);
 
-        akhysai_library.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), akhysai_library, new RecyclerViewTouchListener.RecyclerViewClickListener() {
+        akhysai_library.addOnItemTouchListener(new RecyclerViewTouchListener(requireContext(), akhysai_library, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
                 Bundle bundle = new Bundle();
@@ -171,29 +171,29 @@ public class HomeFragment extends Fragment {
 
         home_search_button.setOnClickListener(v -> {
             if (home_search_city.getSelectedItemPosition() == 0) {
-                home_search_city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                home_search_area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_field.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_specialty.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                Toast.makeText(getContext(), "Select city to start search", Toast.LENGTH_SHORT).show();
+                home_search_city.setBackgroundResource(R.drawable.background_spinner_error);
+                home_search_area.setBackgroundResource(R.drawable.background_spinner);
+                home_search_field.setBackgroundResource(R.drawable.background_spinner);
+                home_search_specialty.setBackgroundResource(R.drawable.background_spinner);
+                Toast.makeText(requireContext(), "Select city to start search", Toast.LENGTH_SHORT).show();
             } else if (home_search_area.getSelectedItemPosition() == 0) {
-                home_search_city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                home_search_field.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_specialty.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                Toast.makeText(getContext(), "Select area to start search", Toast.LENGTH_SHORT).show();
+                home_search_city.setBackgroundResource(R.drawable.background_spinner);
+                home_search_area.setBackgroundResource(R.drawable.background_spinner_error);
+                home_search_field.setBackgroundResource(R.drawable.background_spinner);
+                home_search_specialty.setBackgroundResource(R.drawable.background_spinner);
+                Toast.makeText(requireContext(), "Select area to start search", Toast.LENGTH_SHORT).show();
             } else if (home_search_field.getSelectedItemPosition() == 0) {
-                home_search_city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_field.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                home_search_specialty.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                Toast.makeText(getContext(), "Select field to start search", Toast.LENGTH_SHORT).show();
+                home_search_city.setBackgroundResource(R.drawable.background_spinner);
+                home_search_area.setBackgroundResource(R.drawable.background_spinner);
+                home_search_field.setBackgroundResource(R.drawable.background_spinner_error);
+                home_search_specialty.setBackgroundResource(R.drawable.background_spinner);
+                Toast.makeText(requireContext(), "Select field to start search", Toast.LENGTH_SHORT).show();
             } else if (home_search_specialty.getSelectedItemPosition() == 0) {
-                home_search_city.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_area.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_field.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner));
-                home_search_specialty.setBackground(getActivity().getResources().getDrawable(R.drawable.background_spinner_error));
-                Toast.makeText(getContext(), "Select specialty to start search", Toast.LENGTH_SHORT).show();
+                home_search_city.setBackgroundResource(R.drawable.background_spinner);
+                home_search_area.setBackgroundResource(R.drawable.background_spinner);
+                home_search_field.setBackgroundResource(R.drawable.background_spinner);
+                home_search_specialty.setBackgroundResource(R.drawable.background_spinner_error);
+                Toast.makeText(requireContext(), "Select specialty to start search", Toast.LENGTH_SHORT).show();
             } else {
                 Log.w("Bad", home_search_city.getSelectedItemPosition() + "\n" +
                         home_search_area.getSelectedItemPosition() + "\n" +
@@ -242,10 +242,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void initSpinnerData() {
-        Cities = Arrays.asList(getContext().getResources().getStringArray(R.array.cities));
-        Areas = Arrays.asList(getContext().getResources().getStringArray(R.array.cairo));
-        Fields = Arrays.asList(getContext().getResources().getStringArray(R.array.fields));
-        Specialties = Arrays.asList(getContext().getResources().getStringArray(R.array.specialties_with_special_needs));
+        Cities = Arrays.asList(requireContext().getResources().getStringArray(R.array.cities));
+        Areas = Arrays.asList(requireContext().getResources().getStringArray(R.array.cairo));
+        Fields = Arrays.asList(requireContext().getResources().getStringArray(R.array.fields));
+        Specialties = Arrays.asList(requireContext().getResources().getStringArray(R.array.specialties_with_special_needs));
     }
 
     private ArrayList<Article> getAllArticles() {

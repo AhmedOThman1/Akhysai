@@ -48,6 +48,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
 
     FirebaseAuth mAuth;
 
+    private String goTo="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +69,8 @@ public class PhoneAuthPageTwoFragment extends Fragment {
         Bundle arg = getArguments();
         if (arg != null) {
             phone = arg.getString("phone");
+            goTo = arg.getString("goTo", "");
+            Log.w("GOTO p2", "goto: " + goTo);
             Log.w("PHONEA", "phone: " + phone);
             Toast.makeText(context, "phone: " + phone, Toast.LENGTH_SHORT).show();
             sendVerificationCode(phone);
@@ -83,7 +86,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                 PinView.setError(null);
                 verifyVerificationCode(code);
             } else {
-                Log.w("CodeError",code+", he wrote: "+PinView.getText().toString().trim());
+                Log.w("CodeError", code + ", he wrote: " + PinView.getText().toString().trim());
                 PinView.setError("Enter the correct code");
                 PinView.setText("");
                 PinView.requestFocus();
@@ -103,7 +106,7 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                     PinView.setError(null);
                     verifyVerificationCode(code);
                 } else if (temp.length() == 6) {
-                    Log.w("CodeError",code+", he wrote: "+temp);
+                    Log.w("CodeError", code + ", he wrote: " + temp);
                     PinView.setError("Enter the correct code");
                     PinView.setText("");
                     PinView.requestFocus();
@@ -199,17 +202,24 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
 
+                        close_keyboard();
                         // TODO write the correct condition
                         if (true == true && !false == !true)     // logged in before ?
                         {
                             requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
                             updateNavDrawer(requireActivity());
-                            Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_homeFragment);
+                            if (goTo.isEmpty())
+                                Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_homeFragment);
+                            else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                                Navigation.findNavController(view).popBackStack(R.id.oneAkhysaiFragment, false);
+                            else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                                Navigation.findNavController(view).popBackStack(R.id.bookOneAkhysaiFragment, false);
                         } else {
                             // new user ?
                             Bundle bundle = new Bundle();
                             bundle.putString("sign_from", "phone");
                             bundle.putString("phone", phone);
+                            bundle.putString("goTo", goTo);
                             Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_pickSignUpTypeFragment, bundle);
                         }
                     } else {
@@ -223,4 +233,12 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                 });
     }
 
+    private void close_keyboard() {
+        View view = requireActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
