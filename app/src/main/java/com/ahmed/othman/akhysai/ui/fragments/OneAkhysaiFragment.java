@@ -28,7 +28,7 @@ import com.ahmed.othman.akhysai.adapter.ReviewAdapter;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.pojo.Article;
 import com.ahmed.othman.akhysai.pojo.Review;
-import com.ahmed.othman.akhysai.ui.activities.MainActivity;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,8 +38,9 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.logged_in;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.shared_pref;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.full_name;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
 public class OneAkhysaiFragment extends Fragment {
@@ -79,8 +80,8 @@ public class OneAkhysaiFragment extends Fragment {
             String json = args.getString("akhysai", "");
             if (!json.trim().isEmpty()) {
                 currentAkhysai = new Gson().fromJson(json, Akhysai.class);
-                currentAkhysai.setReviews(getReviewsByAkhysaiID(currentAkhysai.getAkhysai_id()));
-                currentAkhysai.setArticles(getArticlesByAkhysaiID(currentAkhysai.getAkhysai_id()));
+//                currentAkhysai.setReviews(getReviewsByAkhysaiID(currentAkhysai.getAkhysai_id()));
+//                currentAkhysai.setArticles(getArticlesByAkhysaiID(currentAkhysai.getAkhysai_id()));
             }
             if(args.getBoolean("OpenWriteReviewDialog",false)){
                 open_write_review_dialog();
@@ -90,30 +91,30 @@ public class OneAkhysaiFragment extends Fragment {
 
 
         Glide.with(context)
-                .load(currentAkhysai.getPhoto())
+                .load(LauncherActivity.ImagesLink+currentAkhysai.getProfile_picture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.doctor_img2)
                 .into(akhysai_image);
 
         akhysai_name.setText(currentAkhysai.getName());
 
-        akhysai_description.setText(currentAkhysai.getDescription());
+//        akhysai_description.setText(currentAkhysai.getDescription());
 
-        about_akhysai_body.setText(currentAkhysai.getAbout_akhysai());
+//        about_akhysai_body.setText(currentAkhysai.getAbout_akhysai());
 
 
-        if (currentAkhysai.getReviews().isEmpty()) {
-            //TODO show image no reviews found
-        }
-
-        if (currentAkhysai.getArticles().isEmpty()) {
-            //TODO show image no articles found
-        } else {
-            //TODO hide image no articles found
+//        if (currentAkhysai.getReviews().isEmpty()) {
+//            TODO show image no reviews found
+//        }
+//
+//        if (currentAkhysai.getArticles().isEmpty()) {
+//            //TODO show image no articles found
+//        } else {
+//            //TODO hide image no articles found
 
             ArticleAdapter articleAdapter = new ArticleAdapter(requireContext());
 
-            articleAdapter.setModels(currentAkhysai.getArticles());
+//            articleAdapter.setArticles(currentAkhysai.getArticles());
             akhysai_articles_recyclerview.setAdapter(articleAdapter);
             akhysai_articles_recyclerview.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
             akhysai_articles_recyclerview.setHasFixedSize(true);
@@ -122,9 +123,8 @@ public class OneAkhysaiFragment extends Fragment {
                 @Override
                 public void onClick(View v, int position) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", currentAkhysai.getArticles().get(position).getArticle_id());
                     bundle.putBoolean("from_akhysai_profile",true);
-                    bundle.putString("article", new Gson().toJson(currentAkhysai.getArticles().get(position)));
+//                    bundle.putString("article", new Gson().toJson(currentAkhysai.getArticles().get(position)));
                     Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_oneArticleFragment,bundle);
                 }
 
@@ -134,27 +134,26 @@ public class OneAkhysaiFragment extends Fragment {
                 }
             }));
 
-        }
+//        }
 
 
-        view.findViewById(R.id.profile_second_card).setVisibility(currentAkhysai.getAbout_akhysai().trim().isEmpty() ? View.GONE : View.VISIBLE);
+//        view.findViewById(R.id.profile_second_card).setVisibility(currentAkhysai.getAbout_akhysai().trim().isEmpty() ? View.GONE : View.VISIBLE);
 
 
-        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + currentAkhysai.getExperience_years() + context.getResources().getString(R.string.years);
+        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + currentAkhysai.getExperienceYears() + context.getResources().getString(R.string.years);
         akhysai_years_of_experience.setText(temp);
 
-        akhysai_rating.setRating(currentAkhysai.getRate());
+//        akhysai_rating.setRating(currentAkhysai.getRate());
         akhysai_rating.setIsIndicator(true);
 
-        temp = context.getResources().getString(R.string.this_rate_from) + currentAkhysai.getVisitor_num() + context.getResources().getString(R.string.visitor);
-        visitors_rate_num.setText(temp);
+//        temp = context.getResources().getString(R.string.this_rate_from) + currentAkhysai.getVisitor_num() + context.getResources().getString(R.string.visitor);
+//        visitors_rate_num.setText(temp);
 
-        temp = context.getResources().getString(R.string.session_price) + currentAkhysai.getPrice() + context.getResources().getString(R.string.egp);
-        akhysai_price.setText(temp);
+//        temp = context.getResources().getString(R.string.session_price) + currentAkhysai.getPrice() + context.getResources().getString(R.string.egp);
+//        akhysai_price.setText(temp);
 
         view.findViewById(R.id.book_akhysai).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", currentAkhysai.getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(currentAkhysai));
             Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_bookOneAkhysaiFragment, bundle);
         });
@@ -174,14 +173,14 @@ public class OneAkhysaiFragment extends Fragment {
         });
 
         reviewAdapter = new ReviewAdapter(context);
-        reviewAdapter.setModels(currentAkhysai.getReviews());
+//        reviewAdapter.setModels(currentAkhysai.getReviews());
         rates_recyclerview.setAdapter(reviewAdapter);
         rates_recyclerview.setLayoutManager(new LinearLayoutManager(context));
 
         return view;
     }
 
-    private ArrayList<Review> getReviewsByAkhysaiID(String akhysai_id) {
+    private ArrayList<Review> getReviewsByAkhysaiID(int akhysai_id) {
         //TODO delete this
         ArrayList<Review> tempReviews = new ArrayList<>();
         Calendar tempCal1 = Calendar.getInstance();
@@ -202,7 +201,7 @@ public class OneAkhysaiFragment extends Fragment {
         // End of TODO
     }
 
-    private ArrayList<Article> getArticlesByAkhysaiID(String akhysai_id) {
+    private ArrayList<Article> getArticlesByAkhysaiID(int akhysai_id) {
         ArrayList<Article> myTempArticles = new ArrayList<>();
         Calendar c1 = Calendar.getInstance();
         c1.add(Calendar.DAY_OF_MONTH,-10);
@@ -211,9 +210,10 @@ public class OneAkhysaiFragment extends Fragment {
         Calendar c3 = Calendar.getInstance();
         c3.add(Calendar.DAY_OF_MONTH,-142);
 
-        myTempArticles.add(new Article("", "مقالة عن التنمر", "الطب",c1.getTimeInMillis(),"تفاصيل طويلة عريضة",""));
-        myTempArticles.add(new Article("", "مقالة عن التوحد", "الطب",c2.getTimeInMillis(),"تفاصيل طويلة عريضة تاني",""));
-        myTempArticles.add(new Article("", "مقالة عن التخاطب", "ذووي الاحتياجات الخاصة",c3.getTimeInMillis(),"تفاصيل طويلة عريضة تالت انت لحقت تزهق",""));
+        //TODO
+//        myTempArticles.add(new Article("", "مقالة عن التنمر", "الطب",c1.getTimeInMillis(),"تفاصيل طويلة عريضة",""));
+//        myTempArticles.add(new Article("", "مقالة عن التوحد", "الطب",c2.getTimeInMillis(),"تفاصيل طويلة عريضة تاني",""));
+//        myTempArticles.add(new Article("", "مقالة عن التخاطب", "ذووي الاحتياجات الخاصة",c3.getTimeInMillis(),"تفاصيل طويلة عريضة تالت انت لحقت تزهق",""));
         return myTempArticles;
     }
 
@@ -236,7 +236,7 @@ public class OneAkhysaiFragment extends Fragment {
             if (akhysai_rating.getRating() < 0.5) {
                 Toast.makeText(context, "Choose rate first", Toast.LENGTH_SHORT).show();
             } else if (review.getEditText().getText().toString().trim().isEmpty()) {
-                review.setError("Can't be empty");
+                review.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 review.requestFocus();
                 open_keyboard(review.getEditText());
             } else {
@@ -245,11 +245,11 @@ public class OneAkhysaiFragment extends Fragment {
                 Review newReview = new Review(review.getEditText().getText().toString().trim(),
                         akhysai_rating.getRating(),
                         System.currentTimeMillis(),
-                        context.getSharedPreferences(MainActivity.shared_pref, Context.MODE_PRIVATE).getString(MainActivity.full_name, ""));
-                currentAkhysai.getReviews().add(newReview);
+                        context.getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString(full_name, ""));
+//                currentAkhysai.getReviews().add(newReview);
 
                 postReview(newReview);
-                reviewAdapter.notifyItemInserted(currentAkhysai.getReviews().size() - 1);
+//                reviewAdapter.notifyItemInserted(currentAkhysai.getReviews().size() - 1);
                 dialog.dismiss();
                 dialogHidden = true;
             }

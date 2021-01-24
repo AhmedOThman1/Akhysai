@@ -54,35 +54,35 @@ public class CallUsFragment extends Fragment {
         view.findViewById(R.id.send_message).setOnClickListener(v -> {
             if (name.getEditText().getText().toString().trim().isEmpty()) {
                 email.setError(null);
-                name.setError("Can't be empty");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (name.getEditText().getText().toString().trim().length() < 6) {
                 email.setError(null);
-                name.setError("can't be less than 6 characters");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_less_than_6));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (email.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
-                email.setError("Can't be empty");
+                email.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email.getEditText().getText().toString().trim()).matches()) {
                 name.setError(null);
-                email.setError("Enter valid email");
+                email.setError(requireActivity().getResources().getString(R.string.enter_valid_email));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (message_title.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
-                message_title.setError("Can't be empty");
+                message_title.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 message_title.requestFocus();
                 open_keyboard(message_title.getEditText());
             } else if (message_body.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 message_title.setError(null);
-                message_body.setError("Can't be empty");
+                message_body.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 message_body.requestFocus();
                 open_keyboard(message_body.getEditText());
             } else {

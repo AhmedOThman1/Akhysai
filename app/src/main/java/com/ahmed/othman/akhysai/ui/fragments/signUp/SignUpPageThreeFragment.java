@@ -1,58 +1,45 @@
 package com.ahmed.othman.akhysai.ui.fragments.signUp;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.CODE1_PERMISSION;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.CODE2_PERMISSION;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.GAL_CODE;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.GAL_CODE2;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.PDF_CODE;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.logged_in;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.shared_pref;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE1_PERMISSION;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE2_PERMISSION;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE2;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PDF_CODE;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
 
@@ -206,20 +193,20 @@ public class SignUpPageThreeFragment extends Fragment {
 
     private boolean akhysai_sign_up(View v) {
         if (years_of_experience.getEditText().getText().toString().trim().isEmpty()) {
-            years_of_experience.setError("Can't be empty");
+            years_of_experience.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             years_of_experience.requestFocus();
             open_keyboard(years_of_experience.getEditText());
             return false;
         } else if (id_card_number.getEditText().getText().toString().trim().isEmpty()) {
             years_of_experience.setError(null);
-            id_card_number.setError("Can't be empty");
+            id_card_number.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             id_card_number.requestFocus();
             open_keyboard(id_card_number.getEditText());
             return false;
         } else if (about_doctor.getEditText().getText().toString().trim().isEmpty()) {
             years_of_experience.setError(null);
             id_card_number.setError(null);
-            about_doctor.setError("Can't be empty");
+            about_doctor.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             about_doctor.requestFocus();
             open_keyboard(about_doctor.getEditText());
             return false;
@@ -247,7 +234,7 @@ public class SignUpPageThreeFragment extends Fragment {
             uploadSignUpData();
             requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
                     .putBoolean(logged_in, true)
-                    .putString("userType","Akhysia")
+                    .putString("userType", LauncherActivity.AKHYSAI)
                     .apply();
             updateNavDrawer(requireActivity());
             if (goTo.isEmpty())

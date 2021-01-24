@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Article;
 import com.ahmed.othman.akhysai.pojo.Clinic;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -57,7 +58,7 @@ public class ClinicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ViewHolder.clinic_item_company_name.setText(current_model.getCompany_name().contains(context.getResources().getString(R.string.company)) ? current_model.getCompany_name() : context.getResources().getString(R.string.company) + current_model.getCompany_name());
 
         Glide.with(context)
-                .load(current_model.getImage())
+                .load(LauncherActivity.ImagesLink+current_model.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.akhysai_logo)
                 .into(ViewHolder.clinic_item_image);

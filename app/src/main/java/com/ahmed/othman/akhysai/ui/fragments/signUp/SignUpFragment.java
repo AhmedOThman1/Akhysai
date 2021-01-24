@@ -1,6 +1,8 @@
 package com.ahmed.othman.akhysai.ui.fragments.signUp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -18,13 +20,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Locale;
+
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.close_loading_dialog;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.open_loading_dialog;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.userType;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
-public class SignUpPageOneFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
-    public SignUpPageOneFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -36,14 +49,15 @@ public class SignUpPageOneFragment extends Fragment {
     String phone = "", birthday = "", name_text = "", email_text = "", password_text = "";
     int city_index = 0, area_index = 0;
     boolean gender = true, HasPhone = false;
-
+    View view;
     String Type = "", sign_from;
-    private String goTo="";
+    private String goTo = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sign_up_page_one, container, false);
+        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         sign_up_first_card = view.findViewById(R.id.sign_up_first_card);
         name = view.findViewById(R.id.name);
@@ -64,7 +78,7 @@ public class SignUpPageOneFragment extends Fragment {
             Log.w("TypeSignUp1", "Type: " + Type);
 
             sign_from = arg.getString("sign_from");
-            goTo = arg.getString("goTo","");
+            goTo = arg.getString("goTo", "");
             Log.w("GOTO1", "goto: " + goTo);
             if (sign_from == null) {
                 //don't do any thing
@@ -102,37 +116,37 @@ public class SignUpPageOneFragment extends Fragment {
             if (name.getEditText().getText().toString().trim().isEmpty()) {
                 password.setError(null);
                 email.setError(null);
-                name.setError("Can't be empty");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (name.getEditText().getText().toString().trim().length() < 6) {
                 password.setError(null);
                 email.setError(null);
-                name.setError("can't be less than 6 characters");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_less_than_6));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (email.getVisibility() == View.VISIBLE && email.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 password.setError(null);
-                email.setError("Can't be empty");
+                email.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (email.getVisibility() == View.VISIBLE && !Patterns.EMAIL_ADDRESS.matcher(email.getEditText().getText().toString().trim()).matches()) {
                 name.setError(null);
                 password.setError(null);
-                email.setError("Enter valid email");
+                email.setError(requireActivity().getResources().getString(R.string.enter_valid_email));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (password.getVisibility() == View.VISIBLE && password.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
-                password.setError("Can't be empty");
+                password.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 password.requestFocus();
                 open_keyboard(password.getEditText());
             } else if (password.getVisibility() == View.VISIBLE && password.getEditText().getText().toString().trim().length() < 6) {
                 name.setError(null);
                 email.setError(null);
-                password.setError("can't be less than 6 characters");
+                password.setError(requireActivity().getResources().getString(R.string.can_not_be_less_than_6));
                 password.requestFocus();
                 open_keyboard(password.getEditText());
             } else {
@@ -141,24 +155,50 @@ public class SignUpPageOneFragment extends Fragment {
                 email.setError(null);
                 password.setError(null);
                 close_keyboard();
+                LauncherActivity.akhysaiViewModel.RegisterRequest(
+                        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
+                        name.getEditText().getText().toString().trim(),
+                        email.getEditText().getText().toString().trim(),
+                        password.getEditText().getText().toString().trim());
+                open_loading_dialog(requireContext(),getLayoutInflater());
+            }
 
+        });
+
+
+        LauncherActivity.akhysaiViewModel.RegisterCurrentUserToken.observe(requireActivity(), strings -> {
+            close_loading_dialog();
+            for (int i = 0; i < strings.size(); i++)
+                Log.w(i+": ",strings.get(i));
+            if (strings != null && strings.get(0) != null && strings.get(0).equals("success")) {
                 Bundle bundle = new Bundle();
                 bundle.putString("Type", Type);
                 bundle.putString("goTo", goTo);
-
-//                bundle.putString("name", name.getEditText().getText().toString().trim());
-//                bundle.putString("email", email.getEditText().getText().toString().trim());
-//                bundle.putString("password", password.getEditText().getText().toString().trim());
-//                bundle.putString("phone", phone);
-//                bundle.putString("birthday", birthday);
-//                bundle.putInt("city_index", city_index);
-//                bundle.putInt("area_index", area_index);
-//                bundle.putBoolean("gender", gender);
+                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean(logged_in, true)
+                        .putString(userType,Type)
+                        .putString(Token, strings.get(1))
+                        .apply();
+                Toast.makeText(getContext(), "Complete Your Profile", Toast.LENGTH_SHORT).show();
                 if (HasPhone)
                     bundle.putString("phone", phone);
-                Navigation.findNavController(v).navigate(R.id.action_signUpPageOneFragment_to_signUpPageTwoFragment, bundle);
+                Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(R.id.action_signUpFragment_to_completeProfileFragment, bundle);
+            } else if (strings != null && strings.get(0) != null && strings.get(0).equals("error")) {
+                if (strings.get(1).contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+//                            .setActionTextColor(Color.WHITE)
+                            .show();
+                else if(strings.size()>2&&strings.get(1).contains("Data validation error")){
+                    email.setError(strings.get(2));
+                    email.requestFocus();
+                    open_keyboard(email.getEditText());
+                }else{
+                    Toast.makeText(requireContext(), "" + strings.get(1) + "\n" + strings.get(2), Toast.LENGTH_SHORT).show();
+                    Log.w("ERROR", strings.get(1) + "\t" + strings.get(2));
+                }
             }
-
         });
 
         return view;

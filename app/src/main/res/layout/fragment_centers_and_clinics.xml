@@ -121,6 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layoutAnimation="@anim/layout_animation"
             app:layout_constraintTop_toBottomOf="@id/clinics_text"
             tools:listitem="@layout/one_clinic_item" />
 

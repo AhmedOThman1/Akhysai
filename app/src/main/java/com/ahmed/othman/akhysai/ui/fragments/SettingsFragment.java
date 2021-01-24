@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -27,10 +28,10 @@ import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.LanguageIso;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.setAppLocale;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.shared_pref;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
 public class SettingsFragment extends Fragment {
@@ -50,6 +51,38 @@ public class SettingsFragment extends Fragment {
 
         view.findViewById(R.id.language).setOnClickListener(v -> chooseLanguage());
         view.findViewById(R.id.language_text).setOnClickListener(v -> chooseLanguage());
+
+        String userType = requireActivity().getSharedPreferences(LauncherActivity.shared_pref, MODE_PRIVATE).getString("userType", "Patient");
+        if (userType.equalsIgnoreCase(LauncherActivity.PATIENT)) {
+            view.findViewById(R.id.profile).setVisibility(View.GONE);
+            view.findViewById(R.id.line0).setVisibility(View.GONE);
+        }
+
+        view.findViewById(R.id.profile).setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.specialties:
+                        Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_mySpecialtiesFragment);
+                        return true;
+                    case R.id.edit_profile:
+                        if (userType.equalsIgnoreCase(LauncherActivity.AKHYSAI))
+                            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_editAkhysaiDataFragment);
+                        else
+                            Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_editClinicFragment);
+                        return true;
+                    case R.id.change_password:
+
+                        return true;
+
+                    default:
+                        return false;
+                }
+            });
+            popupMenu.inflate(R.menu.profile_settings_menu);
+            popupMenu.getMenu().findItem(R.id.specialties).setVisible(userType.equalsIgnoreCase(LauncherActivity.AKHYSAI));
+            popupMenu.show();
+        });
 
         view.findViewById(R.id.about_us).setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_aboutUsFragment));
 

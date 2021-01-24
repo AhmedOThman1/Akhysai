@@ -22,20 +22,31 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.pojo.Region;
+import com.ahmed.othman.akhysai.ui.fragments.HomeFragment;
+import com.ahmed.othman.akhysai.ui.viewModels.AkhysaiViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.logged_in;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.shared_pref;
+import static android.content.Context.MODE_PRIVATE;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Cities;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
 
 public class SignUpPageTwoFragment extends Fragment {
 
@@ -47,7 +58,6 @@ public class SignUpPageTwoFragment extends Fragment {
     CardView sign_up_second_card;
     TextView sign_up;
     TextInputLayout phone, birthday;
-    ImageView back;
     Spinner city, area;
     RadioGroup genderRadio;
     RadioButton male, female;
@@ -62,16 +72,18 @@ public class SignUpPageTwoFragment extends Fragment {
     String Type = "";
     private String goTo = "";
 
+    AkhysaiViewModel akhysaiViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up_page_two, container, false);
 
+        akhysaiViewModel = ViewModelProviders.of(requireActivity()).get(AkhysaiViewModel.class);
+
 
         sign_up_second_card = view.findViewById(R.id.sign_up_second_card);
         sign_up = view.findViewById(R.id.sign_up);
-        back = view.findViewById(R.id.back);
         phone = view.findViewById(R.id.phone);
         birthday = view.findViewById(R.id.birthday);
         pick_birthday = view.findViewById(R.id.pick_birthday);
@@ -123,43 +135,28 @@ public class SignUpPageTwoFragment extends Fragment {
 
         Log.w("TypeSignUp3", "Type: " + Type);
 //        Toast.makeText(getContext(), "3"+Type, Toast.LENGTH_SHORT).show();
-        if (Type.equals("patient")) {
+        if (Type.equalsIgnoreCase("patient")) {
             birthday.setVisibility(View.VISIBLE);
             genderRadio.setVisibility(View.VISIBLE);
             sign_up.setText(getContext().getResources().getString(R.string.sign_up_button));
             page_num.setText("2 / 2");
-        } else if (Type.equals("akhysai")) {
+        } else if (Type.equalsIgnoreCase("akhysai")) {
             birthday.setVisibility(View.VISIBLE);
             genderRadio.setVisibility(View.VISIBLE);
             sign_up.setText(getContext().getResources().getString(R.string.next_button));
             page_num.setText("2 / 3");
-        } else if (Type.equals("clinic")) {
+        } else if (Type.equalsIgnoreCase("clinic")) {
             birthday.setVisibility(View.GONE);
             genderRadio.setVisibility(View.GONE);
             page_num.setText("2 / 2");
             sign_up.setText(getContext().getResources().getString(R.string.sign_up_button));
         }
-        back.setOnClickListener(v ->
-//                {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("name", name_text);
-//                    bundle.putString("email", email_text);
-//                    bundle.putString("password", password_text);
-//                    bundle.putString("phone", phone.getEditText().getText().toString().trim());
-//                    bundle.putString("birthday", birthday.getEditText().getText().toString().trim());
-//                    bundle.putInt("city_index", city_index);
-//                    bundle.putInt("area_index", area_index);
-//                    bundle.putBoolean("gender", male.isChecked());
-//                    Navigation.findNavController(v).navigate(R.id.action_patientSignUpPageTwoFragment_to_patientSignUpPageOneFragment,bundle);
-//                }
-                        requireActivity().onBackPressed()
 
-        );
 
         pick_birthday.setOnClickListener(v -> open_pick_birthday());
 
         sign_up.setOnClickListener(v -> {
-            if (Type.equals("patient") && patient_sign_up(v)) {
+            if (Type.equalsIgnoreCase("patient") && patient_sign_up(v)) {
                 requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
                         .putBoolean(logged_in, true)
                         .putString("userType", "Patient")
@@ -172,11 +169,11 @@ public class SignUpPageTwoFragment extends Fragment {
                 else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
                     Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
 
-            } else if (Type.equals("akhysai") && akhysai_sign_up(v)) {
+            } else if (Type.equalsIgnoreCase("akhysai") && akhysai_sign_up(v)) {
                 Bundle bundle = new Bundle();
                 bundle.putString("goTo", goTo);
                 Navigation.findNavController(v).navigate(R.id.action_signUpPageTwoFragment_to_signUpPageThreeFragment, bundle);
-            } else if (Type.equals("clinic") && clinic_sign_up(v)) {
+            } else if (Type.equalsIgnoreCase("clinic") && clinic_sign_up(v)) {
                 requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
                         .putBoolean(logged_in, true)
                         .putString("userType", "Clinic")
@@ -197,7 +194,7 @@ public class SignUpPageTwoFragment extends Fragment {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (phone.getEditText().getText().toString().trim().isEmpty()) {
                     birthday.setError(null);
-                    phone.setError("Can't be empty");
+                    phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                     phone.requestFocus();
                     open_keyboard(phone.getEditText());
                 } else if (phone.getEditText().getText().toString().trim().length() < 9) {
@@ -205,7 +202,7 @@ public class SignUpPageTwoFragment extends Fragment {
                     phone.setError("Enter valid phone number");
                     phone.requestFocus();
                     open_keyboard(phone.getEditText());
-                } else if (!Type.equals("clinic")) {
+                } else if (!Type.equalsIgnoreCase("clinic")) {
                     phone.setError(null);
                     open_pick_birthday();
                 }
@@ -215,7 +212,7 @@ public class SignUpPageTwoFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getContext().getResources().getStringArray(R.array.cities));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, CitiesString);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         city.setAdapter(adapter);
 
@@ -224,13 +221,7 @@ public class SignUpPageTwoFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 area.setVisibility(position > 0 ? View.VISIBLE : View.GONE);
                 if (position > 0) {
-                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                            position == 1 ? getContext().getResources().getStringArray(R.array.cairo) :
-                                    position == 2 ? getContext().getResources().getStringArray(R.array.giza) :
-                                            position == 3 ? getContext().getResources().getStringArray(R.array.alex) :
-                                                    getContext().getResources().getStringArray(R.array.mansoura));
-                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    area.setAdapter(adapter1);
+                    akhysaiViewModel.getAllRegionsByCityId(requireActivity().getSharedPreferences(shared_pref,MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),Cities.get(position-1).getCityId());
                 }
             }
 
@@ -240,13 +231,25 @@ public class SignUpPageTwoFragment extends Fragment {
             }
         });
 
+        akhysaiViewModel.regionsMutableLiveData.observe(requireActivity(), regions -> {
+            Regions = new ArrayList<>(regions);
+            RegionsString.clear();
+            RegionsString.add(requireActivity().getResources().getString(R.string.choose_region));
+            for (Region region : Regions)
+                RegionsString.add(region.getRegionName());
+
+            ArrayAdapter<String> area_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, RegionsString);
+            area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            area.setAdapter(area_adapter);
+        });
+
         return view;
     }
 
     private boolean patient_sign_up(View v) {
         if (phone.getEditText().getText().toString().trim().isEmpty()) {
             birthday.setError(null);
-            phone.setError("Can't be empty");
+            phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             phone.requestFocus();
             open_keyboard(phone.getEditText());
             return false;
@@ -258,7 +261,7 @@ public class SignUpPageTwoFragment extends Fragment {
             return false;
         } else if (birthday.getEditText().getText().toString().trim().isEmpty()) {
             phone.setError(null);
-            birthday.setError("Can't be empty");
+            birthday.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             open_pick_birthday();
             return false;
         } else if (city.getSelectedItemPosition() == 0) {
@@ -285,7 +288,7 @@ public class SignUpPageTwoFragment extends Fragment {
     private boolean akhysai_sign_up(View v) {
         if (phone.getEditText().getText().toString().trim().isEmpty()) {
             birthday.setError(null);
-            phone.setError("Can't be empty");
+            phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             phone.requestFocus();
             open_keyboard(phone.getEditText());
             return false;
@@ -297,7 +300,7 @@ public class SignUpPageTwoFragment extends Fragment {
             return false;
         } else if (birthday.getEditText().getText().toString().trim().isEmpty()) {
             phone.setError(null);
-            birthday.setError("Can't be empty");
+            birthday.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             open_pick_birthday();
             return false;
         } else if (city.getSelectedItemPosition() == 0) {
@@ -324,7 +327,7 @@ public class SignUpPageTwoFragment extends Fragment {
     private boolean clinic_sign_up(View v) {
         if (phone.getEditText().getText().toString().trim().isEmpty()) {
             birthday.setError(null);
-            phone.setError("Can't be empty");
+            phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
             phone.requestFocus();
             open_keyboard(phone.getEditText());
             return false;

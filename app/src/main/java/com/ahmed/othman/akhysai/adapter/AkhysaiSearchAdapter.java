@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -51,44 +52,41 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
         Glide.with(context)
-                .load(current_model.getPhoto())
+                .load(LauncherActivity.ImagesLink+current_model.getProfile_picture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.doctor_img2)
                 .into(ViewHolder.akhysai_image);
 
         ViewHolder.akhysai_name.setText(current_model.getName());
 
-        ViewHolder.akhysai_description.setText(current_model.getDescription());
+//        ViewHolder.akhysai_description.setText(current_model.getDescription());
 
-        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + current_model.getExperience_years() + context.getResources().getString(R.string.years);
+        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + current_model.getExperienceYears() + context.getResources().getString(R.string.years);
         ViewHolder.akhysai_years_of_experience.setText(temp);
 
-        ViewHolder.akhysai_rating.setRating(current_model.getRate());
+//        ViewHolder.akhysai_rating.setRating(current_model.getRate());
         ViewHolder.akhysai_rating.setIsIndicator(true);
 
-        temp = context.getResources().getString(R.string.this_rate_from) + current_model.getVisitor_num() + context.getResources().getString(R.string.visitor);
-        ViewHolder.visitors_rate_num.setText(temp);
+//        temp = context.getResources().getString(R.string.this_rate_from) + current_model.getVisitor_num() + context.getResources().getString(R.string.visitor);
+//        ViewHolder.visitors_rate_num.setText(temp);
 
-        temp = context.getResources().getString(R.string.session_price) + current_model.getPrice() + context.getResources().getString(R.string.egp);
-        ViewHolder.akhysai_price.setText(temp);
+//        temp = context.getResources().getString(R.string.session_price) + current_model.getPrice() + context.getResources().getString(R.string.egp);
+//        ViewHolder.akhysai_price.setText(temp);
 
         ViewHolder.open_profile.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
             Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment, bundle);
         });
 
         ViewHolder.book_akhysai.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
             Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_bookOneAkhysaiFragment, bundle);
         });
 
         ViewHolder.itemView.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("id", Models.get(position).getAkhysai_id());
             bundle.putString("akhysai", new Gson().toJson(Models.get(position)));
             Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_oneAkhysaiFragment, bundle);
         });

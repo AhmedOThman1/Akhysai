@@ -65,19 +65,45 @@
                     android:layout_marginEnd="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    android:text="@string/language_name"
                     android:textColor="@color/black2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/settings_title"
-                    android:text="@string/language_name" />
+                    app:layout_constraintTop_toBottomOf="@id/settings_title" />
+
+                <View
+                    android:id="@+id/line0"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#DDD"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/language" />
+
+
+                <TextView
+                    android:id="@+id/profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:text="@string/profile"
+                    android:textColor="@color/black2"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line0" />
+
 
                 <View
                     android:id="@+id/line1"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black2"
+                    android:background="#DDD"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/language" />
+                    app:layout_constraintTop_toBottomOf="@id/profile" />
 
                 <TextView
                     android:id="@+id/about_us"
@@ -98,7 +124,7 @@
                     android:id="@+id/line2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black2"
+                    android:background="#DDD"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/about_us" />
@@ -122,7 +148,7 @@
                     android:id="@+id/line3"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black2"
+                    android:background="#DDD"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/terms_and_conditions" />
@@ -147,7 +173,7 @@
                     android:id="@+id/line4"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black2"
+                    android:background="#DDD"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/privacy_policy" />
@@ -172,7 +198,7 @@
                     android:id="@+id/line5"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/black2"
+                    android:background="#DDD"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/contact_us" />

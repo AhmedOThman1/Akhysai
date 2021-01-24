@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.fragments.AboutUsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <com.shuhart.stepview.StepView
+            android:id="@+id/step_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sv_stepsNumber="3"
+            android:padding="16dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sv_selectedCircleColor="@color/colorPrimary"
+            app:sv_selectedTextColor="@color/colorPrimary"
+            app:sv_stepLineWidth="1dp"
+            app:sv_stepPadding="4dp"
+            app:sv_nextTextColor="@color/colorPrimary"
+            app:sv_nextStepLineColor="@color/colorAccent"
+            app:sv_doneCircleColor="@color/colorAccent"
+            app:sv_doneStepLineColor="@color/colorPrimary"
+            app:sv_doneCircleRadius="12dp"
+            app:sv_selectedCircleRadius="12dp"
+            app:sv_selectedStepNumberColor="@color/white"
+            app:sv_stepViewStyle="@style/StepView"
+            app:sv_doneStepMarkColor="@color/colorPrimary"
+            app:sv_stepNumberTextSize="12sp"
+            app:sv_animationType="All"/>
+
+        <fragment
+            android:id="@+id/frame_stepper"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/step_view"
+            app:navGraph="@navigation/complete_profile_nav_graph" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

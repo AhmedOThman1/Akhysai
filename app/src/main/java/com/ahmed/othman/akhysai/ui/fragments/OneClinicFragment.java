@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Article;
 import com.ahmed.othman.akhysai.pojo.Clinic;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -62,7 +63,7 @@ public class OneClinicFragment extends Fragment {
 
 
         Glide.with(context)
-                .load(currentClinic.getImage())
+                .load(LauncherActivity.ImagesLink+currentClinic.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.akhysai_logo)
                 .into(clinic_item_image);

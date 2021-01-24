@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.fragments.signUp.SignUpPageOneFragment">
+    tools:context=".ui.fragments.signUp.SignUpFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
-                    android:hint="@string/write_few_lines_about_yourself"
+                    android:hint="@string/write_few_lines_about_yourself_in_en"
                     app:counterEnabled="true"
                     app:counterMaxLength="200"
                     app:errorEnabled="true"

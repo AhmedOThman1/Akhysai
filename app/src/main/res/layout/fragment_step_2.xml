@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sign_up_second_card"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:contentPaddingBottom="32dp"
+        app:contentPaddingRight="16dp"
+        app:contentPaddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:hint="@string/phone_number_hint"
+                android:id="@+id/phone"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_width="0dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:hint="@string/birthday_hint"
+                android:id="@+id/birthday"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/pick_birthday"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/birthday"
+                app:layout_constraintEnd_toEndOf="@id/birthday"
+                app:layout_constraintStart_toStartOf="@id/birthday"
+                app:layout_constraintTop_toTopOf="@id/birthday" />
+
+            <View
+                android:id="@+id/center_view"
+                android:layout_height="1dp"
+                android:layout_width="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:background="@drawable/background_spinner"
+                android:id="@+id/city"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/birthday" />
+
+            <Spinner
+                android:background="@drawable/background_spinner"
+                android:id="@+id/area"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <RadioGroup
+                android:id="@+id/gender"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/area">
+
+                <RadioButton
+                    android:checked="true"
+                    android:id="@+id/male"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:id="@+id/temp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:text="@string/male"
+                    android:visibility="invisible" />
+
+                <RadioButton
+                    android:gravity="center"
+                    android:id="@+id/female"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:text="@string/female" />
+
+            </RadioGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:background="@drawable/background_login"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:id="@+id/sign_up"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/sign_up_button"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/sign_up_second_card"
+        app:layout_constraintEnd_toEndOf="@id/sign_up_second_card"
+        app:layout_constraintStart_toStartOf="@id/sign_up_second_card"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_second_card" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

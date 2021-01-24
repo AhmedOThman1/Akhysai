@@ -38,7 +38,7 @@ public class ConfirmDateFragment extends Fragment {
     TextView are_you_sure_question_text;
     FirebaseUser currentUser;
     Akhysai currentAkhysai = new Akhysai();
-    AvailableDate date = new AvailableDate();
+    AvailableDate date ;
     long start_time, end_time;
     Calendar start = Calendar.getInstance(), end = Calendar.getInstance();
 
@@ -67,8 +67,8 @@ public class ConfirmDateFragment extends Fragment {
             json = args.getString("date", "");
             if (!json.trim().isEmpty()) {
                 date = new Gson().fromJson(json, AvailableDate.class);
-                start_time = date.getStart_time();
-                end_time = date.getEnd_time();
+//                start_time = date.getStart_time();
+//                end_time = date.getEnd_time();
 
                 start.setTimeInMillis(start_time);
                 end.setTimeInMillis(end_time);
@@ -107,7 +107,7 @@ public class ConfirmDateFragment extends Fragment {
         view.findViewById(R.id.yes_send).setOnClickListener(v -> {
             if (phone.getEditText().getText().toString().trim().isEmpty()) {
                 address.setError(null);
-                phone.setError("Can't be empty");
+                phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 phone.requestFocus();
                 open_keyboard(phone.getEditText());
             } else if (phone.getEditText().getText().toString().trim().length() < 9) {
@@ -117,7 +117,7 @@ public class ConfirmDateFragment extends Fragment {
                 open_keyboard(phone.getEditText());
             } else if (address.getEditText().getText().toString().trim().isEmpty()) {
                 phone.setError(null);
-                address.setError("Can't be empty");
+                address.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 address.requestFocus();
                 open_keyboard(address.getEditText());
             } else {
@@ -139,7 +139,7 @@ public class ConfirmDateFragment extends Fragment {
         return view;
     }
 
-    private void sendOrderRequest(String uid, String akhysai_id, long currentTimeMillis, String phone, String address, String notes, long start_time, long end_time) {
+    private void sendOrderRequest(String uid, int akhysai_id, long currentTimeMillis, String phone, String address, String notes, long start_time, long end_time) {
 
         Toast.makeText(requireContext(), "Successfully sent", Toast.LENGTH_SHORT).show();
     }

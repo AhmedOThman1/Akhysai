@@ -60,7 +60,7 @@ public class PhoneAuthFragment extends Fragment {
         view.findViewById(R.id.back).setOnClickListener(v -> requireActivity().onBackPressed());
         view.findViewById(R.id.login_with_phone).setOnClickListener(v -> {
             if (phone_number.getEditText().getText().toString().trim().isEmpty()) {
-                phone_number.setError("Can't be empty");
+                phone_number.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 phone_number.requestFocus();
                 open_keyboard(phone_number.getEditText());
             } else if (phone_number.getEditText().getText().toString().trim().length() < 9) {

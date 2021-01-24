@@ -11,10 +11,10 @@
             android:icon="@drawable/nav_home"
             android:title="@string/home" />
 
-        <item
-            android:id="@+id/nav_edit_clinic_profile"
-            android:icon="@drawable/nav_join_us"
-            android:title="@string/nav_edit_akhysai_profile" />
+<!--        <item-->
+<!--            android:id="@+id/nav_edit_clinic_profile"-->
+<!--            android:icon="@drawable/nav_join_us"-->
+<!--            android:title="@string/nav_edit_akhysai_profile" />-->
 
 
         <item
@@ -22,15 +22,15 @@
             android:title="@string/booking_requests"
             android:icon="@drawable/ic_booking"/>
 
-        <item
-            android:id="@+id/nav_edit_akhysai_profile"
-            android:icon="@drawable/nav_join_us"
-            android:title="@string/nav_edit_akhysai_profile" />
+<!--        <item-->
+<!--            android:id="@+id/nav_edit_akhysai_profile"-->
+<!--            android:icon="@drawable/nav_join_us"-->
+<!--            android:title="@string/nav_edit_akhysai_profile" />-->
 
-        <item
-            android:id="@+id/nav_my_specialty"
-            android:icon="@drawable/ic_specialties"
-            android:title="@string/nav_my_specialties" />
+<!--        <item-->
+<!--            android:id="@+id/nav_my_specialty"-->
+<!--            android:icon="@drawable/ic_specialties"-->
+<!--            android:title="@string/nav_my_specialties" />-->
 
 
         <item
@@ -38,10 +38,10 @@
             android:icon="@drawable/ic_available_dates"
             android:title="@string/my_available_dates" />
 
-        <item
-            android:id="@+id/nav_create_article"
-            android:icon="@drawable/ic_add_article"
-            android:title="@string/nav_create_article" />
+<!--        <item-->
+<!--            android:id="@+id/nav_create_article"-->
+<!--            android:icon="@drawable/ic_add_article"-->
+<!--            android:title="@string/nav_create_article" />-->
 
 
         <item

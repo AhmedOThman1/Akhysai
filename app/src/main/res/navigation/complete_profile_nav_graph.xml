@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/complete_profile_nav_graph"
+    app:startDestination="@id/step1Fragment">
+
+    <fragment
+        android:id="@+id/step1Fragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.completeProfile.steps.Step1Fragment"
+        android:label="Step1Fragment"
+        tools:layout="@layout/fragment_step_1">
+        <action
+            android:id="@+id/action_step1Fragment_to_step2Fragment"
+            app:destination="@id/step2Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/step2Fragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.completeProfile.steps.Step2Fragment"
+        android:label="Step2Fragment"
+        tools:layout="@layout/fragment_step_2">
+        <action
+            android:id="@+id/action_step2Fragment_to_step3Fragment"
+            app:destination="@id/step3Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/step3Fragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.completeProfile.steps.Step3Fragment"
+        android:label="Step3Fragment"
+        tools:layout="@layout/fragment_step_3" />
+
+</navigation>

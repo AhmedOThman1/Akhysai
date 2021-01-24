@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/step1Fragment"
+        android:title="@string/complete_profile_step_1" />
+
+    <item android:id="@+id/step2Fragment"
+        android:title="@string/complete_profile_step_2" />
+
+    <item android:id="@+id/step3Fragment"
+        android:title="@string/complete_profile_step_3" />
+
+</menu>

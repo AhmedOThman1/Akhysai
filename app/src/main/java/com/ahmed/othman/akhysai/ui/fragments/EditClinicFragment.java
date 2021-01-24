@@ -32,9 +32,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.CODE2_PERMISSION;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.GAL_CODE2;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE2_PERMISSION;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.DirectoryCategoriesString;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE2;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
 
 public class EditClinicFragment extends Fragment {
 
@@ -48,10 +51,6 @@ public class EditClinicFragment extends Fragment {
 
     Uri ImageUri;
 
-    List<String> Categories = new ArrayList<>();
-    List<String> Cities = new ArrayList<>();
-    List<String> Areas = new ArrayList<>();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class EditClinicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_clinic_data, container, false);
 
         toolbar.setVisibility(View.VISIBLE);
-        initSpinners();
 
         clinic_image = view.findViewById(R.id.clinic_image);
         name = view.findViewById(R.id.name);
@@ -85,61 +83,61 @@ public class EditClinicFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Cities);
+        ArrayAdapter<String> city_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, CitiesString);
         city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         city.setAdapter(city_adapter);
 
-        ArrayAdapter<String> area_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Areas);
+        ArrayAdapter<String> area_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, RegionsString);
         area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         area.setAdapter(area_adapter);
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Categories);
-        field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        clinic_category.setAdapter(field_adapter);
+        ArrayAdapter<String> category_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, DirectoryCategoriesString);
+        category_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        clinic_category.setAdapter(category_adapter);
 
 
         view.findViewById(R.id.edit_clinic).setOnClickListener(v -> {
             if (name.getEditText().getText().toString().trim().isEmpty()) {
                 password.setError(null);
                 email.setError(null);
-                name.setError("Can't be empty");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (name.getEditText().getText().toString().trim().length() < 6) {
                 password.setError(null);
                 email.setError(null);
-                name.setError("can't be less than 6 characters");
+                name.setError(requireActivity().getResources().getString(R.string.can_not_be_less_than_6));
                 name.requestFocus();
                 open_keyboard(name.getEditText());
             } else if (email.getVisibility() == View.VISIBLE && email.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 password.setError(null);
-                email.setError("Can't be empty");
+                email.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (email.getVisibility() == View.VISIBLE && !Patterns.EMAIL_ADDRESS.matcher(email.getEditText().getText().toString().trim()).matches()) {
                 name.setError(null);
                 password.setError(null);
-                email.setError("Enter valid email");
+                email.setError(requireActivity().getResources().getString(R.string.enter_valid_email));
                 email.requestFocus();
                 open_keyboard(email.getEditText());
             } else if (password.getVisibility() == View.VISIBLE && password.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
-                password.setError("Can't be empty");
+                password.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 password.requestFocus();
                 open_keyboard(password.getEditText());
             } else if (password.getVisibility() == View.VISIBLE && password.getEditText().getText().toString().trim().length() < 6) {
                 name.setError(null);
                 email.setError(null);
-                password.setError("can't be less than 6 characters");
+                password.setError(requireActivity().getResources().getString(R.string.can_not_be_less_than_6));
                 password.requestFocus();
                 open_keyboard(password.getEditText());
             } else if (company_name.getEditText().getText().toString().trim().isEmpty()) {
                 name.setError(null);
                 email.setError(null);
                 password.setError(null);
-                company_name.setError("Can't be empty");
+                company_name.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 company_name.requestFocus();
                 open_keyboard(company_name.getEditText());
             } else if (phone.getEditText().getText().toString().trim().isEmpty()) {
@@ -147,7 +145,7 @@ public class EditClinicFragment extends Fragment {
                 email.setError(null);
                 password.setError(null);
                 company_name.setError(null);
-                phone.setError("Can't be empty");
+                phone.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 phone.requestFocus();
                 open_keyboard(phone.getEditText());
             } else if (phone.getEditText().getText().toString().trim().length() < 9) {
@@ -164,7 +162,7 @@ public class EditClinicFragment extends Fragment {
                 password.setError(null);
                 company_name.setError(null);
                 phone.setError(null);
-                website.setError("Can't be empty");
+                website.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 website.requestFocus();
                 open_keyboard(website.getEditText());
             } else if (clinic_category.getSelectedItemPosition() == 0) {
@@ -203,7 +201,7 @@ public class EditClinicFragment extends Fragment {
                 clinic_category.setBackgroundResource(R.drawable.background_spinner);
                 city.setBackgroundResource(R.drawable.background_spinner);
                 area.setBackgroundResource(R.drawable.background_spinner);
-                clinic_details.setError("Can't be empty");
+                clinic_details.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 clinic_details.requestFocus();
                 open_keyboard(clinic_details.getEditText());
             } else if (ImageUri == null) {
@@ -232,12 +230,12 @@ public class EditClinicFragment extends Fragment {
                 clinic_image.setBorderWidth((float) 0);
                 Clinic clinic = new Clinic(String.valueOf(ImageUri),
                         name.getEditText().getText().toString().trim(),
-                        Categories.get(clinic_category.getSelectedItemPosition()),
+                        DirectoryCategoriesString.get(clinic_category.getSelectedItemPosition()),
                         phone.getEditText().getText().toString().trim(),
                         website.getEditText().getText().toString().trim(),
                         "", "",
-                        Cities.get(city.getSelectedItemPosition()),
-                        Areas.get(area.getSelectedItemPosition())
+                        CitiesString.get(city.getSelectedItemPosition()),
+                        RegionsString.get(area.getSelectedItemPosition())
                 );
                 postEditClinicData(clinic);
             }
@@ -246,12 +244,6 @@ public class EditClinicFragment extends Fragment {
         return view;
     }
 
-
-    private void initSpinners() {
-        Cities = Arrays.asList(getContext().getResources().getStringArray(R.array.cities));
-        Areas = Arrays.asList(getContext().getResources().getStringArray(R.array.cairo));
-        Categories = Arrays.asList(getContext().getResources().getStringArray(R.array.category));
-    }
 
     private void postEditClinicData(Clinic clinic) {
         Toast.makeText(requireContext(), "Your data has been changed successfully", Toast.LENGTH_SHORT).show();

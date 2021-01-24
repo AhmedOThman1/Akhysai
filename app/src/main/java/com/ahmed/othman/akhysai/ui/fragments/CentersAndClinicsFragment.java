@@ -25,6 +25,7 @@ import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.RecyclerViewTouchListener;
 import com.ahmed.othman.akhysai.adapter.ClinicAdapter;
 import com.ahmed.othman.akhysai.pojo.Clinic;
+import com.ahmed.othman.akhysai.pojo.DirectoryCategories;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
@@ -34,6 +35,7 @@ import java.util.List;
 
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.DirectoryCategoriesString;
 
 
 public class CentersAndClinicsFragment extends Fragment {
@@ -46,7 +48,6 @@ public class CentersAndClinicsFragment extends Fragment {
     Spinner search_category;
     RecyclerView clinics_recycler;
     ArrayList<Clinic> ClinicsArray = new ArrayList<>();
-    List<String> Categories = new ArrayList<>();
     TextView clinics_text;
     NestedScrollView nested_scroll;
     ConstraintLayout no_result, no_internet;
@@ -57,7 +58,6 @@ public class CentersAndClinicsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_centers_and_clinics, container, false);
-        getClinicsCategories();
         search = view.findViewById(R.id.search);
         search_category = view.findViewById(R.id.search_category);
 
@@ -94,14 +94,14 @@ public class CentersAndClinicsFragment extends Fragment {
         }));
 
 
-        ArrayAdapter<String> field_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Categories);
-        field_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        search_category.setAdapter(field_adapter);
+        ArrayAdapter<String> category_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, DirectoryCategoriesString);
+        category_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        search_category.setAdapter(category_adapter);
 
 
         view.findViewById(R.id.clinic_search_button).setOnClickListener(v -> {
             if (search.getEditText().getText().toString().trim().isEmpty()) {
-                search.setError("Can't be empty");
+                search.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 search.requestFocus();
                 open_keyboard(search.getEditText());
             } else if (search_category.getSelectedItemPosition() == 0) {
@@ -113,7 +113,7 @@ public class CentersAndClinicsFragment extends Fragment {
                 search.setError(null);
                 search_category.setBackgroundResource(R.drawable.background_spinner);
                 nested_scroll.smoothScrollTo(0, clinics_text.getTop());
-                ClinicsArray = getClinicsByTitle(search.getEditText().getText().toString().trim(), Categories.get(search_category.getSelectedItemPosition()));
+                ClinicsArray = getClinicsByTitle(search.getEditText().getText().toString().trim(), DirectoryCategoriesString.get(search_category.getSelectedItemPosition()));
             }
         });
 
@@ -121,10 +121,6 @@ public class CentersAndClinicsFragment extends Fragment {
         return view;
     }
 
-
-    private void getClinicsCategories() {
-        Categories = Arrays.asList(requireContext().getResources().getStringArray(R.array.category));
-    }
 
     private ArrayList<Clinic> getAllClinics() {
         ArrayList<Clinic> tempClinics = new ArrayList<>();

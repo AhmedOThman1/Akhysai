@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@color/white"
+    app:cardCornerRadius="15dp"
+    app:contentPadding="18dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/akhysai_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:background="#e7e7e7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/akhysai_name"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#e7e7e7"
+            android:text="أحمد عثمان"
+            android:textColor="#e7e7e7"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_image" />
+
+        <TextView
+            android:id="@+id/akhysai_description"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#e7e7e7"
+            android:text="طبيب جراح قلوب الناس اداويها"
+            android:textColor="#e7e7e7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_name" />
+
+
+        <TextView
+            android:id="@+id/akhysai_years_of_experience"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#e7e7e7"
+            android:text="سنين الخبرة: 5 سنين"
+            android:textColor="#e7e7e7"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_description" />
+
+        <RatingBar
+            android:id="@+id/akhysai_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:theme="@style/RatingBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_years_of_experience"
+            tools:rating="0" />
+
+        <TextView
+            android:id="@+id/visitors_rate_num"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:background="#e7e7e7"
+            android:text="هذا التقييم من 18 زائر"
+            android:textColor="#e7e7e7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_rating" />
+
+        <TextView
+            android:id="@+id/akhysai_price"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#e7e7e7"
+            android:text="سعر الجلسة (600 جنيه)"
+            android:textColor="#e7e7e7"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/visitors_rate_num" />
+
+        <TextView
+            android:id="@+id/open_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/background_shimmer"
+            android:gravity="center"
+            android:paddingStart="56dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="56dp"
+            android:paddingBottom="10dp"
+            android:text="@string/profile"
+            android:textAllCaps="false"
+            android:textColor="#e7e7e7"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/akhysai_price" />
+
+        <TextView
+            android:id="@+id/book_akhysai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/background_shimmer"
+            android:gravity="center"
+            android:paddingStart="56dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="56dp"
+            android:paddingBottom="10dp"
+            android:text="@string/akhysai_book"
+            android:textAllCaps="false"
+            android:textColor="#e7e7e7"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/open_profile" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

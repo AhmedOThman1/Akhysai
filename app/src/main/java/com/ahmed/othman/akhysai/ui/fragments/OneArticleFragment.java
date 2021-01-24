@@ -6,22 +6,21 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.pojo.Article;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.util.Calendar;
 
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
@@ -38,7 +37,7 @@ public class OneArticleFragment extends Fragment {
     Article article = new Article();
     Context context;
     Akhysai Article_writer;
-    boolean fromAkhysiaProfile = false;
+    boolean fromAkhysaiProfile = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,34 +58,32 @@ public class OneArticleFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            fromAkhysiaProfile = args.getBoolean("from_akhysai_profile", false);
+            fromAkhysaiProfile = args.getBoolean("from_akhysai_profile", false);
             String json = args.getString("article", "");
             Log.w("JSON_ARTICLE", json + "");
             if (!json.trim().isEmpty()) {
                 article = new Gson().fromJson(json, Article.class);
-                Article_writer = getArticleWriterData(article.getArticle_writer_id());
+//                Article_writer = getArticleWriterData(article.getSpecialistId());
             }
         }
 
 
         Glide.with(context)
-                .load(article.getImage())
+                .load(LauncherActivity.ImagesLink+article.getPicture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.akhysai_logo)
                 .into(article_item_image);
 
         article_item_title.setText(article.getTitle());
 
-        article_item_category.setText(article.getCategory().contains(context.getResources().getString(R.string.category)) ? article.getCategory() : context.getResources().getString(R.string.category) + article.getCategory());
+        article_item_category.setText( context.getResources().getString(R.string.category) + getCategoryNameById(article.getCategoryId()));
 
-        article_item_body.setText(article.getBody());
+        article_item_body.setText(Html.fromHtml(article.getBody()));
 
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(article.getDate());
-        article_item_time.setText(c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH));
+        article_item_time.setText(article.getCreatedAt());
 
         Glide.with(context)
-                .load(Article_writer.getPhoto())
+                .load(LauncherActivity.ImagesLink+Article_writer.getProfile_picture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.doctor_img2)
                 .into(article_writer_image);
@@ -94,7 +91,7 @@ public class OneArticleFragment extends Fragment {
         article_writer_name.setText(String.valueOf(Article_writer.getName()));
 
         view.findViewById(R.id.writer_card).setOnClickListener(v -> {
-            if (fromAkhysiaProfile)
+            if (fromAkhysaiProfile)
                 requireActivity().onBackPressed();
             else {
                 Bundle bundle = new Bundle();
@@ -106,9 +103,17 @@ public class OneArticleFragment extends Fragment {
         return view;
     }
 
-    private Akhysai getArticleWriterData(String article_writer_id) {
-
-        //TODO delete this
-        return new Akhysai("", "احمد عثمان", "طبيب جراح قلوب الناس اداويها", "محاضر معتمد من نقابة الاطباء\n دبلوم تجميل و ليزر و دبلومة مكافحة عدوي جودة", 6, (float) 4.5, 42, 620);
+    private String getCategoryNameById(String Id){
+        for (int i = 0; i < LauncherActivity.BlogCategories.size(); i++) {
+            if(String.valueOf(LauncherActivity.BlogCategories.get(i).getId()).equalsIgnoreCase(Id))
+                return LauncherActivity.BlogCategories.get(i).getName();
+        }
+        return "";
     }
+
+//    private Akhysai getArticleWriterData(String article_writer_id) {
+//
+//        //TODO delete this
+//        return new Akhysai("", "احمد عثمان", "طبيب جراح قلوب الناس اداويها", "محاضر معتمد من نقابة الاطباء\n دبلوم تجميل و ليزر و دبلومة مكافحة عدوي جودة", 6, (float) 4.5, 42, 620);
+//    }
 }

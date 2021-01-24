@@ -122,12 +122,12 @@ public class MyAvailableDatesFragment extends Fragment {
                 Toast.makeText(requireContext(), "Choose day first", Toast.LENGTH_SHORT).show();
             } else if (start_time_text.getEditText().getText().toString().trim().isEmpty()) {
                 days_spinner.setBackgroundResource(R.drawable.background_spinner);
-                start_time_text.setError("Can't be empty");
+                start_time_text.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 choice_start_time();
             } else if (end_time_text.getEditText().getText().toString().trim().isEmpty()) {
                 days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError(null);
-                end_time_text.setError("Can't be empty");
+                end_time_text.setError(requireActivity().getResources().getString(R.string.can_not_be_empty));
                 choice_end_time();
             } else if (end_calendar.before(start_calendar)) {
                 days_spinner.setBackgroundResource(R.drawable.background_spinner);
@@ -138,8 +138,8 @@ public class MyAvailableDatesFragment extends Fragment {
                 days_spinner.setBackgroundResource(R.drawable.background_spinner);
                 start_time_text.setError(null);
                 end_time_text.setError(null);
-                AvailableDate newAvailableDate = new AvailableDate(start_calendar.getTimeInMillis(), end_calendar.getTimeInMillis());
-                availableDates.add(newAvailableDate);
+//                AvailableDate newAvailableDate = new AvailableDate(start_calendar.getTimeInMillis(), end_calendar.getTimeInMillis());
+//                availableDates.add(newAvailableDate);
                 updateAvailableDatesByAkhysaiId(availableDates);
                 days_spinner.setSelection(0);
                 start_time_text.getEditText().setText("");
@@ -185,41 +185,41 @@ public class MyAvailableDatesFragment extends Fragment {
     private ArrayList<AvailableDate> getAvailableDatesByAkhysaiID(String akhysai_id) {
         ArrayList<AvailableDate> tempAvailableDates = new ArrayList<>();
 
-        Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
-        c2.add(Calendar.HOUR, 1);
-        c2.add(Calendar.MINUTE, 30);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-        c.add(Calendar.HOUR, 4);
-        c2.add(Calendar.HOUR, 4);
-        c2.add(Calendar.MINUTE, 30);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        c2.add(Calendar.DAY_OF_MONTH, 1);
-        c.add(Calendar.HOUR, 1);
-        c2.add(Calendar.HOUR, 1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        c2.add(Calendar.DAY_OF_MONTH, 1);
-        c.add(Calendar.HOUR, 1);
-        c2.add(Calendar.HOUR, 1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-        c.add(Calendar.HOUR, 1);
-        c2.add(Calendar.HOUR, 1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-        c.add(Calendar.HOUR, 1);
-        c2.add(Calendar.HOUR, 1);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        c2.add(Calendar.DAY_OF_MONTH, 1);
-        c.add(Calendar.HOUR, 2);
-        c2.add(Calendar.HOUR, 2);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
-        c.add(Calendar.HOUR, 1);
-        c2.add(Calendar.HOUR, 2);
-        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//        Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
+//        c2.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.MINUTE, 30);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//        c.add(Calendar.HOUR, 4);
+//        c2.add(Calendar.HOUR, 4);
+//        c2.add(Calendar.MINUTE, 30);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//
+//        c.add(Calendar.DAY_OF_MONTH, 1);
+//        c2.add(Calendar.DAY_OF_MONTH, 1);
+//        c.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.HOUR, 1);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//
+//        c.add(Calendar.DAY_OF_MONTH, 1);
+//        c2.add(Calendar.DAY_OF_MONTH, 1);
+//        c.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.HOUR, 1);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//        c.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.HOUR, 1);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//        c.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.HOUR, 1);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//
+//        c.add(Calendar.DAY_OF_MONTH, 1);
+//        c2.add(Calendar.DAY_OF_MONTH, 1);
+//        c.add(Calendar.HOUR, 2);
+//        c2.add(Calendar.HOUR, 2);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
+//        c.add(Calendar.HOUR, 1);
+//        c2.add(Calendar.HOUR, 2);
+//        tempAvailableDates.add(new AvailableDate(c.getTimeInMillis(), c2.getTimeInMillis()));
 
         return tempAvailableDates;
     }
@@ -237,8 +237,8 @@ public class MyAvailableDatesFragment extends Fragment {
 
         for (AvailableDate date : availableDates) {
             Calendar start_time = Calendar.getInstance(), end_time = Calendar.getInstance();
-            start_time.setTimeInMillis(date.getStart_time());
-            end_time.setTimeInMillis(date.getEnd_time());
+//            start_time.setTimeInMillis(date.getStart_time());
+//            end_time.setTimeInMillis(date.getEnd_time());
 
             String title = (start_time.get(Calendar.HOUR) == 0 ? "12" : start_time.get(Calendar.HOUR))
                     + ":" + (start_time.get(Calendar.MINUTE) < 10 ? "0" + start_time.get(Calendar.MINUTE) : start_time.get(Calendar.MINUTE))

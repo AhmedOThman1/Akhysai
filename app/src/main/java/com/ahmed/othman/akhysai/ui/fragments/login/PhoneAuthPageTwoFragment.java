@@ -29,8 +29,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.logged_in;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.shared_pref;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
 
@@ -208,6 +208,8 @@ public class PhoneAuthPageTwoFragment extends Fragment {
                         {
                             requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
                             updateNavDrawer(requireActivity());
+
+                            //TODO if(profileComplete==false) nav to completeProfile fragment
                             if (goTo.isEmpty())
                                 Navigation.findNavController(view).navigate(R.id.action_phoneAuthPageTwoFragment_to_homeFragment);
                             else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))

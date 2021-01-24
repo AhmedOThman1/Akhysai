@@ -1,30 +1,74 @@
 package com.ahmed.othman.akhysai.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AvailableDate {
-    private long start_time;
-    private long end_time;
 
-    public AvailableDate() {
+    private String id;
+    @SerializedName("specialist_id")
+    private String specialistId;
+    private String day;
+    @SerializedName("start_time")
+    private String startTime;
+    @SerializedName("end_time")
+    private String endTime;
+    @SerializedName("is_active")
+    private String isActive;
+
+    public AvailableDate(String id, String specialistId, String day, String startTime, String endTime, String isActive) {
+        this.id = id;
+        this.specialistId = specialistId;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isActive = isActive;
     }
 
-    public AvailableDate(long start_time, long end_time) {
-        this.start_time = start_time;
-        this.end_time = end_time;
+    public String getId() {
+        return id;
     }
 
-    public long getStart_time() {
-        return start_time;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setStart_time(long start_time) {
-        this.start_time = start_time;
+    public String getSpecialistId() {
+        return specialistId;
     }
 
-    public long getEnd_time() {
-        return end_time;
+    public void setSpecialistId(String specialistId) {
+        this.specialistId = specialistId;
     }
 
-    public void setEnd_time(long end_time) {
-        this.end_time = end_time;
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 }

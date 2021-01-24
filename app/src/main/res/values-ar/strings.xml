@@ -8,6 +8,8 @@
     <string name="login">تسجيل الدخول</string>
     <string name="signup">لا تمتلك حساب ؟<b>" سجل الآن "</b></string>
     <string name="name_hint">الاسم بالكامل</string>
+    <string name="name_in_en_hint">الاسم بالإنجليزية</string>
+    <string name="name_in_ar_hint">الاسم بالعربية</string>
     <string name="phone_number_hint">رقم الهاتف</string>
     <string name="address_hint">الع</string>
     <string name="city_hint">المدينة</string>
@@ -28,12 +30,15 @@
     <string name="company">"الشركة : "</string>
     <string name="session_price">"سعر الجلسة ("</string>
     <string name="session_price_hint">سعر الجلسة</string>
-    <string name="write_few_lines_about_yourself">اُكتب نبذة مختصرة عن نفسك</string>
+    <string name="write_few_lines_about_yourself_in_ar">السيرة الذاتية بالعربية</string>
+    <string name="write_few_lines_about_yourself_in_en">السيرة الذاتية بالإنجليزية</string>
     <string name="write_about_yourself_hint">اُكتب باستفاضة عن نفسك</string>
     <string name="upload_cv">قم برفع السيرة الذاتية</string>
-    <string name="or">" او "</string>
+    <string name="or"> او </string>
     <string name="register_to_book_session">تسجيل لحجز جلسة</string>
+    <string name="login_to_book_session">تسجيل الدخول لحجز جلسة</string>
     <string name="join_to_our_team">إنضم لفريق اخصائي</string>
+    <string name="login_as_akhysai">تسجيل الدخول كـ اخصائي</string>
     <string name="register_clinic">تسجيل عيادة - مركز</string>
     <string name="search">بحث</string>
     <string name="article_title">عنوان المقالة</string>
@@ -155,6 +160,30 @@
     <string name="change_app_language">تغيير لغة التطبيق</string>
     <string name="english">الانجليزية</string>
     <string name="arabic">العربية</string>
+    <string name="choose_city">إختر مدينة</string>
+    <string name="choose_region">إختر المنطقة</string>
+    <string name="choose_field">إختر المجال</string>
+    <string name="choose_specialty">إختر تخصص</string>
+    <string name="choose_category">إختر الفئة</string>
+    <string name="choose_qualification">إختر المؤهل</string>
+    <string name="enter_valid_email">يجب ادخال بريد الكتروني صحيح</string>
+    <string name="can_not_be_empty">هذا الحقل مطلوب</string>
+    <string name="can_not_be_less_than_6">"يجب ان يكون 6 احرف علي الاقل"</string>
+    <string name="complete_profile_step_1">Step 1</string>
+    <string name="complete_profile_step_2">Step 2</string>
+    <string name="complete_profile_step_3">Step 3</string>
+    <string name="please_click_back_again_to_exit">إضغط رجوع مرة اخري للخروج</string>
+    <string name="fill_the_below_information_to_join_our_specialists_team">املأ المعلومات أدناه للانضمام إلى <b>فريق الاخصائيين لدينا</b></string>
+    <string name="add_image">إضافة صورة</string>
+    <string name="this_article_was_written_in">تمت كتابة هذا المقال باللغة</string>
+    <string name="change_password">تغيير كلمة السر</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="address_amp_communication">العنوان والتواصل</string>
+    <string name="address_in_arabic">العنوان بالعربية</string>
+    <string name="address_in_english">العنوان بالانجليزية</string>
+    <string name="professional_information">المعلومات المهنية</string>
+    <string name="update_all">تعديل البيانات</string>
 
     <array name="days">
         <item>اليوم</item>
@@ -167,71 +196,5 @@
         <item>الجمعة</item>
     </array>
 
-    <array name="specialties_medical">
-        <item>إختر تخصص</item>
-        <item>مخ و اعصاب</item>
-        <item>انف و اذن و حنجرة</item>
-        <item>اطفال</item>
-        <item>باطنة</item>
-        <item>قلب و اوعية دموية</item>
-    </array>
 
-    <array name="specialties_with_special_needs">
-        <item>إختر تخصص</item>
-        <item>علاج وظيفي</item>
-        <item>نطق و تخاطب</item>
-        <item>صعوبات تعلم</item>
-        <item>تعديل السلوك</item>
-        <item>تنمية المهارات</item>
-        <item>التوحد</item>
-        <item>الاختبارات النفسية</item>
-    </array>
-
-
-    <array name="fields">
-        <item>إختر المجال</item>
-        <item>طبي</item>
-        <item>ذووي احتياجات خاصة</item>
-    </array>
-
-
-    <array name="category">
-        <item>إختر الفئة</item>
-        <item>طبي</item>
-        <item>ذووي احتياجات خاصة</item>
-    </array>
-
-    <array name="cities">
-        <item>إختر المدينة</item>
-        <item>القاهرة</item>
-        <item>الجيزة</item>
-        <item>الإسكندرية</item>
-        <item>المنصورة</item>
-    </array>
-
-    <array name="cairo">
-        <item>إختر المنطقة</item>
-        <item>مصر الجديدة</item>
-        <item>مدينة نصر</item>
-        <item>مصر القديمة</item>
-    </array>
-
-    <array name="giza">
-        <item>إختر المنطقة</item>
-        <item>الدقي</item>
-        <item>شارع الهرم</item>
-    </array>
-
-    <array name="alex">
-        <item>إختر المنطقة</item>
-        <item>ابو قير</item>
-        <item>سيدي بشر</item>
-        <item>المعموره</item>
-    </array>
-
-    <array name="mansoura">
-        <item>إختر المنطقة</item>
-        <item>المنصورة الجديدة</item>
-        <item>شارع الدحيح</item>
-    </array>
 </resources>

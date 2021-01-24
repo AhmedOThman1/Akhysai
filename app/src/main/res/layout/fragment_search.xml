@@ -5,8 +5,8 @@
     android:id="@+id/nested_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
     android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.fragments.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,12 +82,12 @@
                     android:gravity="center"
                     android:paddingStart="56dp"
                     android:paddingTop="10dp"
-                    android:textSize="16sp"
                     android:paddingEnd="56dp"
                     android:paddingBottom="10dp"
                     android:text="@string/search"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,12 +102,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layoutAnimation="@anim/layout_animation"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_card"
             tools:listitem="@layout/one_search_item" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/search_shimmer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shimmer_auto_start="true"
+            app:shimmer_base_alpha="0.5"
+            app:layout_constraintTop_toBottomOf="@id/search_card"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/one_search_shimmer_item" />
+                <include layout="@layout/one_search_shimmer_item" />
+                <include layout="@layout/one_search_shimmer_item" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <include
             android:id="@+id/no_result"
@@ -119,7 +146,8 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_card" />
+            app:layout_constraintTop_toBottomOf="@id/search_card"
+            tools:visibility="gone" />
 
         <include
             android:id="@+id/no_internet"
@@ -130,7 +158,8 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_card" />
+            app:layout_constraintTop_toBottomOf="@id/search_card"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
