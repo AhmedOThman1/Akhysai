@@ -29,8 +29,16 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AkhysaiRetrofitInterface {
+
+    @GET("{languageIso}/search")
+    public Call<JsonObject> mainSearch(@Path("languageIso") String languageIso,
+                                       @Query("city") String city_id,
+                                       @Query("region") String region_id,
+                                       @Query("speciality") String speciality_id,
+                                       @Query("field") String field_id);
 
     @GET("{languageIso}/cities")
     public Call<List<City>> getAllCities(@Path("languageIso") String languageIso);
@@ -55,13 +63,13 @@ public interface AkhysaiRetrofitInterface {
     public Call<List<Qualification>> getAllQualifications(@Path("languageIso") String languageIso);
 
 
-    @POST("{languageIso}/login/specialist")
+    @POST("{languageIso}/login/{type}")
     @Headers("Accept: application/json")
-    public Call<JsonObject> LoginRequest(@Path("languageIso") String languageIso, @Body JsonObject loginData);
+    public Call<JsonObject> LoginRequest(@Path("languageIso") String languageIso, @Path("type") String type, @Body JsonObject loginData);
 
-    @POST("{languageIso}/register/specialist")
+    @POST("{languageIso}/register/{type}")
     @Headers("Accept: application/json")
-    public Call<JsonObject> RegisterRequest(@Path("languageIso") String languageIso, @Body JsonObject registerData);
+    public Call<JsonObject> RegisterRequest(@Path("languageIso") String languageIso,@Path("type") String type, @Body JsonObject registerData);
 
     @GET("specialist/")
     @Headers("Accept: application/json")
@@ -73,7 +81,7 @@ public interface AkhysaiRetrofitInterface {
 
 
     @Multipart
-    @POST("specialist/profile/complete/")
+    @POST("specialist/profile/complete")
     @Headers("Accept: application/json")
     public Call<JsonObject> CompleteProfile(@Header("Authorization") String Authorization,
                                             @Part("name[ar]") RequestBody nameAr,
@@ -94,14 +102,14 @@ public interface AkhysaiRetrofitInterface {
                                             @Part("speciality") RequestBody speciality,
                                             @Part("qualification") RequestBody qualification);
 
+    @GET("view-specialist/{id}")
+    public Call<JsonObject> getAkhysaiById(@Path("id") String Id);
+
+
     @GET("specialist/articles")
     @Headers("Accept: application/json")
     public Call<ArrayList<Article>> getAkhysaiArticles(@Header("Authorization") String Authorization);
 
-
-//    @POST("specialist/articles/add")
-//    @Headers("Accept: application/json")
-//    public Call<JsonObject> AddNewArticle(@Header("Authorization") String Authorization, @Body JsonObject articleData);
 
     @Multipart
     @POST("specialist/articles/add")
@@ -122,6 +130,13 @@ public interface AkhysaiRetrofitInterface {
     @Headers("Accept: application/json")
     public Call<JsonObject> AddNewService(@Header("Authorization") String Authorization, @Body JsonObject servicesData);
 
+    @Multipart
+    @POST("specialist/services/add")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> AddNewService(@Header("Authorization") String Authorization, @Part("name[ar]") RequestBody nameAr,
+                                          @Part("name[en]") RequestBody nameEn,
+                                          @Part("price") RequestBody price);
+
 
     @POST("specialist/services/delete")
     @Headers("Accept: application/json")
@@ -130,6 +145,40 @@ public interface AkhysaiRetrofitInterface {
 
     @GET("specialist/timetable")
     @Headers("Accept: application/json")
-    public Call<ArrayList<AvailableDate>> getAkhysaiTimetable(@Header("Authorization") String Authorization);
+    public Call<JsonObject> getAkhysaiTimetable(@Header("Authorization") String Authorization);
+
+    @Multipart
+    @POST("specialist/timetable/add")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> AddNewTimeSlots(@Header("Authorization") String Authorization, @Part("days[]") RequestBody days,
+                                            @Part("start_time") RequestBody start_time,
+                                            @Part("end_time") RequestBody end_time);
+
+    @POST("specialist/timetable/add")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> AddNewTimeSlots(@Header("Authorization") String Authorization, @Body JsonObject jsonObject);
+
+    @GET("specialist/timetable/slot/delete/{id}")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> DeleteTimeSlot(@Header("Authorization") String Authorization, @Path("id") String Id);
+
+    @GET("specialist/timetable/slot/toggle/{id}")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> ToggleTimeSlot(@Header("Authorization") String Authorization, @Path("id") String Id);
+
+
+    @GET("specialist/timetable/day/delete/{id}")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> DeleteDay(@Header("Authorization") String Authorization, @Path("id") String Id);
+
+
+    @GET("specialist/timetable/day/toggle/{id}")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> ToggleDay(@Header("Authorization") String Authorization, @Path("id") String Id);
+
+
+    @GET("specialist/{languageIso}/bookings")
+    @Headers("Accept: application/json")
+    public Call<JsonObject> getAkhysaiBookings(@Header("Authorization") String Authorization,@Path("languageIso") String languageIso);
 
 }

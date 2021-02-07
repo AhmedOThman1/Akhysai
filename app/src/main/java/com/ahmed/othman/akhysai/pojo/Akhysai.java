@@ -31,6 +31,8 @@ public class Akhysai {
     private String profile_picture;
     @SerializedName("name")
     private String name;
+    @SerializedName("email")
+    private String email;
     @SerializedName("api_token")
     private String apiToken;
     @SerializedName("is_active")

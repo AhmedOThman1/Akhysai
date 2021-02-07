@@ -40,8 +40,8 @@ import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE2;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PDF_CODE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 
 public class SignUpPageThreeFragment extends Fragment {
 

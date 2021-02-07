@@ -2,29 +2,20 @@ package com.ahmed.othman.akhysai.ui.fragments.completeProfile.steps;
 
 import android.Manifest;
 import android.content.ClipData;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.FileUtils;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,20 +31,17 @@ import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.network.ApiClient;
+import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.ahmed.othman.akhysai.ui.fragments.completeProfile.CompleteProfileFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,16 +55,20 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE1_PERMISSION;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE2_PERMISSION;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE3_PERMISSION;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE2;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.ImagesLink;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PDF_CODE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.close_loading_dialog;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.open_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileComplete;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileVerify;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 
 public class Step3Fragment extends Fragment {
 
@@ -92,6 +84,7 @@ public class Step3Fragment extends Fragment {
 
     ArrayList<String> Images = new ArrayList<>();
 
+    String ImagePath = "";
     Uri ImageUri = null;
     View view;
     private String goTo = "";
@@ -117,10 +110,30 @@ public class Step3Fragment extends Fragment {
         doctor_photo = view.findViewById(R.id.doctor_photo);
 
         Bundle arg = getArguments();
-//
-//        back.setOnClickListener(v ->
-//                requireActivity().onBackPressed()
-//        );
+
+        if (currentAkhysai.getProfile_picture() != null) {
+            Glide.with(view)
+                    .load(ImagesLink + currentAkhysai.getProfile_picture())
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .placeholder(R.drawable.background_circle_shimmer)
+                    .into(doctor_photo);
+            ImageUri = Uri.parse(ImagesLink + currentAkhysai.getProfile_picture());
+        }
+
+        if (currentAkhysai.getExperienceYears() != null) {
+            years_of_experience.getEditText().setText(currentAkhysai.getExperienceYears().trim());
+        }
+
+        if (currentAkhysai.getNationalId() != null) {
+            id_card_number.getEditText().setText(currentAkhysai.getNationalId().trim());
+        }
+
+        if (currentAkhysai.getEn() != null && currentAkhysai.getEn().getBio() != null)
+            about_doctor_en.getEditText().setText(currentAkhysai.getEn().getBio().trim());
+
+        if (currentAkhysai.getAr() != null && currentAkhysai.getAr().getBio() != null)
+            about_doctor_ar.getEditText().setText(currentAkhysai.getAr().getBio().trim());
+
 
         pdf_cv.setOnClickListener(v -> {
             if (ActivityCompat.checkSelfPermission(requireContext(),
@@ -150,8 +163,14 @@ public class Step3Fragment extends Fragment {
         });
 
         doctor_photo.setOnClickListener(v -> {
-            Intent gal = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(gal, "select media file"), GAL_CODE2);
+            if (ActivityCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE3_PERMISSION);
+            } else {
+                Intent gal = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gal, GAL_CODE2);
+            }
         });
 
         sign_up.setOnClickListener(v -> {
@@ -199,6 +218,9 @@ public class Step3Fragment extends Fragment {
             gal.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             gal.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*"});
             startActivityForResult(Intent.createChooser(gal, "select media file"), GAL_CODE);
+        } else if (requestCode == CODE3_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent gal = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(gal, GAL_CODE2);
         }
     }
 
@@ -231,10 +253,36 @@ public class Step3Fragment extends Fragment {
             Uri imageUri = data.getData();
             if (imageUri != null) {
                 // one image
-                doctor_photo.setImageURI(imageUri);
-                doctor_photo.setBorderWidth(2);
-                doctor_photo.setBorderColor(getContext().getResources().getColor(R.color.primary));
+
                 ImageUri = imageUri;
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = requireContext().getContentResolver().query(ImageUri, filePathColumn, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    ImagePath = cursor.getString(columnIndex);
+                    Log.w("ImagePath", "-->" + ImagePath + "<--");
+                    if (ImagePath == null) {
+                        ImageUri = null;
+                        doctor_photo.setImageBitmap(null);
+                        Toast.makeText(requireContext(), "Unable to load image", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Glide.with(requireContext())
+                                .load(new File(ImagePath))
+                                .into(doctor_photo);
+                        doctor_photo.setBorderWidth(2);
+                        doctor_photo.setBorderColor(getContext().getResources().getColor(R.color.primary));
+                    }
+                    cursor.close();
+                }
+
+            } else {
+                ImageUri = null;
+                doctor_photo.setImageBitmap(null);
+                Toast.makeText(requireContext(), "Unable to load image", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -310,226 +358,80 @@ public class Step3Fragment extends Fragment {
         CompleteProfileFragment.ProfieData.addProperty("address[ar]", "null");
         CompleteProfileFragment.ProfieData.addProperty("address[en]", "null");
 
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), ImageUri);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            CompleteProfileFragment.ProfieData.addProperty("profile_picture", Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT));
-        } catch (IOException e) {
-            e.printStackTrace();
-            CompleteProfileFragment.ProfieData.addProperty("profile_picture", "");
-        }
+        CompleteProfileFragment.ProfieData.addProperty("profile_picture", "" + currentAkhysai.getProfile_picture());
 
     }
 
     void uploadSignUpData() {
-        CompleteProfileFragment.ProfieData.addProperty("profile_picture", "");
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE);
         String UserToken = sharedPreferences.getString(Token, "");
 
-        File file = saveFile(ImageUri);
-        if (file.exists()) {
-            open_loading_dialog(requireContext(), getLayoutInflater());
+        File file = new File(ImagePath);
+        open_loading_dialog(requireContext(), getLayoutInflater());
+        ApiClient.getINSTANCE().CompleteProfile("Bearer " + UserToken,
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("name[ar]").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("name[en]").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("city").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("region").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("national_id").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("birth_date").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("gender").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("phone").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("years_of_experience").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("bio[ar]").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("bio[en]").getAsString()),
+                file.exists() ?
+                        MultipartBody.Part.createFormData("profile_picture", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file))
+                        : MultipartBody.Part.createFormData("profile_picture", CompleteProfileFragment.ProfieData.get("profile_picture").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("address[ar]").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("address[en]").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("field").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("speciality").getAsString()),
+                RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("qualification").getAsString())
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.w("CompleteProfileResponse", response.body() + "");
+                close_loading_dialog();
+                if (response.isSuccessful()) {
+                    Log.w("JSON", "" + response.body().get("status").getAsString());
+                    if (response.body().get("status").getAsString().equalsIgnoreCase("success")) {
+                        currentAkhysai = new Gson().fromJson(response.body().get("data").getAsJsonObject().get("specialist").getAsJsonObject().toString(), Akhysai.class);
 
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
+                                .putBoolean(logged_in, true)
+                                .putBoolean(profileComplete, true)
+                                .putBoolean(profileVerify, currentAkhysai.getIsActive().equals("1"))
+                                .putString("userType", LauncherActivity.AKHYSAI)
+                                .apply();
+                        updateNavDrawer(requireActivity());
 
-            ApiClient.getINSTANCE().CompleteProfile("Bearer " + UserToken,
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("name[ar]").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("name[en]").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("city").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("region").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("national_id").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("birth_date").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("gender").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("phone").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("years_of_experience").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("bio[ar]").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("bio[en]").getAsString()),
-                    MultipartBody.Part.createFormData("profile_picture", file.getName(), requestFile),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("address[ar]").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("address[en]").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("field").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("speciality").getAsString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), CompleteProfileFragment.ProfieData.get("qualification").getAsString())
-            ).enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.w("CompleteProfileResponse", response.body() + "");
-                    close_loading_dialog();
-                    if (response.isSuccessful()) {
-                        Log.w("JSON", "" + response.body().get("status").getAsString());
-                        if (response.body().get("status").getAsString().equalsIgnoreCase("success")) {
-                            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit()
-                                    .putBoolean(logged_in, true)
-                                    .putBoolean(profileComplete, true)
-                                    .putString("userType", LauncherActivity.AKHYSAI)
-                                    .apply();
-                            updateNavDrawer(requireActivity());
-                            if (goTo.isEmpty())
-                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_homeFragment);
-                            else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
-                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.oneAkhysaiFragment, false);
-                            else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
-                                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.bookOneAkhysaiFragment, false);
-                        }
-                    } else {
-                        Log.w("CompNotSucc", "" + response);
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_homeFragment);
+                        if (!currentAkhysai.getIsActive().equals("1"))
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_verifyProfileFragment);
+                        else if (goTo.isEmpty())
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_homeFragment);
+                        else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.oneAkhysaiFragment, false);
+                        else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.bookOneAkhysaiFragment, false);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    close_loading_dialog();
-                    if (t.getMessage().contains("Unable to resolve host"))
-                        Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
-                                .show();
-                }
-            });
-
-        }
-        else
-            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_homeFragment);
-
-    }
-
-    private File saveFile(Uri uri){
-        String sourseFileName = uri.getPath();
-        //                    get image type ( png , jpg , webp )
-        ContentResolver cR = requireContext().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        String type = mime.getExtensionFromMimeType(cR.getType(uri));
-        Log.w("Log", "image1 type : " + type);
-        // end of get image type
-        String destinationFileName = android.os.Environment.getExternalStorageDirectory().getPath()+File.separatorChar+"Image"+type;
-        BufferedInputStream bis =null;
-        BufferedOutputStream bos = null;
-
-        try {
-            bis = new BufferedInputStream(new FileInputStream(sourseFileName));
-            bos = new BufferedOutputStream(new FileOutputStream(destinationFileName, false));
-            byte[] buf = new byte[1024];
-            bis.read(buf);
-            do {
-                bos.write(buf);
-            } while (bis.read(buf) != -1);
-        }catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try {
-                if(bis!=null)bis.close();
-                if(bos!=null)bos.close();
-            }catch (IOException e){
-                e.printStackTrace();
+                } else
+                    Log.w("CompNotSucc", "" + response);
             }
-        }
 
-        return new File(destinationFileName);
-    }
-
-    public String getRealPathFromUri(final Uri uri) {
-        // DocumentProvider
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(requireContext(), uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                close_loading_dialog();
+                if (t.getMessage().contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+                            .show();
             }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
+        });
 
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 
-                return getDataColumn(requireContext(), contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(requireContext(), contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(requireContext(), uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
     }
-
-    private String getDataColumn(Context context, Uri uri, String selection,
-                                 String[] selectionArgs) {
-
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
-    private boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    private boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    private boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    private boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
-
 
     private void open_keyboard(EditText textInputLayout) {
         textInputLayout.requestFocus();     // editText.requestFocus();

@@ -3,21 +3,17 @@ package com.ahmed.othman.akhysai.ui.fragments.signUp;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 public class PickSignUpTypeFragment extends Fragment {
 

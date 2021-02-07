@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -20,30 +19,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Region;
-import com.ahmed.othman.akhysai.ui.fragments.HomeFragment;
 import com.ahmed.othman.akhysai.ui.viewModels.AkhysaiViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Cities;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;

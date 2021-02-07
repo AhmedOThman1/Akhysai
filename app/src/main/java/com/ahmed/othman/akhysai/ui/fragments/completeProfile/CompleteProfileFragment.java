@@ -1,12 +1,16 @@
 package com.ahmed.othman.akhysai.ui.fragments.completeProfile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,6 +27,8 @@ import com.ahmed.othman.akhysai.pojo.Field;
 import com.ahmed.othman.akhysai.pojo.Region;
 import com.ahmed.othman.akhysai.pojo.Speciality;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
+import com.ahmed.othman.akhysai.ui.activities.mainActivity.DrawerLocker;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 import com.shuhart.stepview.StepView;
 
@@ -38,9 +44,14 @@ import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Specialties;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.SpecialtiesString;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.akhysaiViewModel;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileComplete;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileVerify;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.userType;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 public class CompleteProfileFragment extends Fragment {
 
@@ -51,8 +62,9 @@ public class CompleteProfileFragment extends Fragment {
 
     public static StepView stepView;
     public static JsonObject ProfieData = new JsonObject();
-    public static String Type = "",phone_text = "", goTo = "";
+    public static String Type = "", phone_text = "", goTo = "";
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,40 +72,41 @@ public class CompleteProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_complete_profile, container, false);
 
         toolbar.setVisibility(View.GONE);
+        ((DrawerLocker)requireActivity()).setDrawerLocked(true);
 
         stepView = view.findViewById(R.id.step_view);
 
 
-        if(Cities.isEmpty())
-            initArraysData();
+        initArraysData();
 
         Bundle arg = getArguments();
         if (arg != null) {
             Type = arg.getString("Type");
-            if(Type.equalsIgnoreCase(LauncherActivity.AKHYSAI))
+            if (Type.equalsIgnoreCase(LauncherActivity.AKHYSAI))
                 stepView.setStepsNumber(3);
             else
                 stepView.setStepsNumber(2);
-            requireActivity().getSharedPreferences(shared_pref,Context.MODE_PRIVATE).edit().putString("userType",Type).apply();
+            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putString("userType", Type).apply();
             goTo = arg.getString("goTo", "");
             Log.w("GOTO2", "goto: " + goTo);
             phone_text = arg.getString("phone");
-        }else{
-            Type = requireActivity().getSharedPreferences(shared_pref,Context.MODE_PRIVATE).getString("userType","");
-            Toast.makeText(requireContext(), ""+Type, Toast.LENGTH_SHORT).show();
-            if(Type.equalsIgnoreCase(LauncherActivity.AKHYSAI))
+        } else {
+            Type = requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString("userType", "");
+            Toast.makeText(requireContext(), "" + Type, Toast.LENGTH_SHORT).show();
+            if (Type.equalsIgnoreCase(LauncherActivity.AKHYSAI))
                 stepView.setStepsNumber(3);
             else
                 stepView.setStepsNumber(2);
         }
 
 
-        stepView.go(0,true);
+        stepView.go(0, true);
 
         return view;
     }
 
-    boolean doubleBackToExitPressedOnce = false;
+    AlertDialog dialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +118,43 @@ public class CompleteProfileFragment extends Fragment {
                 // Handle the back button event
 
                 /* exit only if the user click the back button twice in the Main Activity**/
-                if (doubleBackToExitPressedOnce) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                View exitLogout = getLayoutInflater().inflate(R.layout.exit_logout_dialog, null);
+                exitLogout.findViewById(R.id.exit).setOnClickListener(v -> {
+                    dialog.dismiss();
                     requireActivity().finish();
-                }
-                doubleBackToExitPressedOnce = true;
-                Toast.makeText(requireContext(), getResources().getString(R.string.please_click_back_again_to_exit), Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+                });
+                exitLogout.findViewById(R.id.logout).setOnClickListener(v -> {
+                    dialog.dismiss();
+                    FirebaseAuth.getInstance().signOut();
+                    requireActivity().getSharedPreferences(LauncherActivity.shared_pref, Context.MODE_PRIVATE).edit()
+                            .putBoolean(LauncherActivity.logged_in, false)
+                            .putBoolean(profileComplete, false)
+                            .putBoolean(profileVerify, false)
+                            .putString(Token, "")
+                            .putString(userType, "")
+                            .apply();
+
+                    currentAkhysai = null;
+
+                    // Restart the app
+
+                    Intent restartIntent = requireActivity().getBaseContext()
+                            .getPackageManager()
+                            .getLaunchIntentForPackage(requireActivity().getBaseContext().getPackageName());
+                    assert restartIntent != null;
+                    restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    requireActivity().startActivity(restartIntent);
+                    requireActivity().finish();
+                });
+
+                builder.setView(exitLogout);
+                dialog = builder.create();
+                dialog.show();
+                Window window = dialog.getWindow();
+                assert window != null;
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -174,6 +218,12 @@ public class CompleteProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((DrawerLocker)requireActivity()).setDrawerLocked(false);
+    }
+
     private void open_keyboard(EditText textInputLayout) {
         textInputLayout.requestFocus();     // editText.requestFocus();
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);     // Context.INPUT_METHOD_SERVICE
@@ -190,4 +240,6 @@ public class CompleteProfileFragment extends Fragment {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+
 }

@@ -112,7 +112,7 @@
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/search_shimmer"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:orientation="vertical"
             android:padding="8dp"
@@ -121,7 +121,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:shimmer_auto_start="true"
-            app:shimmer_base_alpha="0.5"
             app:layout_constraintTop_toBottomOf="@id/search_card"
             tools:visibility="visible">
 

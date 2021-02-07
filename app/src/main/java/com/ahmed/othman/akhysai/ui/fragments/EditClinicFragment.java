@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,15 +26,11 @@ import com.ahmed.othman.akhysai.pojo.Clinic;
 import com.google.android.material.textfield.TextInputLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static android.app.Activity.RESULT_OK;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CODE2_PERMISSION;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.DirectoryCategoriesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.GAL_CODE2;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
 

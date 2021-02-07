@@ -1,4 +1,4 @@
-package com.ahmed.othman.akhysai.ui.fragments;
+package com.ahmed.othman.akhysai.ui.fragments.akhysai;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,12 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +27,7 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Fields;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.FieldsString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Specialties;

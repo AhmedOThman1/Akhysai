@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,20 +18,18 @@ import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.chaos.view.PinView;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 
 public class PhoneAuthPageTwoFragment extends Fragment {
 

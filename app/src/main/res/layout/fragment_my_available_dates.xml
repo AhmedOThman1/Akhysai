@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     tools:context=".ui.fragments.AboutUsFragment">
@@ -136,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="#f9f9f9"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:contentPadding="16dp"
@@ -174,14 +173,15 @@
                     android:layout_marginEnd="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/available_appointments_text">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/saturday"
@@ -199,6 +199,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -206,14 +207,52 @@
                             app:layout_constraintStart_toEndOf="@id/saturday"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
+                        <ImageView
+                            android:id="@+id/saturday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_saturday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/saturday_background"
+                            app:layout_constraintEnd_toStartOf="@id/saturday_active"
+                            app:layout_constraintTop_toTopOf="@id/saturday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/saturday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/saturday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/saturday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/saturday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/saturday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/saturday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -226,14 +265,15 @@
                     android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/saturday_card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/sunday"
@@ -251,6 +291,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -259,14 +300,51 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <ImageView
+                            android:id="@+id/sunday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_sunday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/sunday_background"
+                            app:layout_constraintEnd_toStartOf="@id/sunday_active"
+                            app:layout_constraintTop_toTopOf="@id/sunday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/sunday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/sunday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/sunday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/sunday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/sunday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sunday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -279,14 +357,15 @@
                     android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sunday_card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/monday"
@@ -304,6 +383,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -312,14 +392,51 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <ImageView
+                            android:id="@+id/monday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_monday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/monday_background"
+                            app:layout_constraintEnd_toStartOf="@id/monday_active"
+                            app:layout_constraintTop_toTopOf="@id/monday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/monday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/monday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/monday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/monday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/monday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/monday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -332,14 +449,15 @@
                     android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/monday_card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/tuesday"
@@ -357,6 +475,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -365,14 +484,51 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <ImageView
+                            android:id="@+id/tuesday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_tuesday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/tuesday_background"
+                            app:layout_constraintEnd_toStartOf="@id/tuesday_active"
+                            app:layout_constraintTop_toTopOf="@id/tuesday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/tuesday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/tuesday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tuesday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/tuesday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tuesday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tuesday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -385,14 +541,15 @@
                     android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tuesday_card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/wednesday"
@@ -410,6 +567,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -417,14 +575,52 @@
                             app:layout_constraintStart_toEndOf="@id/wednesday"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
+                        <ImageView
+                            android:id="@+id/wednesday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_wednesday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/wednesday_background"
+                            app:layout_constraintEnd_toStartOf="@id/wednesday_active"
+                            app:layout_constraintTop_toTopOf="@id/wednesday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/wednesday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/wednesday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/wednesday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/wednesday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/wednesday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wednesday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -437,14 +633,15 @@
                     android:layout_margin="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/wednesday_card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/thursday"
@@ -462,6 +659,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -470,14 +668,51 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <ImageView
+                            android:id="@+id/thursday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_thursday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/thursday_background"
+                            app:layout_constraintEnd_toStartOf="@id/thursday_active"
+                            app:layout_constraintTop_toTopOf="@id/thursday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/thursday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/thursday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/thursday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/thursday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/thursday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/thursday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -491,7 +726,6 @@
                     android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="15dp"
-                    app:contentPadding="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -499,7 +733,9 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:paddingEnd="0dp">
 
                         <TextView
                             android:id="@+id/friday"
@@ -517,6 +753,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/there_are_no_appointments_available_today"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -524,14 +761,52 @@
                             app:layout_constraintStart_toEndOf="@id/friday"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
+                        <ImageView
+                            android:id="@+id/friday_background"
+                            android:layout_width="100dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/background_service"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_friday"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/delete"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintBottom_toBottomOf="@id/friday_background"
+                            app:layout_constraintEnd_toStartOf="@id/friday_active"
+                            app:layout_constraintTop_toTopOf="@id/friday_background"
+                            app:tint="@color/error_red" />
+
+                        <ImageView
+                            android:id="@+id/friday_active"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/available"
+                            android:src="@drawable/ic_check_circle"
+                            app:layout_constraintBottom_toBottomOf="@id/friday_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/friday_background"
+                            app:tint="@color/colorPrimary" />
+
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/friday_chips"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/friday"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/friday_background"
                             app:singleSelection="true" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

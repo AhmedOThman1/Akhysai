@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.navigation_view;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.BlogCategoriesString;
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,23 +22,30 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.adapter.AkhysaiSearchAdapter;
+import com.ahmed.othman.akhysai.network.ApiClient;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.pojo.Region;
 import com.ahmed.othman.akhysai.pojo.Speciality;
 import com.ahmed.othman.akhysai.ui.viewModels.AkhysaiViewModel;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.navigation_view;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Fields;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
@@ -59,9 +67,12 @@ public class SearchFragment extends Fragment {
     RecyclerView searchRecycler;
     NestedScrollView nested_scroll;
     AkhysaiSearchAdapter akhysaiSearchAdapter;
+    ConstraintLayout no_result, no_internet;
 
     int temp1 = -1, temp2 = -1;
     AkhysaiViewModel akhysaiViewModel;
+
+    ShimmerFrameLayout searchShimmer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +88,16 @@ public class SearchFragment extends Fragment {
         search_button = view.findViewById(R.id.search_button);
         searchRecycler = view.findViewById(R.id.search_recyclerview);
         nested_scroll = view.findViewById(R.id.nested_scroll);
+        no_result = view.findViewById(R.id.no_result);
+        no_internet = view.findViewById(R.id.no_internet);
+        searchShimmer = view.findViewById(R.id.search_shimmer);
+
+
+        // Search shimmer
+        searchShimmer.startShimmer();
+        searchShimmer.setVisibility(View.VISIBLE);
+        searchRecycler.setVisibility(View.GONE);
+        ////
 
         akhysaiViewModel = ViewModelProviders.of(requireActivity()).get(AkhysaiViewModel.class);
 
@@ -111,7 +132,8 @@ public class SearchFragment extends Fragment {
                     if (temp1 != -1) {
                         search_area.setSelection(temp1);
                         temp1 = -1;
-                    } else if(!Cities.isEmpty()) akhysaiViewModel.getAllRegionsByCityId(requireActivity().getSharedPreferences(shared_pref,MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),Cities.get(position-1).getCityId());
+                    } else if (!Cities.isEmpty())
+                        akhysaiViewModel.getAllRegionsByCityId(requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()), Cities.get(position - 1).getCityId());
                 }
             }
 
@@ -130,8 +152,9 @@ public class SearchFragment extends Fragment {
                     if (temp2 != -1) {
                         search_specialty.setSelection(temp2);
                         temp2 = -1;
-                    } else if(!Fields.isEmpty())
-                        akhysaiViewModel.getAllSpecialitiesByFieldId(requireActivity().getSharedPreferences(shared_pref,MODE_PRIVATE).getString(LanguageIso,Locale.getDefault().getLanguage()),Fields.get(position-1).getFieldId());
+                    } else if (!Fields.isEmpty())
+                        akhysaiViewModel.getAllSpecialitiesByFieldId(requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
+                                Fields.get(position - 1).getFieldId());
                 }
             }
 
@@ -143,52 +166,83 @@ public class SearchFragment extends Fragment {
 
         Bundle arg = getArguments();
         if (arg != null) {
-            search_city.setSelection(arg.getInt("city", 0));
-            temp1 = arg.getInt("area", 0);
-            search_field.setSelection(arg.getInt("field", 0));
-            temp2 = arg.getInt("specialty", 0);
-
-            akhysaiSearchAdapter.setModels(
-                    getAkhysaiSearchData(CitiesString.get(arg.getInt("city", 0)),
-                            RegionsString.get(temp1),
-                            FieldsString.get(arg.getInt("field", 0)),
-                            SpecialtiesString.get(temp2)));
+            search_city.setSelection(arg.getInt("cityPosition", 0));
+            temp1 = arg.getInt("regionPosition", 0);
+            search_field.setSelection(arg.getInt("fieldPosition", 0));
+            temp2 = arg.getInt("specialtyPosition", 0);
+            getAkhysaiSearchData(
+                    arg.getString("city"),
+                    arg.getString("region"),
+                    arg.getString("field"),
+                    arg.getString("specialty")
+            );
+        } else {
+            getAkhysaiSearchData(
+                    "all",
+                    "all",
+                    "all",
+                    "all"
+            );
         }
 
         search_button.setOnClickListener(v -> {
-            if (search_city.getSelectedItemPosition() == 0) {
-                search_city.setBackgroundResource(R.drawable.background_spinner_error);
-                search_area.setBackgroundResource(R.drawable.background_spinner);
-                search_field.setBackgroundResource(R.drawable.background_spinner);
-                search_specialty.setBackgroundResource(R.drawable.background_spinner);
-                Toast.makeText(requireContext(), "Select city to start search", Toast.LENGTH_SHORT).show();
-            } else if (search_area.getSelectedItemPosition() == 0) {
-                search_city.setBackgroundResource(R.drawable.background_spinner);
-                search_area.setBackgroundResource(R.drawable.background_spinner_error);
-                search_field.setBackgroundResource(R.drawable.background_spinner);
-                search_specialty.setBackgroundResource(R.drawable.background_spinner);
-                Toast.makeText(requireContext(), "Select area to start search", Toast.LENGTH_SHORT).show();
-            } else if (search_field.getSelectedItemPosition() == 0) {
-                search_city.setBackgroundResource(R.drawable.background_spinner);
-                search_area.setBackgroundResource(R.drawable.background_spinner);
-                search_field.setBackgroundResource(R.drawable.background_spinner_error);
-                search_specialty.setBackgroundResource(R.drawable.background_spinner);
-                Toast.makeText(requireContext(), "Select field to start search", Toast.LENGTH_SHORT).show();
-            } else if (search_specialty.getSelectedItemPosition() == 0) {
-                search_city.setBackgroundResource(R.drawable.background_spinner);
-                search_area.setBackgroundResource(R.drawable.background_spinner);
-                search_field.setBackgroundResource(R.drawable.background_spinner);
-                search_specialty.setBackgroundResource(R.drawable.background_spinner_error);
-                Toast.makeText(requireContext(), "Select specialty to start search", Toast.LENGTH_SHORT).show();
-            } else {
+//            if (search_city.getSelectedItemPosition() == 0) {
+//                search_city.setBackgroundResource(R.drawable.background_spinner_error);
+//                search_area.setBackgroundResource(R.drawable.background_spinner);
+//                search_field.setBackgroundResource(R.drawable.background_spinner);
+//                search_specialty.setBackgroundResource(R.drawable.background_spinner);
+//                Toast.makeText(requireContext(), "Select city to start search", Toast.LENGTH_SHORT).show();
+//            } else if (search_area.getSelectedItemPosition() == 0) {
+//                search_city.setBackgroundResource(R.drawable.background_spinner);
+//                search_area.setBackgroundResource(R.drawable.background_spinner_error);
+//                search_field.setBackgroundResource(R.drawable.background_spinner);
+//                search_specialty.setBackgroundResource(R.drawable.background_spinner);
+//                Toast.makeText(requireContext(), "Select area to start search", Toast.LENGTH_SHORT).show();
+//            } else if (search_field.getSelectedItemPosition() == 0) {
+//                search_city.setBackgroundResource(R.drawable.background_spinner);
+//                search_area.setBackgroundResource(R.drawable.background_spinner);
+//                search_field.setBackgroundResource(R.drawable.background_spinner_error);
+//                search_specialty.setBackgroundResource(R.drawable.background_spinner);
+//                Toast.makeText(requireContext(), "Select field to start search", Toast.LENGTH_SHORT).show();
+//            } else if (search_specialty.getSelectedItemPosition() == 0) {
+//                search_city.setBackgroundResource(R.drawable.background_spinner);
+//                search_area.setBackgroundResource(R.drawable.background_spinner);
+//                search_field.setBackgroundResource(R.drawable.background_spinner);
+//                search_specialty.setBackgroundResource(R.drawable.background_spinner_error);
+//                Toast.makeText(requireContext(), "Select specialty to start search", Toast.LENGTH_SHORT).show();
+//            } else {
 
-                nested_scroll.smoothScrollTo(0, searchRecycler.getTop());
-            }
+            nested_scroll.smoothScrollTo(0, searchRecycler.getTop());
+            String city, region, field, specialty;
+            if (search_city.getSelectedItemPosition() > 0 && search_city.getSelectedItemPosition() <= Cities.size())
+                city = "" + Cities.get(search_city.getSelectedItemPosition() - 1).getCityId();
+            else
+                city = "all";
+
+            if (search_area.getVisibility() == View.VISIBLE && search_area.getSelectedItemPosition() > 0 && search_area.getSelectedItemPosition() <= Regions.size())
+                region = "" + Regions.get(search_area.getSelectedItemPosition() - 1).getRegionId();
+            else
+                region = "all";
+
+            if (search_field.getSelectedItemPosition() > 0 && search_field.getSelectedItemPosition() <= Fields.size())
+                field = "" + Fields.get(search_field.getSelectedItemPosition() - 1).getFieldId();
+            else
+                field = "all";
+
+            if (search_specialty.getVisibility() == View.VISIBLE && search_specialty.getSelectedItemPosition() > 0 && search_specialty.getSelectedItemPosition() <= Specialties.size())
+                specialty = "" + Specialties.get(search_specialty.getSelectedItemPosition() - 1).getSpecialityId();
+            else
+                specialty = "all";
+
+
+            getAkhysaiSearchData(city, region, field, specialty);
+
+//            }
         });
 
-        //Todo delete this
-        akhysaiSearchAdapter.setModels(getAkhysaiSearchData("", "", "", ""));
-        //End of TODO
+        //To do delete this
+//        akhysaiSearchAdapter.setModels(getAkhysaiSearchData("", "", "", ""));
+        //End of TO DO
         searchRecycler.setAdapter(akhysaiSearchAdapter);
         searchRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         searchRecycler.setHasFixedSize(true);
@@ -226,14 +280,67 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private ArrayList<Akhysai> getAkhysaiSearchData(String city, String area, String field, String specialty) {
-        //TODO delete this
+    private void getAkhysaiSearchData(String city, String region, String field, String specialty) {
+
         ArrayList<Akhysai> akhysaiArrayList = new ArrayList<>();
-//        akhysaiArrayList.add(new Akhysai("", "حسام اشرف", "طبيب انف و اذن و حنجرة و حاصل ع الزماله البريطانية", "محاضر معتمد من نقابة الاطباء\n دبلوم تجميل و ليزر و دبلومة مكافحة عدوي جودة", 2, (float) 3.5, 19, 380));
-//        akhysaiArrayList.add(new Akhysai("", "زياد صقر", "طبيب جراح و حاصل ع الزماله البريطانية", "محاضر معتمد من نقابة الاطباء\n دبلوم تجميل و ليزر و دبلومة مكافحة عدوي جودة", 2, (float) 4, 29, 250));
-//        akhysaiArrayList.add(new Akhysai("", "احمد عثمان", "طبيب جراح قلوب الناس اداويها", "محاضر معتمد من نقابة الاطباء\n دبلوم تجميل و ليزر و دبلومة مكافحة عدوي جودة", 6, (float) 4.5, 42, 620));
-        //End of delete
-        return akhysaiArrayList;
+
+        searchRecycler.setVisibility(View.GONE);
+        no_result.setVisibility(View.GONE);
+        no_internet.setVisibility(View.GONE);
+        searchShimmer.startShimmer();
+        searchShimmer.setVisibility(View.VISIBLE);
+
+        ApiClient.getINSTANCE().mainSearch(requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
+                city, region, specialty, field).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    for (String key : response.body().keySet()) {
+                        Akhysai newAkhysai = new Gson().fromJson(response.body().get(key).getAsJsonObject().toString(), Akhysai.class);
+                        if (newAkhysai.getProfileCompleted().equalsIgnoreCase("1") && newAkhysai.getIsActive().equalsIgnoreCase("1") && newAkhysai.getIsVerified().equalsIgnoreCase("1"))
+                            akhysaiArrayList.add(newAkhysai);
+                    }
+                    if (akhysaiArrayList.isEmpty()) {
+                        searchRecycler.setVisibility(View.GONE);
+                        no_result.setVisibility(View.VISIBLE);
+                        no_internet.setVisibility(View.GONE);
+                    } else {
+                        akhysaiSearchAdapter.setModels(akhysaiArrayList);
+                        akhysaiSearchAdapter.notifyDataSetChanged();
+                        searchRecycler.setVisibility(View.VISIBLE);
+                        no_result.setVisibility(View.GONE);
+                        no_internet.setVisibility(View.GONE);
+                    }
+                } else {
+                    searchRecycler.setVisibility(View.GONE);
+                    no_result.setVisibility(View.VISIBLE);
+                    no_internet.setVisibility(View.GONE);
+                }
+                searchShimmer.stopShimmer();
+                searchShimmer.hideShimmer();
+                searchShimmer.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                new Handler().postDelayed(() -> {
+                if (t.getMessage().contains("Unable to resolve host")) {
+                    no_internet.setVisibility(View.VISIBLE);
+                    searchRecycler.setVisibility(View.GONE);
+                    no_result.setVisibility(View.GONE);
+                } else {
+                    no_result.setVisibility(View.VISIBLE);
+                    searchRecycler.setVisibility(View.GONE);
+                    no_internet.setVisibility(View.GONE);
+                }
+
+                searchShimmer.stopShimmer();
+                searchShimmer.hideShimmer();
+                searchShimmer.setVisibility(View.GONE);
+//                }, 1000);
+            }
+        });
+
     }
 
     @Override

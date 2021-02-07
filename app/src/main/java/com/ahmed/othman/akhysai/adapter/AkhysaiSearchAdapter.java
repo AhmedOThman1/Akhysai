@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+import com.willy.ratingbar.ScaleRatingBar;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -50,14 +54,15 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         Akhysai current_model = Models.get(position);
         final AkhysaiViewHolder ViewHolder = (AkhysaiViewHolder) holder;
 
+        Log.w("AKHYSAIADAPTER", "" + position + ": " + new Gson().toJson(Models.get(position)));
 
         Glide.with(context)
-                .load(LauncherActivity.ImagesLink+current_model.getProfile_picture())
+                .load(LauncherActivity.ImagesLink + current_model.getProfile_picture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.doctor_img2)
                 .into(ViewHolder.akhysai_image);
 
-        ViewHolder.akhysai_name.setText(current_model.getName());
+        ViewHolder.akhysai_name.setText((LauncherActivity.AppLanguage.equalsIgnoreCase("ar") ? Models.get(position).getAr().getName() : Models.get(position).getEn().getName()));
 
 //        ViewHolder.akhysai_description.setText(current_model.getDescription());
 
@@ -65,7 +70,7 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         ViewHolder.akhysai_years_of_experience.setText(temp);
 
 //        ViewHolder.akhysai_rating.setRating(current_model.getRate());
-        ViewHolder.akhysai_rating.setIsIndicator(true);
+//        ViewHolder.akhysai_rating.setIsIndicator(true);
 
 //        temp = context.getResources().getString(R.string.this_rate_from) + current_model.getVisitor_num() + context.getResources().getString(R.string.visitor);
 //        ViewHolder.visitors_rate_num.setText(temp);
@@ -93,6 +98,27 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     }
 
+    private void setRating(double rating, ImageView star1, ImageView star2, ImageView star3, ImageView star4, ImageView star5) {
+
+        star1.setImageResource(R.drawable.empty);
+        star2.setImageResource(R.drawable.empty);
+        star3.setImageResource(R.drawable.empty);
+        star4.setImageResource(R.drawable.empty);
+        star5.setImageResource(R.drawable.empty);
+
+        if (rating > 4)
+            star5.setImageResource(R.drawable.filled);
+        if (rating > 3)
+            star4.setImageResource(R.drawable.filled);
+        if (rating > 2)
+            star3.setImageResource(R.drawable.filled);
+        if (rating > 1)
+            star2.setImageResource(R.drawable.filled);
+        if (rating > 0)
+            star1.setImageResource(R.drawable.filled);
+
+    }
+
     @Override
     public int getItemCount() {
         return Models.size();
@@ -100,9 +126,9 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     static class AkhysaiViewHolder extends RecyclerView.ViewHolder {
         // views
-        ImageView akhysai_image;
+        CircleImageView akhysai_image;
         TextView akhysai_name, akhysai_description, akhysai_years_of_experience, visitors_rate_num, akhysai_price, open_profile, book_akhysai;
-        RatingBar akhysai_rating;
+        ImageView star1, star2, star3, star4, star5;
 
         public AkhysaiViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +136,11 @@ public class AkhysaiSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
             akhysai_name = itemView.findViewById(R.id.akhysai_name);
             akhysai_description = itemView.findViewById(R.id.akhysai_description);
             akhysai_years_of_experience = itemView.findViewById(R.id.akhysai_years_of_experience);
-            akhysai_rating = itemView.findViewById(R.id.akhysai_rating);
+            star1 = itemView.findViewById(R.id.star1);
+            star2 = itemView.findViewById(R.id.star2);
+            star3 = itemView.findViewById(R.id.star3);
+            star4 = itemView.findViewById(R.id.star4);
+            star5 = itemView.findViewById(R.id.star5);
             visitors_rate_num = itemView.findViewById(R.id.visitors_rate_num);
             akhysai_price = itemView.findViewById(R.id.akhysai_price);
             open_profile = itemView.findViewById(R.id.open_profile);

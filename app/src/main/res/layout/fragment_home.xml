@@ -91,8 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:adjustViewBounds="true"
-            android:minHeight="200dp"
-            android:scaleType="fitXY"
+            android:maxHeight="200dp"
             android:src="@drawable/home_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -482,12 +481,39 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"
+            android:layoutAnimation="@anim/layout_animation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layoutAnimation="@anim/layout_animation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_third_title"
-            tools:listitem="@layout/one_article_item" />
+            tools:listitem="@layout/one_article_category_item" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/akhysai_library_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_third_title"
+            android:paddingBottom="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:shimmer_auto_start="true"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/one_article_category_shimmer_item"/>
+                <include layout="@layout/one_article_category_shimmer_item"/>
+                <include layout="@layout/one_article_category_shimmer_item"/>
+                <include layout="@layout/one_article_category_shimmer_item"/>
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

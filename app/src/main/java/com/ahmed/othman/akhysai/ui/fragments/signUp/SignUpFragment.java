@@ -20,20 +20,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.network.ApiClient;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.AKHYSAI;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PATIENT;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.close_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.open_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.userType;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 
 public class SignUpFragment extends Fragment {
 
@@ -155,53 +165,124 @@ public class SignUpFragment extends Fragment {
                 email.setError(null);
                 password.setError(null);
                 close_keyboard();
-                LauncherActivity.akhysaiViewModel.RegisterRequest(
-                        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
-                        name.getEditText().getText().toString().trim(),
-                        email.getEditText().getText().toString().trim(),
-                        password.getEditText().getText().toString().trim());
-                open_loading_dialog(requireContext(),getLayoutInflater());
+                if (Type.equalsIgnoreCase(AKHYSAI))
+                    AkhysaiRegisterRequest(
+                            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
+                            name.getEditText().getText().toString().trim(),
+                            email.getEditText().getText().toString().trim(),
+                            password.getEditText().getText().toString().trim());
+
+                else if (Type.equalsIgnoreCase(PATIENT))
+                    PatientRegisterRequest(
+                            requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getString(LanguageIso, Locale.getDefault().getLanguage()),
+                            name.getEditText().getText().toString().trim(),
+                            email.getEditText().getText().toString().trim(),
+                            password.getEditText().getText().toString().trim());
+
             }
 
-        });
-
-
-        LauncherActivity.akhysaiViewModel.RegisterCurrentUserToken.observe(requireActivity(), strings -> {
-            close_loading_dialog();
-            for (int i = 0; i < strings.size(); i++)
-                Log.w(i+": ",strings.get(i));
-            if (strings != null && strings.get(0) != null && strings.get(0).equals("success")) {
-                Bundle bundle = new Bundle();
-                bundle.putString("Type", Type);
-                bundle.putString("goTo", goTo);
-                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
-                        .edit()
-                        .putBoolean(logged_in, true)
-                        .putString(userType,Type)
-                        .putString(Token, strings.get(1))
-                        .apply();
-                Toast.makeText(getContext(), "Complete Your Profile", Toast.LENGTH_SHORT).show();
-                if (HasPhone)
-                    bundle.putString("phone", phone);
-                Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(R.id.action_signUpFragment_to_completeProfileFragment, bundle);
-            } else if (strings != null && strings.get(0) != null && strings.get(0).equals("error")) {
-                if (strings.get(1).contains("Unable to resolve host"))
-                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
-//                            .setActionTextColor(Color.WHITE)
-                            .show();
-                else if(strings.size()>2&&strings.get(1).contains("Data validation error")){
-                    email.setError(strings.get(2));
-                    email.requestFocus();
-                    open_keyboard(email.getEditText());
-                }else{
-                    Toast.makeText(requireContext(), "" + strings.get(1) + "\n" + strings.get(2), Toast.LENGTH_SHORT).show();
-                    Log.w("ERROR", strings.get(1) + "\t" + strings.get(2));
-                }
-            }
         });
 
         return view;
+    }
+
+    public void AkhysaiRegisterRequest(String languageIso, String name, String email_text, String password) {
+
+        open_loading_dialog(requireContext(), getLayoutInflater());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("email", email_text);
+        jsonObject.addProperty("password", password);
+
+        ApiClient.getINSTANCE().RegisterRequest(languageIso, "specialist", jsonObject).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.w("Register_Response", response.body() + "");
+                close_loading_dialog();
+                if (response.isSuccessful()) {
+                    if (response.body().get("status").getAsString().equals("success")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Type", Type);
+                        bundle.putString("goTo", goTo);
+                        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
+                                .edit()
+                                .putBoolean(logged_in, true)
+                                .putString(userType, Type)
+                                .putString(Token, response.body().get("data").getAsString())
+                                .apply();
+                        Toast.makeText(getContext(), "Complete Your Profile", Toast.LENGTH_SHORT).show();
+                        if (HasPhone)
+                            bundle.putString("phone", phone);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_signUpFragment_to_completeProfileFragment, bundle);
+                    } else if (response.body().get("status").getAsString().equals("error") && response.body().get("data").getAsString().contains("Data validation error")) {
+                        email.setError(response.body().get("message").getAsJsonObject().get("email").getAsJsonArray().get(0).getAsString());
+                        email.requestFocus();
+                        open_keyboard(email.getEditText());
+                    }
+
+                } else {
+                    Toast.makeText(requireContext(), "error -> response is not successful", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                close_loading_dialog();
+                if (t.getMessage().contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+                            .show();
+            }
+        });
+    }
+
+
+    public void PatientRegisterRequest(String languageIso, String name, String email_text, String password) {
+
+        open_loading_dialog(requireContext(), getLayoutInflater());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("email", email_text);
+        jsonObject.addProperty("password", password);
+
+        ApiClient.getINSTANCE().RegisterRequest(languageIso, "user", jsonObject).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.w("Register_Response", response.body() + "");
+                close_loading_dialog();
+                if (response.isSuccessful()) {
+                    if (response.body().get("status").getAsString().equals("success")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Type", Type);
+                        bundle.putString("goTo", goTo);
+                        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
+                                .edit()
+                                .putBoolean(logged_in, true)
+                                .putString(userType, Type)
+                                .putString(Token, response.body().get("data").getAsString())
+                                .apply();
+                        updateNavDrawer(requireActivity());
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_signUpFragment_to_homeFragment, bundle);
+                    } else if (response.body().get("status").getAsString().equals("error") && response.body().get("data").getAsString().contains("Data validation error")) {
+                        email.setError(response.body().get("message").getAsJsonObject().get("email").getAsJsonArray().get(0).getAsString());
+                        email.requestFocus();
+                        open_keyboard(email.getEditText());
+                    }
+
+                } else {
+                    Toast.makeText(requireContext(), "error -> response is not successful", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                close_loading_dialog();
+                if (t.getMessage().contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+                            .show();
+            }
+        });
     }
 
 

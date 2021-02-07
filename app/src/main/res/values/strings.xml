@@ -192,6 +192,23 @@
     <string name="address_in_english">Address in English</string>
     <string name="professional_information">professional information</string>
     <string name="update_all">Update all</string>
+    <string name="add_service">Add Service</string>
+    <string name="service_name_in_arabic">Service name in arabic</string>
+    <string name="service_name_in_english">Service name in english</string>
+    <string name="price">Price</string>
+    <string name="my_services">My Services</string>
+    <string name="delete">Delete</string>
+    <string name="delete_service">Delete Service</string>
+    <string name="are_you_sure">Are you sure ?</string>
+    <string name="do_you_want_to_exit_the_app_or_just_logout">Do you want to <b>Exit</b> the app or just <b>Logout</b>?</string>
+    <string name="exit_app">Exit app</string>
+    <string name="activate_text">Your information has been successfully registered, and your account will be activated after the review, and you will be contacted within two working days</string>
+    <string name="edit_profile_data">Edit Profile data</string>
+    <string name="article">article</string>
+    <string name="not_available">Not Available</string>
+    <string name="available">Available</string>
+    <string name="deleting_time_slot">Deleting time slot…</string>
+    <string name="undo">Undo</string>
 
     <array name="days">
         <item>Day</item>

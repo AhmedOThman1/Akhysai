@@ -25,23 +25,33 @@ import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.RecyclerViewTouchListener;
 import com.ahmed.othman.akhysai.adapter.ArticleAdapter;
 import com.ahmed.othman.akhysai.adapter.ReviewAdapter;
+import com.ahmed.othman.akhysai.network.ApiClient;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.pojo.Article;
 import com.ahmed.othman.akhysai.pojo.Review;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.willy.ratingbar.ScaleRatingBar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.AppLanguage;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PATIENT;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.full_name;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 public class OneAkhysaiFragment extends Fragment {
 
@@ -49,9 +59,13 @@ public class OneAkhysaiFragment extends Fragment {
         // Required empty public constructor
     }
 
-    Akhysai currentAkhysai = new Akhysai();
+    Akhysai thisAkhysai = new Akhysai();
     Context context;
     ReviewAdapter reviewAdapter;
+    ArticleAdapter articleAdapter;
+    ArrayList<Article> Articles = new ArrayList<>();
+    ShimmerFrameLayout articles_shimmer;
+    RecyclerView akhysai_articles_recyclerview;
     boolean dialogHidden = true;
 
     @Override
@@ -62,28 +76,38 @@ public class OneAkhysaiFragment extends Fragment {
 
         context = requireContext();
 
-        RoundedImageView akhysai_image = view.findViewById(R.id.akhysai_image);
+        CircleImageView akhysai_image = view.findViewById(R.id.akhysai_image);
         TextView akhysai_name = view.findViewById(R.id.akhysai_name),
                 akhysai_description = view.findViewById(R.id.akhysai_description),
                 akhysai_years_of_experience = view.findViewById(R.id.akhysai_years_of_experience),
                 visitors_rate_num = view.findViewById(R.id.visitors_rate_num),
                 about_akhysai_body = view.findViewById(R.id.about_akhysai_body),
                 akhysai_price = view.findViewById(R.id.akhysai_price);
-        RatingBar akhysai_rating = view.findViewById(R.id.akhysai_rating);
+//        ScaleRatingBar akhysai_rating = view.findViewById(R.id.akhysai_rating);
         RecyclerView rates_recyclerview = view.findViewById(R.id.rates_recyclerview);
-        RecyclerView akhysai_articles_recyclerview = view.findViewById(R.id.akhysai_articles_recyclerview);
+        akhysai_articles_recyclerview = view.findViewById(R.id.akhysai_articles_recyclerview);
+        articles_shimmer = view.findViewById(R.id.articles_shimmer);
 
         toolbar.setVisibility(View.VISIBLE);
+
+        // Shimmers
+        // Articles shimmer
+        articles_shimmer.startShimmer();
+        articles_shimmer.setVisibility(View.VISIBLE);
+        akhysai_articles_recyclerview.setVisibility(View.GONE);
+        ////
+
+        //
 
         Bundle args = getArguments();
         if (args != null) {
             String json = args.getString("akhysai", "");
             if (!json.trim().isEmpty()) {
-                currentAkhysai = new Gson().fromJson(json, Akhysai.class);
+                thisAkhysai = new Gson().fromJson(json, Akhysai.class);
 //                currentAkhysai.setReviews(getReviewsByAkhysaiID(currentAkhysai.getAkhysai_id()));
-//                currentAkhysai.setArticles(getArticlesByAkhysaiID(currentAkhysai.getAkhysai_id()));
+                getAkhysaiArticles("Bearer " + thisAkhysai.getApiToken());
             }
-            if(args.getBoolean("OpenWriteReviewDialog",false)){
+            if (args.getBoolean("OpenWriteReviewDialog", false)) {
                 open_write_review_dialog();
                 dialogHidden = false;
             }
@@ -91,16 +115,16 @@ public class OneAkhysaiFragment extends Fragment {
 
 
         Glide.with(context)
-                .load(LauncherActivity.ImagesLink+currentAkhysai.getProfile_picture())
+                .load(LauncherActivity.ImagesLink + thisAkhysai.getProfile_picture())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.doctor_img2)
                 .into(akhysai_image);
 
-        akhysai_name.setText(currentAkhysai.getName());
+        akhysai_name.setText((AppLanguage.equalsIgnoreCase("ar") ? thisAkhysai.getAr().getName() : thisAkhysai.getEn().getName()));
 
 //        akhysai_description.setText(currentAkhysai.getDescription());
 
-//        about_akhysai_body.setText(currentAkhysai.getAbout_akhysai());
+        about_akhysai_body.setText(AppLanguage.equalsIgnoreCase("ar") ? thisAkhysai.getAr().getBio() : thisAkhysai.getEn().getBio());
 
 
 //        if (currentAkhysai.getReviews().isEmpty()) {
@@ -112,39 +136,42 @@ public class OneAkhysaiFragment extends Fragment {
 //        } else {
 //            //TODO hide image no articles found
 
-            ArticleAdapter articleAdapter = new ArticleAdapter(requireContext());
+        articleAdapter = new ArticleAdapter(requireContext());
 
-//            articleAdapter.setArticles(currentAkhysai.getArticles());
-            akhysai_articles_recyclerview.setAdapter(articleAdapter);
-            akhysai_articles_recyclerview.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
-            akhysai_articles_recyclerview.setHasFixedSize(true);
+        akhysai_articles_recyclerview.setAdapter(articleAdapter);
+        akhysai_articles_recyclerview.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+        akhysai_articles_recyclerview.setHasFixedSize(true);
 
-            akhysai_articles_recyclerview.addOnItemTouchListener(new RecyclerViewTouchListener(requireContext(), akhysai_articles_recyclerview, new RecyclerViewTouchListener.RecyclerViewClickListener() {
-                @Override
-                public void onClick(View v, int position) {
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("from_akhysai_profile",true);
-//                    bundle.putString("article", new Gson().toJson(currentAkhysai.getArticles().get(position)));
-                    Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_oneArticleFragment,bundle);
-                }
+        akhysai_articles_recyclerview.addOnItemTouchListener(new RecyclerViewTouchListener(requireContext(), akhysai_articles_recyclerview, new RecyclerViewTouchListener.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("from_akhysai_profile", true);
+                bundle.putString("article", new Gson().toJson(Articles.get(position)));
+                Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_oneArticleFragment, bundle);
+            }
 
-                @Override
-                public void onLongClick(View view, int position) {
+            @Override
+            public void onLongClick(View view, int position) {
 
-                }
-            }));
+            }
+        }));
 
 //        }
 
 
-//        view.findViewById(R.id.profile_second_card).setVisibility(currentAkhysai.getAbout_akhysai().trim().isEmpty() ? View.GONE : View.VISIBLE);
+        view.findViewById(R.id.profile_second_card).setVisibility(
+                AppLanguage.equalsIgnoreCase("ar") ?
+                        (thisAkhysai.getAr().getBio().trim().isEmpty() ? View.GONE : View.VISIBLE) :
+                        (thisAkhysai.getEn().getBio().trim().isEmpty() ? View.GONE : View.VISIBLE));
 
 
-        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + currentAkhysai.getExperienceYears() + context.getResources().getString(R.string.years);
+        String temp = context.getResources().getString(R.string.years_of_experience2) + ": " + thisAkhysai.getExperienceYears() + context.getResources().getString(R.string.years);
         akhysai_years_of_experience.setText(temp);
 
+        //TODO get akhysai rating
 //        akhysai_rating.setRating(currentAkhysai.getRate());
-        akhysai_rating.setIsIndicator(true);
+//        akhysai_rating.setIsIndicator(true);
 
 //        temp = context.getResources().getString(R.string.this_rate_from) + currentAkhysai.getVisitor_num() + context.getResources().getString(R.string.visitor);
 //        visitors_rate_num.setText(temp);
@@ -154,7 +181,7 @@ public class OneAkhysaiFragment extends Fragment {
 
         view.findViewById(R.id.book_akhysai).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("akhysai", new Gson().toJson(currentAkhysai));
+            bundle.putString("akhysai", new Gson().toJson(thisAkhysai));
             Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_bookOneAkhysaiFragment, bundle);
         });
 
@@ -162,17 +189,18 @@ public class OneAkhysaiFragment extends Fragment {
             if (requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).getBoolean(logged_in, false) && dialogHidden) {
                 open_write_review_dialog();
                 dialogHidden = false;
-            } else if (dialogHidden)
-            {
+            } else if (dialogHidden) {
                 Bundle bundle = new Bundle();
-                bundle.putString("goTo","oneAkhysaiFragmntWriteReview");
-                bundle.putString("akhysai",new Gson().toJson(currentAkhysai));
-                Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_loginFragment,bundle);
+                bundle.putString("goTo", "oneAkhysaiFragmntWriteReview");
+                bundle.putString("Type", PATIENT);
+                bundle.putString("akhysai", new Gson().toJson(thisAkhysai));
+                Navigation.findNavController(v).navigate(R.id.action_oneAkhysaiFragment_to_loginFragment, bundle);
             }
 
         });
 
         reviewAdapter = new ReviewAdapter(context);
+        //TODO get akhysai reviews
 //        reviewAdapter.setModels(currentAkhysai.getReviews());
         rates_recyclerview.setAdapter(reviewAdapter);
         rates_recyclerview.setLayoutManager(new LinearLayoutManager(context));
@@ -201,20 +229,26 @@ public class OneAkhysaiFragment extends Fragment {
         // End of TODO
     }
 
-    private ArrayList<Article> getArticlesByAkhysaiID(int akhysai_id) {
-        ArrayList<Article> myTempArticles = new ArrayList<>();
-        Calendar c1 = Calendar.getInstance();
-        c1.add(Calendar.DAY_OF_MONTH,-10);
-        Calendar c2 = Calendar.getInstance();
-        c2.add(Calendar.DAY_OF_MONTH,-1);
-        Calendar c3 = Calendar.getInstance();
-        c3.add(Calendar.DAY_OF_MONTH,-142);
+    public void getAkhysaiArticles(String Authorization) {
+        ApiClient.getINSTANCE().getAkhysaiArticles(Authorization).enqueue(new Callback<ArrayList<Article>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Article>> call, Response<ArrayList<Article>> response) {
+                if (response.isSuccessful()) {
+                    Articles = new ArrayList<>(response.body());
+                    articleAdapter.setArticles(Articles);
+                    articleAdapter.notifyDataSetChanged();
+                    akhysai_articles_recyclerview.setVisibility(View.VISIBLE);
+                    articles_shimmer.stopShimmer();
+                    articles_shimmer.hideShimmer();
+                    articles_shimmer.setVisibility(View.GONE);
+                }
+            }
 
-        //TODO
-//        myTempArticles.add(new Article("", "مقالة عن التنمر", "الطب",c1.getTimeInMillis(),"تفاصيل طويلة عريضة",""));
-//        myTempArticles.add(new Article("", "مقالة عن التوحد", "الطب",c2.getTimeInMillis(),"تفاصيل طويلة عريضة تاني",""));
-//        myTempArticles.add(new Article("", "مقالة عن التخاطب", "ذووي الاحتياجات الخاصة",c3.getTimeInMillis(),"تفاصيل طويلة عريضة تالت انت لحقت تزهق",""));
-        return myTempArticles;
+            @Override
+            public void onFailure(Call<ArrayList<Article>> call, Throwable t) {
+
+            }
+        });
     }
 
     AlertDialog dialog;
@@ -223,7 +257,7 @@ public class OneAkhysaiFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View write_review_dialog = getLayoutInflater().inflate(R.layout.write_review_dialog, null);
         TextInputLayout review = write_review_dialog.findViewById(R.id.review);
-        RatingBar akhysai_rating = write_review_dialog.findViewById(R.id.akhysai_rating);
+        ScaleRatingBar akhysai_rating = write_review_dialog.findViewById(R.id.akhysai_rating);
 
         review.requestFocus();
         open_keyboard(review.getEditText());

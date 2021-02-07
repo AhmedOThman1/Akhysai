@@ -1,4 +1,4 @@
-package com.ahmed.othman.akhysai.ui.fragments;
+package com.ahmed.othman.akhysai.ui.fragments.akhysai;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import com.ahmed.othman.akhysai.RecyclerViewTouchListener;
 import com.ahmed.othman.akhysai.adapter.ArticleAdapter;
 import com.ahmed.othman.akhysai.network.ApiClient;
 import com.ahmed.othman.akhysai.pojo.Article;
-import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,8 +37,8 @@ import retrofit2.Response;
 
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.navigation_view;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 
 public class MyArticlesFragment extends Fragment {
@@ -56,12 +55,13 @@ public class MyArticlesFragment extends Fragment {
     ArticleAdapter articleAdapter;
     boolean selectMode = false;
     String UserToken;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_articles, container, false);
+        view = inflater.inflate(R.layout.fragment_my_articles, container, false);
 
         my_articles_recycler = view.findViewById(R.id.my_articles_recycler);
         my_articles_shimmer = view.findViewById(R.id.my_articles_shimmer);
@@ -69,7 +69,7 @@ public class MyArticlesFragment extends Fragment {
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE);
         UserToken = sharedPreferences.getString(Token, "");
-        LauncherActivity.akhysaiViewModel.getAkhysaiArticles("Bearer " + UserToken);
+        getAkhysaiArticles("Bearer " + UserToken);
         my_articles_shimmer.startShimmer();
         my_articles_shimmer.setVisibility(View.VISIBLE);
         my_articles_recycler.setVisibility(View.GONE);
@@ -148,38 +148,34 @@ public class MyArticlesFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_myArticlesFragment_to_createNewArticleFragment);
         });
 
-        LauncherActivity.akhysaiViewModel.akhysaiArticlesMutableLiveData.observe(requireActivity(), articles -> {
-            if (articles != null) {
-                myArticles = new ArrayList<>(articles);
-                articleAdapter.setArticles(myArticles);
-                articleAdapter.notifyDataSetChanged();
-                my_articles_recycler.setVisibility(View.VISIBLE);
-                my_articles_shimmer.stopShimmer();
-                my_articles_shimmer.hideShimmer();
-                my_articles_shimmer.setVisibility(View.GONE);
-            }
-        });
 
         return view;
     }
 
-//    private ArrayList<Article> getCurrentAkhysaiArticles() {
-//
-//
-////        ArrayList<Article> myTempArticles = new ArrayList<>();
-////        Calendar c1 = Calendar.getInstance();
-////        c1.add(Calendar.DAY_OF_MONTH,-10);
-////        Calendar c2 = Calendar.getInstance();
-////        c2.add(Calendar.DAY_OF_MONTH,-1);
-////        Calendar c3 = Calendar.getInstance();
-////        c3.add(Calendar.DAY_OF_MONTH,-142);
-////
-////        myTempArticles.add(new Article("", "مقالة عن التنمر", "الطب",c1.getTimeInMillis(),"تفاصيل طويلة عريضة",""));
-////        myTempArticles.add(new Article("", "مقالة عن التوحد", "الطب",c2.getTimeInMillis(),"تفاصيل طويلة عريضة تاني",""));
-////        myTempArticles.add(new Article("", "مقالة عن التخاطب", "ذووي الاحتياجات الخاصة",c3.getTimeInMillis(),"تفاصيل طويلة عريضة تالت انت لحقت تزهق",""));
-////
-//        return myTempArticles;
-//    }
+    private void getAkhysaiArticles(String Authorization) {
+        ApiClient.getINSTANCE().getAkhysaiArticles(Authorization).enqueue(new Callback<ArrayList<Article>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Article>> call, Response<ArrayList<Article>> response) {
+                if (response.isSuccessful()) {
+                    myArticles = new ArrayList<>(response.body());
+                    articleAdapter.setArticles(myArticles);
+                    articleAdapter.notifyDataSetChanged();
+                    my_articles_recycler.setVisibility(View.VISIBLE);
+                    my_articles_shimmer.stopShimmer();
+                    my_articles_shimmer.hideShimmer();
+                    my_articles_shimmer.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Article>> call, Throwable t) {
+                if (t.getMessage().contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+                            .show();
+            }
+        });
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

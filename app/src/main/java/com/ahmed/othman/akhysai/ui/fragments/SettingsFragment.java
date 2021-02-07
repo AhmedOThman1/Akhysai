@@ -1,38 +1,49 @@
 package com.ahmed.othman.akhysai.ui.fragments;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.network.ApiClient;
+import com.ahmed.othman.akhysai.pojo.Akhysai;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-import java.util.Locale;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.BlogCategories;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Cities;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.DirectoryCategories;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Fields;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.setAppLocale;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Qualifications;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.navigation_view;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 public class SettingsFragment extends Fragment {
 
@@ -40,11 +51,13 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         toolbar.setVisibility(View.VISIBLE);
         navigation_view.setCheckedItem(R.id.nav_settings);
@@ -52,8 +65,9 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.language).setOnClickListener(v -> chooseLanguage());
         view.findViewById(R.id.language_text).setOnClickListener(v -> chooseLanguage());
 
-        String userType = requireActivity().getSharedPreferences(LauncherActivity.shared_pref, MODE_PRIVATE).getString("userType", "Patient");
-        if (userType.equalsIgnoreCase(LauncherActivity.PATIENT)) {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE);
+        String userType = sharedPreferences.getString(LauncherActivity.userType, LauncherActivity.PATIENT);
+        if (userType.equalsIgnoreCase(LauncherActivity.PATIENT)||userType.isEmpty()) {
             view.findViewById(R.id.profile).setVisibility(View.GONE);
             view.findViewById(R.id.line0).setVisibility(View.GONE);
         }
@@ -66,9 +80,12 @@ public class SettingsFragment extends Fragment {
                         Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_mySpecialtiesFragment);
                         return true;
                     case R.id.edit_profile:
-                        if (userType.equalsIgnoreCase(LauncherActivity.AKHYSAI))
+                        if (userType.equalsIgnoreCase(LauncherActivity.AKHYSAI) && currentAkhysai.getApiToken() !=null)
                             Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_editAkhysaiDataFragment);
-                        else
+                        else if (userType.equalsIgnoreCase(LauncherActivity.AKHYSAI)) {
+                            justOnce = true;
+                            getCurrentAkhysaiData(sharedPreferences.getString(Token, ""));
+                        } else
                             Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_editClinicFragment);
                         return true;
                     case R.id.change_password:
@@ -108,6 +125,12 @@ public class SettingsFragment extends Fragment {
             requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE).edit().putString(LanguageIso, isLanguageAr ? "ar" : "en").apply();
             dialog.dismiss();
             // Restart the app
+
+            Cities = new ArrayList<>();
+            Fields = new ArrayList<>();
+//            BlogCategories = new ArrayList<>();
+            DirectoryCategories = new ArrayList<>();
+            Qualifications = new ArrayList<>();
 
             Intent restartIntent = requireActivity().getBaseContext()
                     .getPackageManager()
@@ -166,6 +189,43 @@ public class SettingsFragment extends Fragment {
         Window window = dialog.getWindow();
         assert window != null;
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    boolean justOnce = true;
+
+    private void getCurrentAkhysaiData(String token) {
+
+        ApiClient.getINSTANCE().getSpecialistData("Bearer " + token).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.w("specialistData", response.body().get("status").getAsString());
+
+                    if (response.body().get("status").getAsString().equals("success")) {
+                        currentAkhysai = new Gson().fromJson(response.body().get("data").getAsJsonObject().get("specialist").getAsJsonObject().toString(), Akhysai.class);
+                        if (currentAkhysai != null)
+                            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_editAkhysaiDataFragment);
+
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                if (justOnce && t.getMessage().contains("Unable to resolve host")) {
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+//                            .setActionTextColor(Color.WHITE)
+                            .show();
+                    justOnce = false;
+
+                }
+
+            }
+        });
     }
 
 }

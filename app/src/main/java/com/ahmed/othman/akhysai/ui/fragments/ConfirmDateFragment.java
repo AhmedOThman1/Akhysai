@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 
 public class ConfirmDateFragment extends Fragment {
 
@@ -80,15 +80,13 @@ public class ConfirmDateFragment extends Fragment {
                     temp3 = requireContext().getResources().getString(R.string.on),
                     temp4 = args.getString("day", "Day"),
                     temp5 = requireContext().getResources().getString(R.string.from),
-                    temp6 = (start.get(Calendar.HOUR) == 0 ? "12" : start.get(Calendar.HOUR))
-                            + ":" + (start.get(Calendar.MINUTE) < 10 ? "0" + start.get(Calendar.MINUTE) : start.get(Calendar.MINUTE)),
-                    temp7 = start.get(Calendar.AM_PM) == Calendar.AM ?
+                    temp6 = date.getStartTime().substring(0, 5),
+                    temp7 = (date.getStartTime().charAt(0) == '0' || (date.getStartTime().charAt(0) == '1' && date.getStartTime().charAt(1) < '2')) ?
                             requireContext().getResources().getString(R.string.am)
                             : requireContext().getResources().getString(R.string.pm),
                     temp8 = requireContext().getResources().getString(R.string.to),
-                    temp9 = (end.get(Calendar.HOUR) == 0 ? "12" : end.get(Calendar.HOUR))
-                            + ":" + (end.get(Calendar.MINUTE) < 10 ? "0" + end.get(Calendar.MINUTE) : end.get(Calendar.MINUTE)),
-                    temp10 = end.get(Calendar.AM_PM) == Calendar.AM ?
+                    temp9 = date.getEndTime().substring(0, 5),
+                    temp10 = (date.getEndTime().charAt(0) == '0' || (date.getEndTime().charAt(0) == '1' && date.getEndTime().charAt(1) < '2')) ?
                             requireContext().getResources().getString(R.string.am)
                             : requireContext().getResources().getString(R.string.pm);
 

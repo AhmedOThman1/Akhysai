@@ -3,13 +3,11 @@ package com.ahmed.othman.akhysai.ui.fragments.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -49,10 +47,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -61,16 +57,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Token;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.close_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.open_loading_dialog;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileComplete;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.profileVerify;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.userType;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 
 public class LoginFragment extends Fragment {
 
@@ -147,8 +146,10 @@ public class LoginFragment extends Fragment {
                     AkhysaiLoginRequest(language,
                             username.getEditText().getText().toString().trim(),
                             password.getEditText().getText().toString().trim());
-
-
+                else if(Type.equalsIgnoreCase(LauncherActivity.PATIENT))
+                    PatientLoginRequest(language,
+                            username.getEditText().getText().toString().trim(),
+                            password.getEditText().getText().toString().trim());
                 this.v = v;
 //                requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE).edit().putBoolean(logged_in, true).apply();
 //                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
@@ -198,7 +199,7 @@ public class LoginFragment extends Fragment {
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("password", password);
 
-        ApiClient.getINSTANCE().LoginRequest(languageIso, jsonObject).enqueue(new Callback<JsonObject>() {
+        ApiClient.getINSTANCE().LoginRequest(languageIso,"specialist", jsonObject).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 Log.w("Login_Response", response.body() + "");
@@ -243,6 +244,8 @@ public class LoginFragment extends Fragment {
                         requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
                                 .edit()
                                 .putBoolean(logged_in, true)
+                                .putBoolean(profileComplete,true)
+                                .putBoolean(profileVerify,true)
                                 .putString(userType, Type)
                                 .putString(Token, token)
                                 .apply();
@@ -257,7 +260,25 @@ public class LoginFragment extends Fragment {
                             Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
                     } else if (response.body().get("status").getAsString().equals("warning")) {
                         if (response.body().get("data").getAsString().equals("profile_not_completed")) {
+                            requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE)
+                                    .edit()
+                                    .putBoolean(logged_in, true)
+                                    .putBoolean(profileComplete, false)
+                                    .putString(userType, Type)
+                                    .putString(Token, token)
+                                    .apply();
                             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_completeProfileFragment);
+                        } else if(response.body().get("data").getAsString().equalsIgnoreCase("waiting_to_verify")){
+                            currentAkhysai = new Gson().fromJson(response.body().get("specialist").getAsJsonObject().get("specialist").getAsJsonObject().toString(), Akhysai.class);
+                            requireActivity().getSharedPreferences(shared_pref, MODE_PRIVATE)
+                                    .edit()
+                                    .putBoolean(logged_in, true)
+                                    .putBoolean(profileComplete, true)
+                                    .putBoolean(profileVerify,false)
+                                    .putString(userType, Type)
+                                    .putString(Token, token)
+                                    .apply();
+                            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_verifyProfileFragment);
                         }
                     }
 
@@ -269,6 +290,61 @@ public class LoginFragment extends Fragment {
 
             }
         });
+    }
+
+
+    public void PatientLoginRequest(String languageIso, String email, String password) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("email", email);
+        jsonObject.addProperty("password", password);
+
+        ApiClient.getINSTANCE().LoginRequest(languageIso,"user", jsonObject).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.w("Login_Response", response.body() + "");
+                if (response.isSuccessful()) {
+                    Log.w("LoginP", "LoginRequest_onResponse, Body: " + response.body() + " ,status: " + response.body().get("status").getAsString() + " ,Token: " + response.body().get("data").getAsString());
+
+                    String loginStatus = response.body().get("status").getAsString();
+                    String loginData = response.body().get("data").getAsString();
+
+                    close_loading_dialog();
+                    if (loginStatus != null && loginStatus.equals("success"))
+                        getCurrentPatientData(loginData);
+                    else
+                        Toast.makeText(context, loginData, Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(context, "response is not successful", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                if (t.getMessage().contains("Unable to resolve host"))
+                    Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.go_to_setting, v -> context.startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+//                            .setActionTextColor(Color.WHITE)
+                            .show();
+            }
+        });
+    }
+
+    private void getCurrentPatientData(String token){
+        requireActivity().getSharedPreferences(shared_pref, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(logged_in, true)
+                .putString(userType, Type)
+                .putString(Token, token)
+                .apply();
+        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+        updateNavDrawer(requireActivity());
+
+        if (goTo.isEmpty())
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+        else if (goTo.equalsIgnoreCase("oneAkhysaiFragmntWriteReview"))
+            Navigation.findNavController(v).popBackStack(R.id.oneAkhysaiFragment, false);
+        else if (goTo.equalsIgnoreCase("BookOneAkhysaiFragment"))
+            Navigation.findNavController(v).popBackStack(R.id.bookOneAkhysaiFragment, false);
     }
 
     private void initFacebook() {

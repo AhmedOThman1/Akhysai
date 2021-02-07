@@ -2,22 +2,19 @@ package com.ahmed.othman.akhysai.ui.fragments.completeProfile.steps;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
 import com.ahmed.othman.akhysai.ui.fragments.completeProfile.CompleteProfileFragment;
 import com.google.android.material.textfield.TextInputLayout;
-
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
 
 public class Step1Fragment extends Fragment {
 
@@ -36,6 +33,13 @@ public class Step1Fragment extends Fragment {
 
         name_in_en = view.findViewById(R.id.name_in_en);
         name_in_ar = view.findViewById(R.id.name_in_ar);
+
+        if(LauncherActivity.currentAkhysai.getAr()!=null && LauncherActivity.currentAkhysai.getAr().getName()!=null){
+            name_in_ar.getEditText().setText(LauncherActivity.currentAkhysai.getAr().getName().trim());
+        }
+        if(LauncherActivity.currentAkhysai.getEn()!=null && LauncherActivity.currentAkhysai.getEn().getName()!=null){
+            name_in_en.getEditText().setText(LauncherActivity.currentAkhysai.getEn().getName().trim());
+        }
 
         view.findViewById(R.id.next).setOnClickListener(v -> {
             if(name_in_en.getEditText().getText().toString().trim().isEmpty()){

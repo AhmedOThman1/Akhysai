@@ -154,12 +154,12 @@ public class AkhysaiViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<String>> LoginCurrentUserToken = new MutableLiveData<>();
 
-    public void LoginRequest(String languageIso, String email, String password) {
+    public void LoginRequest(String languageIso, String type, String email, String password) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("password", password);
 
-        ApiClient.getINSTANCE().LoginRequest(languageIso, jsonObject).enqueue(new Callback<JsonObject>() {
+        ApiClient.getINSTANCE().LoginRequest(languageIso, type, jsonObject).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 Log.w("Login_Response", response.body() + "");
@@ -190,13 +190,13 @@ public class AkhysaiViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<String>> RegisterCurrentUserToken = new MutableLiveData<>();
 
-    public void RegisterRequest(String languageIso, String name, String email, String password) {
+    public void RegisterRequest(String languageIso, String type, String name, String email, String password) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("password", password);
 
-        ApiClient.getINSTANCE().RegisterRequest(languageIso, jsonObject).enqueue(new Callback<JsonObject>() {
+        ApiClient.getINSTANCE().RegisterRequest(languageIso,type, jsonObject).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 Log.w("Register_Response", response.body() + "");

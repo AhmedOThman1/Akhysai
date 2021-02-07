@@ -1,14 +1,16 @@
-package com.ahmed.othman.akhysai.ui.fragments;
+package com.ahmed.othman.akhysai.ui.fragments.akhysai;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,31 +25,34 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
+import com.ahmed.othman.akhysai.network.ApiClient;
 import com.ahmed.othman.akhysai.pojo.Akhysai;
-import com.ahmed.othman.akhysai.pojo.Clinic;
 import com.ahmed.othman.akhysai.pojo.Region;
 import com.ahmed.othman.akhysai.pojo.Speciality;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.makeramen.roundedimageview.RoundedImageView;
+import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -64,9 +69,11 @@ import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Specialties;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.SpecialtiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.akhysaiViewModel;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.close_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.open_loading_dialog;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
 
@@ -98,13 +105,15 @@ public class EditAkhysaiDataFragment extends Fragment {
 
 
     Uri ImageUri;
+    String ImagePath="",birthday_text="";
     Calendar calendar = Calendar.getInstance();
     ScrollView scroll;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_akhysai_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_akhysai_profile, container, false);
 
         toolbar.setVisibility(View.VISIBLE);
 //        initSpinners();
@@ -140,8 +149,8 @@ public class EditAkhysaiDataFragment extends Fragment {
 
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE2_PERMISSION);
             } else {
-                Intent gal = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(gal, "select media file"), GAL_CODE2);
+                Intent gal = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gal, GAL_CODE2);
             }
         });
 
@@ -161,9 +170,12 @@ public class EditAkhysaiDataFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .placeholder(R.drawable.background_circle_shimmer)
                 .into(akhysai_image);
+        ImageUri = Uri.parse(ImagesLink + currentAkhysai.getProfile_picture());
+
 
         name_in_ar.getEditText().setText(currentAkhysai.getAr().getName());
         name_in_en.getEditText().setText(currentAkhysai.getEn().getName());
+        birthday_text = currentAkhysai.getBirthDate();
         birthday.getEditText().setText(currentAkhysai.getBirthDate());
         String year = currentAkhysai.getBirthDate().substring(0, 4),
                 month = currentAkhysai.getBirthDate().substring(5, 7),
@@ -441,20 +453,30 @@ public class EditAkhysaiDataFragment extends Fragment {
                 years_of_experience.setError(null);
                 about_doctor_en.setError(null);
                 about_doctor_ar.setError(null);
-                Toast.makeText(requireContext(), "Uploading here...", Toast.LENGTH_SHORT).show();
-//                Akhysai akhysai = new Akhysai(String.valueOf(ImageUri),
-//                        name.getEditText().getText().toString().trim(),
-//                        akhysai_description.getEditText().getText().toString().trim(),
-//                        about_akhysai.getEditText().getText().toString().trim(),
-//                        Integer.parseInt(years_of_experience.getEditText().getText().toString().trim()),
-//                        (float) 4,//put the real rate here
-//                        19,// put the real visitor num here
-//                        Integer.parseInt(akhysai_price.getEditText().getText().toString().trim()),
-//                        phone.getEditText().getText().toString().trim(),
-//                        calendar.getTimeInMillis(),
-//                        male.isChecked(),
-//                        id_card_number.getEditText().getText().toString().trim(), new ArrayList<>(), new ArrayList<>());
-//                postEditAkhysaiProfileData(akhysai);
+
+                ///
+                /////// first card
+                currentAkhysai.getEn().setName(name_in_en.getEditText().getText().toString().trim());
+                currentAkhysai.getAr().setName(name_in_ar.getEditText().getText().toString().trim());
+                currentAkhysai.setBirthDate(birthday_text.trim());
+                currentAkhysai.setNationalId(id_card_number.getEditText().getText().toString().trim());
+                currentAkhysai.setGender(male.isChecked() ? "M" : "F");
+                /////// second card
+                currentAkhysai.setCityId(String.valueOf(Cities.get(city.getSelectedItemPosition()-1).getCityId()));
+                currentAkhysai.setRegionId(String.valueOf(Regions.get(area.getSelectedItemPosition()-1).getRegionId()));
+                currentAkhysai.getAr().setAddress(address_in_ar.getEditText().getText().toString().trim());
+                currentAkhysai.getEn().setAddress(address_in_en.getEditText().getText().toString().trim());
+                currentAkhysai.setPhone(phone.getEditText().getText().toString().trim());
+                //////// third card
+                currentAkhysai.setQualificationId(String.valueOf(Qualifications.get(qualification.getSelectedItemPosition()-1).getQualificationId()));
+                currentAkhysai.setFieldId(String.valueOf(Fields.get(field.getSelectedItemPosition()-1).getFieldId()));
+                currentAkhysai.setSpecialityId(String.valueOf(Specialties.get(specialty.getSelectedItemPosition()-1).getSpecialityId()));
+                currentAkhysai.setExperienceYears(years_of_experience.getEditText().getText().toString().trim());
+                currentAkhysai.getEn().setBio(about_doctor_en.getEditText().getText().toString().trim());
+                currentAkhysai.getAr().setBio(about_doctor_ar.getEditText().getText().toString().trim());
+                ///
+                postEditAkhysaiProfileData(currentAkhysai);
+
             }
         });
 
@@ -523,9 +545,9 @@ public class EditAkhysaiDataFragment extends Fragment {
             calendar.set(Calendar.YEAR, year1);
             calendar.set(Calendar.MONTH, month1);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            String this_day = (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "/" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "/" + year1;
-            birthday.getEditText().setText(this_day);
+            birthday_text = String.valueOf(year1) + "-" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
+//            String this_day = (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "/" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "/" + year1;
+            birthday.getEditText().setText(birthday_text);
             birthday.setError(null);
 
         }, year, month, day);
@@ -533,22 +555,70 @@ public class EditAkhysaiDataFragment extends Fragment {
         pickerDialog.show();
     }
 
-//    private void initSpinners() {
-//        Cities = Arrays.asList(requireContext().getResources().getStringArray(R.array.cities));
-//        Areas = Arrays.asList(requireContext().getResources().getStringArray(R.array.cairo));
-//    }
 
     private void postEditAkhysaiProfileData(Akhysai akhysai) {
-        Toast.makeText(requireContext(), "Your data has been changed successfully", Toast.LENGTH_SHORT).show();
-        requireActivity().onBackPressed();
+
+        File file = new File(ImagePath);
+            Toast.makeText(requireContext(), "Uploading here...", Toast.LENGTH_SHORT).show();
+            open_loading_dialog(requireContext(), getLayoutInflater());
+
+            ApiClient.getINSTANCE().CompleteProfile("Bearer " + akhysai.getApiToken(),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getAr().getName()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getEn().getName()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getCityId()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getRegionId()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getNationalId()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getBirthDate()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getGender()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getPhone()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getExperienceYears()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getAr().getBio()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getEn().getBio()),
+                    file.exists()?
+                    MultipartBody.Part.createFormData("profile_picture", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file))
+                    : MultipartBody.Part.createFormData("profile_picture", ""+akhysai.getProfile_picture()) ,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getAr().getAddress()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getEn().getAddress()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getFieldId()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getSpecialityId()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), akhysai.getQualificationId())
+            ).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.w("CompleteProfileResponse", response.body() + "");
+                    close_loading_dialog();
+                    if (response.isSuccessful()) {
+                        Log.w("JSON", "" + response.body().get("status").getAsString());
+                        if (response.body().get("status").getAsString().equalsIgnoreCase("success")) {
+                            Toast.makeText(requireContext(), "Your data has been changed successfully", Toast.LENGTH_SHORT).show();
+                            requireActivity().onBackPressed();
+                        }
+                    } else {
+                        Log.w("CompNotSucc", "" + response);
+                        Toast.makeText(requireContext(), "Faild, try again", Toast.LENGTH_SHORT).show();
+//                        TO DO REMOVE THIS!
+//                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_completeProfileFragment_to_homeFragment);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    close_loading_dialog();
+                    if (t.getMessage().contains("Unable to resolve host"))
+                        Snackbar.make(view, R.string.no_internet_connection, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.go_to_setting, v -> requireContext().startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)))
+                                .show();
+                }
+            });
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CODE2_PERMISSION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Intent gal = new Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(gal, "select media file"), GAL_CODE2);
+            Intent gal = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(gal, GAL_CODE2);
         }
     }
 
@@ -562,9 +632,36 @@ public class EditAkhysaiDataFragment extends Fragment {
             Uri imageUri = data.getData();
             if (imageUri != null) {
                 // one image
-                akhysai_image.setImageURI(imageUri);
-                akhysai_image.setBorderWidth(0);
+//                akhysai_image.setImageURI(imageUri);
                 ImageUri = imageUri;
+
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = requireContext().getContentResolver().query(ImageUri, filePathColumn, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    ImagePath = cursor.getString(columnIndex);
+                    Log.w("ImagePath", "-->" + ImagePath + "<--");
+                    if (ImagePath == null) {
+                        ImageUri = null;
+                        akhysai_image.setImageBitmap(null);
+                        Toast.makeText(requireContext(), "Unable to load image", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Glide.with(requireContext())
+                                .load(new File(ImagePath))
+                                .into(akhysai_image);
+                        akhysai_image.setBorderWidth(0);
+                    }
+                    cursor.close();
+                }
+
+            } else {
+                ImageUri = null;
+                akhysai_image.setImageBitmap(null);
+                Toast.makeText(requireContext(), "Unable to load image", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -576,27 +673,4 @@ public class EditAkhysaiDataFragment extends Fragment {
         imm.showSoftInput(textInputLayout, InputMethodManager.SHOW_IMPLICIT); //    first param -> editText
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        // This callback will only be called when MyFragment is at least Started.
-//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                // Handle the back button event
-////                NavOptions navOptions = new NavOptions.Builder()
-////                        .setPopUpTo(R.id.homeFragment, true)
-////                        .setEnterAnim(R.anim.slide_in_right)
-////                        .setExitAnim(R.anim.slide_out_left)
-////                        .setPopEnterAnim(R.anim.slide_in_left)
-////                        .setPopExitAnim(R.anim.slide_out_right)
-////                        .build();
-////                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.homeFragment, null, navOptions);
-//
-//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack(R.id.homeFragment, false);
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-//    }
 }

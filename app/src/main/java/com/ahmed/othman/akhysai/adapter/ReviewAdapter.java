@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private ArrayList<Review> Models;
+    private ArrayList<Review> Models = new ArrayList<>();
 
     public ReviewAdapter(@NonNull Context context) {
         this.context = context;

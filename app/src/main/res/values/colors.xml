@@ -10,6 +10,7 @@
     <color name="primary">#0f727c</color>
 
     <color name="error_red">#E91E1E</color>
+    <color name="unselected_chip_color">#EEE</color>
 
 
 </resources>

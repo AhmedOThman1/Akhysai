@@ -71,6 +71,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .placeholder(R.drawable.akhysai_logo)
                     .into(ViewHolder.article_item_image);
+
             if (Articles.get(position).isSelected())
                 ViewHolder.constrain_select_background.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             else

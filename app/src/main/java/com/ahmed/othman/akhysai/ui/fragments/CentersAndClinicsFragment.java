@@ -25,16 +25,13 @@ import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.RecyclerViewTouchListener;
 import com.ahmed.othman.akhysai.adapter.ClinicAdapter;
 import com.ahmed.othman.akhysai.pojo.Clinic;
-import com.ahmed.othman.akhysai.pojo.DirectoryCategories;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.navigation_view;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.navigation_view;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.toolbar;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.DirectoryCategoriesString;
 
 

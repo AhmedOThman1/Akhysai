@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -22,24 +21,18 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.ahmed.othman.akhysai.R;
 import com.ahmed.othman.akhysai.pojo.Region;
 import com.ahmed.othman.akhysai.ui.activities.LauncherActivity;
-import com.ahmed.othman.akhysai.ui.fragments.HomeFragment;
 import com.ahmed.othman.akhysai.ui.fragments.completeProfile.CompleteProfileFragment;
-import com.ahmed.othman.akhysai.ui.viewModels.AkhysaiViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.AKHYSAI;
@@ -47,11 +40,11 @@ import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CLINIC;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Cities;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.LanguageIso;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.PATIENT;
+import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.currentAkhysai;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.logged_in;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.shared_pref;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.userType;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.toolbar;
-import static com.ahmed.othman.akhysai.ui.activities.MainActivity.updateNavDrawer;
+import static com.ahmed.othman.akhysai.ui.activities.mainActivity.MainActivity.updateNavDrawer;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.CitiesString;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.Regions;
 import static com.ahmed.othman.akhysai.ui.activities.LauncherActivity.RegionsString;
@@ -101,6 +94,10 @@ public class Step2Fragment extends Fragment {
         phone.requestFocus();
         open_keyboard(phone.getEditText());
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, CitiesString);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        city.setAdapter(adapter);
+
         Type = CompleteProfileFragment.Type;
         goTo = CompleteProfileFragment.goTo;
         phone_text = CompleteProfileFragment.phone_text;
@@ -115,6 +112,40 @@ public class Step2Fragment extends Fragment {
             birthday.setVisibility(View.VISIBLE);
             genderRadio.setVisibility(View.VISIBLE);
             sign_up.setText(getContext().getResources().getString(R.string.next_button));
+
+            if(currentAkhysai.getPhone()!=null)
+                phone.getEditText().setText(currentAkhysai.getPhone().trim());
+
+            if(currentAkhysai.getBirthDate()!=null)
+            {
+                birthday.getEditText().setText(currentAkhysai.getBirthDate().trim());
+                birthday_text = currentAkhysai.getBirthDate().trim();
+                String year = currentAkhysai.getBirthDate().substring(0, 4),
+                        month = currentAkhysai.getBirthDate().substring(5, 7),
+                        day = currentAkhysai.getBirthDate().substring(8, 10);
+                calendar.set(Calendar.YEAR, Integer.valueOf(year));
+                calendar.set(Calendar.MONTH, Integer.valueOf(month)-1);
+                calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day));
+            }
+
+            Log.w("TTTEEESSSTTT",""+currentAkhysai.getCityId()+", "+Cities.size());
+            if(currentAkhysai.getCityId()!=null){
+                for (int j = 0; j < Cities.size(); j++) {
+                    Log.w("CITY_IDS", "currentAkhysai.getCityId: " + currentAkhysai.getCityId() + ", Cities.get(i).getCityId: " + Cities.get(j).getCityId());
+                    if (String.valueOf(Cities.get(j).getCityId()).equalsIgnoreCase(currentAkhysai.getCityId())) {
+                        city.setSelection(j + 1);
+                        break;
+                    }
+                }
+            }
+
+            if(currentAkhysai.getGender()!=null){
+                if (currentAkhysai.getGender().equalsIgnoreCase("m")) {
+                    male.setChecked(true);
+                } else {
+                    female.setChecked(true);
+                }
+            }
         } else if (Type.equalsIgnoreCase("clinic")) {
             birthday.setVisibility(View.GONE);
             genderRadio.setVisibility(View.GONE);
@@ -204,10 +235,6 @@ public class Step2Fragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, CitiesString);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        city.setAdapter(adapter);
-
         city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -226,13 +253,21 @@ public class Step2Fragment extends Fragment {
         LauncherActivity.akhysaiViewModel.regionsMutableLiveData.observe(requireActivity(), regions -> {
             Regions = new ArrayList<>(regions);
             RegionsString.clear();
-            RegionsString.add(requireActivity().getResources().getString(R.string.choose_region));
+            RegionsString.add(getResources().getString(R.string.choose_region));
             for (Region region : Regions)
                 RegionsString.add(region.getRegionName());
 
             ArrayAdapter<String> area_adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, RegionsString);
             area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             area.setAdapter(area_adapter);
+
+            if(currentAkhysai.getRegionId()!=null){
+                for (int i = 0; i < Regions.size(); i++)
+                    if (String.valueOf(Regions.get(i).getRegionId()).equalsIgnoreCase(currentAkhysai.getRegionId())) {
+                        area.setSelection(i+1);
+                        break;
+                    }
+            }
         });
 
         return view;
@@ -387,8 +422,8 @@ public class Step2Fragment extends Fragment {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             birthday_text = String.valueOf(year1) + "-" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
-            String this_day = (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "/" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "/" + year1;
-            birthday.getEditText().setText(this_day);
+//            String this_day = (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "/" + ((month1 + 1) < 10 ? "0" + (month1 + 1) : (month1 + 1)) + "/" + year1;
+            birthday.getEditText().setText(birthday_text);
             birthday.setError(null);
 
         }, year, month, day);

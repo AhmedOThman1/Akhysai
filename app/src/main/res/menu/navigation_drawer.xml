@@ -8,46 +8,29 @@
 
         <item
             android:id="@+id/home"
-            android:icon="@drawable/nav_home"
+            android:icon="@drawable/ic_home"
             android:title="@string/home" />
-
-<!--        <item-->
-<!--            android:id="@+id/nav_edit_clinic_profile"-->
-<!--            android:icon="@drawable/nav_join_us"-->
-<!--            android:title="@string/nav_edit_akhysai_profile" />-->
-
 
         <item
             android:id="@+id/nav_book_requests"
-            android:title="@string/booking_requests"
-            android:icon="@drawable/ic_booking"/>
-
-<!--        <item-->
-<!--            android:id="@+id/nav_edit_akhysai_profile"-->
-<!--            android:icon="@drawable/nav_join_us"-->
-<!--            android:title="@string/nav_edit_akhysai_profile" />-->
-
-<!--        <item-->
-<!--            android:id="@+id/nav_my_specialty"-->
-<!--            android:icon="@drawable/ic_specialties"-->
-<!--            android:title="@string/nav_my_specialties" />-->
-
+            android:icon="@drawable/ic_booking"
+            android:title="@string/booking_requests" />
 
         <item
             android:id="@+id/nav_my_available_dates"
             android:icon="@drawable/ic_available_dates"
             android:title="@string/my_available_dates" />
 
-<!--        <item-->
-<!--            android:id="@+id/nav_create_article"-->
-<!--            android:icon="@drawable/ic_add_article"-->
-<!--            android:title="@string/nav_create_article" />-->
+        <item
+            android:id="@+id/nav_my_services"
+            android:icon="@drawable/ic_nav_services"
+            android:title="@string/my_services" />
 
 
         <item
             android:id="@+id/nav_my_articles"
-            android:title="@string/my_articles"
-            android:icon="@drawable/ic_my_articles"/>
+            android:icon="@drawable/ic_articles"
+            android:title="@string/my_articles" />
 
 
         <item

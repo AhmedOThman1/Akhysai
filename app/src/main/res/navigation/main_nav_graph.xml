@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/myServicesFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -45,6 +46,16 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+
+        <action
+            android:id="@+id/action_loginFragment_to_verifyProfileFragment"
+            app:destination="@id/verifyProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
 
@@ -80,6 +91,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+            <action
+            android:id="@+id/action_homeFragment_to_categoryArticlesFragment"
+            app:destination="@id/categoryArticlesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
         <action
             android:id="@+id/action_homeFragment_to_centersAndClinicsFragment"
             app:destination="@id/centersAndClinicsFragment" />
@@ -101,7 +120,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-         <action
+        <action
             android:id="@+id/action_pickSignUpTypeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -117,17 +136,17 @@
         android:name="com.ahmed.othman.akhysai.ui.fragments.signUp.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
-<!--        <action-->
-<!--            android:id="@+id/action_signUpPageOneFragment_to_signUpPageTwoFragment"-->
-<!--            app:destination="@id/signUpPageTwoFragment"-->
-<!--            app:enterAnim="@anim/slide_in_right"-->
-<!--            app:exitAnim="@anim/slide_out_left"-->
-<!--            app:popEnterAnim="@anim/slide_in_left"-->
-<!--            app:popExitAnim="@anim/slide_out_right"-->
-<!--            app:popUpToInclusive="true"/>-->
         <action
             android:id="@+id/action_signUpFragment_to_completeProfileFragment"
             app:destination="@id/completeProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -233,7 +252,7 @@
         android:id="@+id/oneArticleFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.OneArticleFragment"
         android:label="fragment_one_article"
-        tools:layout="@layout/fragment_one_article" >
+        tools:layout="@layout/fragment_one_article">
         <action
             android:id="@+id/action_oneArticleFragment_to_oneAkhysaiFragment"
             app:destination="@id/oneAkhysaiFragment"
@@ -246,7 +265,7 @@
         android:id="@+id/libraryArticlesFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.LibraryArticlesFragment"
         android:label="fragment_library_articles"
-        tools:layout="@layout/fragment_library_articles" >
+        tools:layout="@layout/fragment_library_articles">
         <action
             android:id="@+id/action_libraryArticlesFragment_to_oneArticleFragment"
             app:destination="@id/oneArticleFragment"
@@ -286,7 +305,7 @@
         android:id="@+id/bookOneAkhysaiFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.BookOneAkhysaiFragment"
         android:label="fragment_book_one_akhysai"
-        tools:layout="@layout/fragment_book_one_akhysai" >
+        tools:layout="@layout/fragment_book_one_akhysai">
         <action
             android:id="@+id/action_bookOneAkhysaiFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -310,7 +329,7 @@
         android:id="@+id/confirmDateFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.ConfirmDateFragment"
         android:label="ConfirmDateFragment"
-        tools:layout="@layout/fragment_confirm_date"/>
+        tools:layout="@layout/fragment_confirm_date" />
     <fragment
         android:id="@+id/centersAndClinicsFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.CentersAndClinicsFragment"
@@ -328,10 +347,10 @@
         android:id="@+id/oneClinicFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.OneClinicFragment"
         android:label="OneClinicFragment"
-        tools:layout="@layout/fragment_one_clinic"/>
+        tools:layout="@layout/fragment_one_clinic" />
     <fragment
         android:id="@+id/myArticlesFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.MyArticlesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.MyArticlesFragment"
         android:label="MyArticlesFragment"
         tools:layout="@layout/fragment_my_articles">
         <action
@@ -340,8 +359,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            />
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_myArticlesFragment_to_createNewArticleFragment"
             app:destination="@id/createNewArticleFragment"
@@ -352,19 +370,19 @@
     </fragment>
     <fragment
         android:id="@+id/myAvailableDatesFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.MyAvailableDatesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.MyAvailableDatesFragment"
         android:label="MyAvailableDatesFragment"
-        tools:layout="@layout/fragment_my_available_dates"/>
+        tools:layout="@layout/fragment_my_available_dates" />
     <fragment
         android:id="@+id/mySpecialtiesFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.MySpecialtiesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.MySpecialtiesFragment"
         android:label="MySpecialtiesFragment"
-        tools:layout="@layout/fragment_my_specialties"/>
+        tools:layout="@layout/fragment_my_specialties" />
     <fragment
         android:id="@+id/createNewArticleFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.CreateNewArticleFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.CreateNewArticleFragment"
         android:label="CreateNewArticleFragment"
-        tools:layout="@layout/fragment_create_new_article"/>
+        tools:layout="@layout/fragment_create_new_article" />
     <fragment
         android:id="@+id/aboutUsFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.AboutUsFragment"
@@ -384,17 +402,17 @@
         android:id="@+id/editClinicFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.EditClinicFragment"
         android:label="EditClinicFragment"
-        tools:layout="@layout/fragment_edit_clinic_data"/>
+        tools:layout="@layout/fragment_edit_clinic_data" />
     <fragment
         android:id="@+id/bookingRequestsFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.BookingRequestsFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.BookingRequestsFragment"
         android:label="BookingRequestsFragment"
-        tools:layout="@layout/fragment_booking_requests"/>
+        tools:layout="@layout/fragment_booking_requests" />
     <fragment
         android:id="@+id/editAkhysaiDataFragment"
-        android:name="com.ahmed.othman.akhysai.ui.fragments.EditAkhysaiDataFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.EditAkhysaiDataFragment"
         android:label="EditAkhysaiDataFragment"
-        tools:layout="@layout/fragment_edit_akhysai_profile"/>
+        tools:layout="@layout/fragment_edit_akhysai_profile" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.ahmed.othman.akhysai.ui.fragments.SettingsFragment"
@@ -406,28 +424,28 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_settingsFragment_to_mySpecialtiesFragment"
             app:destination="@id/mySpecialtiesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_settingsFragment_to_editAkhysaiDataFragment"
             app:destination="@id/editAkhysaiDataFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_settingsFragment_to_editClinicFragment"
             app:destination="@id/editClinicFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_settingsFragment_to_aboutUsFragment"
             app:destination="@id/aboutUsFragment"
@@ -464,6 +482,53 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_completeProfileFragment_to_verifyProfileFragment"
+            app:destination="@id/verifyProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/myServicesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.akhysai.MyServicesFragment"
+        android:label="MyServicesFragment"
+        tools:layout="@layout/fragment_my_services" />
+    <fragment
+        android:id="@+id/verifyProfileFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.completeProfile.VerifyProfileFragment"
+        android:label="fragment_verify_profile"
+        tools:layout="@layout/fragment_verify_profile">
+
+        <action
+            android:id="@+id/action_verifyProfileFragment_to_completeProfileFragment"
+            app:destination="@id/completeProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
+    <fragment
+        android:id="@+id/categoryArticlesFragment"
+        android:name="com.ahmed.othman.akhysai.ui.fragments.CategoryArticlesFragment"
+        android:label="CategoryArticlesFragment"
+        tools:layout="@layout/fragment_category_articles">
+
+        <action
+            android:id="@+id/action_categoryArticlesFragment_to_oneArticleFragment"
+            app:destination="@id/oneArticleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
 </navigation>

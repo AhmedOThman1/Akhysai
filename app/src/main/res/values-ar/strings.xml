@@ -83,7 +83,7 @@
     <string name="publish_review">نشر التقييم</string>
     <string name="cancel">إلغاء</string>
     <string name="oops_no_result_found">لا توجد نتائج لهذا البحث</string>
-    <string name="try_search_for_something_more_general_check_for_spelling_mistakes">Try search for something more general, check for spelling mistakes.</string>
+    <string name="try_search_for_something_more_general_check_for_spelling_mistakes">حاول البحث عن شئ أكثر عمومية، او تحقق من الأخطاء الإملائية</string>
     <string name="control_board">لوحة التحكم</string>
     <string name="join_us">انضم الينا</string>
     <string name="logout">تسجيل الخروج</string>
@@ -184,6 +184,23 @@
     <string name="address_in_english">العنوان بالانجليزية</string>
     <string name="professional_information">المعلومات المهنية</string>
     <string name="update_all">تعديل البيانات</string>
+    <string name="add_service">إضافة خدمة</string>
+    <string name="service_name_in_arabic">اسم الخدمة بالعربية</string>
+    <string name="service_name_in_english">اسم الخدمة بالانجليزية</string>
+    <string name="price">السعر</string>
+    <string name="my_services">خدماتي</string>
+    <string name="delete">حذف</string>
+    <string name="delete_service">حذف الخدمة</string>
+    <string name="are_you_sure">هل انت متاكد ؟</string>
+    <string name="do_you_want_to_exit_the_app_or_just_logout">هل تريد الخروج من التطبيق ام تسجيل الخروج فقط ؟</string>
+    <string name="exit_app">الخروج من التطبيق</string>
+    <string name="activate_text">تم تسجيل معلوماتك بنجاح وسيتم تفعيل حسابك بعد المراجعة وسيتم الاتصال بك في غضون يومي عمل.</string>
+    <string name="edit_profile_data">تعديل الملف الشخصي</string>
+    <string name="article">مقال</string>
+    <string name="not_available">غير متاح</string>
+    <string name="available">متاح</string>
+    <string name="deleting_time_slot">حذف هذا الوقت…</string>
+    <string name="undo">تراجع</string>
 
     <array name="days">
         <item>اليوم</item>

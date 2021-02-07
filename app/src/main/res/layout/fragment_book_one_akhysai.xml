@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/akhysai_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -62,28 +62,77 @@
                     app:layout_constraintTop_toBottomOf="@id/akhysai_name"
                     tools:text="سنين الخبرة: 5 سنين" />
 
-                <RatingBar
+                <LinearLayout
                     android:id="@+id/akhysai_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:theme="@style/RatingBar"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/akhysai_years_of_experience"
-                    tools:rating="4.5" />
+                    app:layout_constraintTop_toBottomOf="@id/akhysai_years_of_experience">
+
+                    <ImageView
+                        android:id="@+id/star1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/filled" />
+                    <ImageView
+                        android:id="@+id/star2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/filled"
+                        android:layout_marginStart="4dp"/>
+                    <ImageView
+                        android:id="@+id/star3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/filled"
+                        android:layout_marginStart="4dp"/>
+                    <ImageView
+                        android:id="@+id/star4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/empty"
+                        android:layout_marginStart="4dp"/>
+                    <ImageView
+                        android:id="@+id/star5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/empty"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
+
+<!--                <com.willy.ratingbar.ScaleRatingBar-->
+<!--                    android:id="@+id/akhysai_rating"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/akhysai_years_of_experience"-->
+<!--                    app:srb_clearRatingEnabled="true"-->
+<!--                    app:srb_clickable="false"-->
+<!--                    app:srb_isIndicator="true"-->
+<!--                    app:srb_minimumStars="1"-->
+<!--                    app:srb_numStars="5"-->
+<!--                    app:srb_rating="2"-->
+<!--                    app:srb_scrollable="true"-->
+<!--                    app:srb_starHeight="30dp"-->
+<!--                    app:srb_starPadding="15dp"-->
+<!--                    app:srb_starWidth="30dp"-->
+<!--                    app:srb_stepSize="0.5" />-->
 
                 <TextView
                     android:id="@+id/visitors_rate_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="هذا التقييم من 18 زائر"
                     android:textColor="@color/black2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/akhysai_rating"
-                    tools:text="هذا التقييم من 18 زائر" />
+                    app:layout_constraintTop_toBottomOf="@id/akhysai_rating" />
 
                 <TextView
                     android:id="@+id/akhysai_price"
@@ -92,6 +141,7 @@
                     android:layout_marginTop="8dp"
                     android:textColor="@color/black2"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/visitors_rate_num"
@@ -206,8 +256,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textColor="@color/black"
                             android:text="@string/sunday"
+                            android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -365,8 +415,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textColor="@color/black"
                             android:text="@string/wednesday"
+                            android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -416,9 +466,9 @@
                             android:id="@+id/thursday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/black"
                             android:gravity="center"
                             android:text="@string/thursday"
+                            android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
